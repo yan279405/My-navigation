@@ -412,10 +412,10 @@ body {
             <button data-type="cn" onclick="showPage('cn')"><span>📺</span> 国内平台</button>
             <button data-type="global" onclick="showPage('global')"><span>▶</span> 国际平台</button>
             <button data-type="media" onclick="showPage('media')"><span>♪</span> 流媒体</button>
-            <button data-type="media" onclick="showPage('media')"><span>♪</span> 新闻</button>
-            <button data-type="media" onclick="showPage('media')"><span>♪</span> 购物</button>
-            <button data-type="media" onclick="showPage('media')"><span>♪</span> 银行</button>
-            <button data-type="media" onclick="showPage('media')"><span>♪</span> 乱七八糟</button>
+            <button data-type="news" onclick="showPage('news')"><span>📰</span> 新闻</button>
+            <button data-type="shopping" onclick="showPage('shopping')"><span>🛍️</span> 购物</button>
+            <button data-type="bank" onclick="showPage('bank')"><span>🏦</span> 银行</button>
+            <button data-type="other" onclick="showPage('other')"><span>⚪</span> 其他</button>
             <button data-type="business" onclick="showPage('business')"><span>💼</span> 商务合作</button>
         </div>
     </div>
@@ -465,6 +465,21 @@ const DATA = {
         {icon: "♪", name: "Spotify", desc: "播客与音乐库", url: "https://spotify.com"},
         {icon: "🎵", name: "Apple Music", desc: "高清音乐歌单", url: "https://music.apple.com"}
     ],
+    news: [
+        {icon: "📰", name: "澎湃新闻", desc: "时事要闻", url: "https://www.thepaper.cn"},
+        {icon: "📰", name: "纽约时报", desc: "国际时事", url: "https://nytimes.com"}
+    ],
+    shopping: [
+        {icon: "🛍️", name: "淘宝", desc: "在线购物", url: "https://taobao.com"},
+        {icon: "🛍️", name: "京东", desc: "在线购物", url: "https://jd.com"}
+    ],
+    bank: [
+        {icon: "🏦", name: "招商银行", desc: "个人金融", url: "https://cmbchina.com"}
+    ],
+    other: [
+        {icon: "⚪", name: "待定", desc: "空数据测试", url: "#"}
+    ]
+};
     business: [
         {icon: "💼", name: "商务合作", desc: "联系邮箱/合作", url: "mailto:example@email.com"},
         {icon: "📊", name: "Media Kit", desc: "创作者数据看板", url: "#"}
