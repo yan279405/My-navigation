@@ -430,62 +430,41 @@ body {
 </div>
 
 <div id="light"></div>
-    
-    <script>
-        
+
+<script>
+
 let currentPage = "cn";
 
-/* ===== 菜单状态同步（App级核心） ===== */
+/* ===== 菜单状态同步 ===== */
 function setActiveMenu(type){
-
     document.querySelectorAll(".menu button")
         .forEach(btn=>{
-
             const t = btn.dataset.type;
-
-            if(t === type){
-                btn.classList.add("active");
-            }else{
-                btn.classList.remove("active");
-            }
+            btn.classList.toggle("active", t === type);
         });
 }
 
-/* ===== 页面渲染（带动画） ===== */
+/* ===== 页面渲染 ===== */
 function render(type){
 
     const page = document.getElementById("page");
 
-    page.style.opacity = 0;
-    page.style.transform = "translateY(12px)";
+    page.innerHTML = `<div class="cards"></div>`;
+    const box = page.querySelector(".cards");
 
-    setTimeout(()=>{
-
-        page.innerHTML = `<div class="cards"></div>`;
-        const box = page.querySelector(".cards");
-
-        DATA[type].forEach(item=>{
-
-            const div = document.createElement("div");
-            div.className = "card";
-
-            div.innerHTML = `
-                <div class="card-title">${item.icon} ${item.name}</div>
-                <div class="card-sub">${item.desc}</div>
-            `;
-
-            div.onclick = ()=> window.open(item.url, "_blank");
-
-            box.appendChild(div);
-        });
-
-        page.style.opacity = 1;
-        page.style.transform = "translateY(0)";
-
-    },120);
+    DATA[type].forEach(item=>{
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+            <div class="card-title">${item.icon} ${item.name}</div>
+            <div class="card-sub">${item.desc}</div>
+        `;
+        div.onclick = ()=> window.open(item.url, "_blank");
+        box.appendChild(div);
+    });
 }
 
-/* ===== App主入口 ===== */
+/* ===== App入口 ===== */
 function showPage(type){
 
     currentPage = type;
@@ -493,19 +472,15 @@ function showPage(type){
     setActiveMenu(type);
     render(type);
 
-    // 状态显示（App识别当前平台）
     document.querySelector(".hero p").innerText =
         "当前平台：" + type.toUpperCase();
 
-    // 记忆系统（App级体验）
     localStorage.setItem("lastPage", type);
 }
 
-/* ===== 初始化 App ===== */
+/* ===== init ===== */
 function initApp(){
-
     const last = localStorage.getItem("lastPage");
-
     showPage(last || "cn");
 }
 
@@ -519,13 +494,9 @@ document.addEventListener("mousemove", e=>{
         `translate(${e.clientX - 175}px, ${e.clientY - 175}px)`;
 });
 
-/* ===== splash修复（避免报错） ===== */
+/* ===== splash ===== */
 setTimeout(()=>{
-
-    const splash = document.querySelector(".splash");
-
-    if(splash){
-        splash.remove();
-    }
-
+    document.querySelector(".splash")?.remove();
 },2500);
+
+</script>
