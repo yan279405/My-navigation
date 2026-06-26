@@ -31,8 +31,13 @@
 
     filter:blur(20px);
 
-    z-index:0;
+    z-index:1;
 }
+    .app{
+    position:relative;
+    z-index:2;
+}
+    
 *{
     margin:0;
     padding:0;
@@ -56,7 +61,7 @@
 html,body{
     width:100%;
     height:100%;
-    overflow:hidden;
+    overflow:auto;
 
     font-family:
     -apple-system,
@@ -407,13 +412,6 @@ body{
 
     box-shadow:
         0 20px 60px rgba(0,0,0,.35);
-}
-
-.card:hover{
-
-    transform:
-        translateY(-8px)
-        scale(1.02);
 }
 
 .card:active{
