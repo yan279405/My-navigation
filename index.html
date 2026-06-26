@@ -2,67 +2,116 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>我的全平台聚合空间</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>二哥 · 全网矩阵</title>
 
 <style>
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
+:root{
+    --bg:#020617;
+    --card:rgba(255,255,255,.05);
+    --border:rgba(255,255,255,.08);
+    --text:#fff;
+    --sub:#94a3b8;
+    --blue:#38bdf8;
+}
+
 body{
-    height:100vh;
-    display:flex;
-    overflow:hidden;
     font-family:
         -apple-system,
         BlinkMacSystemFont,
+        "PingFang SC",
         sans-serif;
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    overflow:hidden;
+}
+
+/* 背景 */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
 
     background:
         radial-gradient(
-            circle at top,
-            #1e3a8a,
-            #020617
+            circle at 15% 20%,
+            rgba(56,189,248,.25),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 80% 10%,
+            rgba(99,102,241,.25),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 50% 90%,
+            rgba(14,165,233,.15),
+            transparent 40%
         );
 
-    color:#fff;
+    filter:blur(40px);
+
+    z-index:-1;
+}
+
+/* 总体布局 */
+
+.wrapper{
+
+    display:flex;
+
+    height:100vh;
 }
 
 /* 左侧 */
 
 .sidebar{
 
-    width:300px;
-    height:100vh;
+    width:320px;
 
-    position:fixed;
-    left:0;
-    top:0;
+    padding:35px;
 
-    padding:30px;
+    background:
+        rgba(15,23,42,.82);
 
-    background:rgba(15,23,42,.85);
-
-    backdrop-filter:blur(25px);
+    backdrop-filter:
+        blur(30px);
 
     border-right:
-        1px solid
-        rgba(255,255,255,.08);
+        1px solid var(--border);
 }
 
-/* 头像 */
+/* 用户信息 */
 
 .profile{
+
     text-align:center;
+
     margin-bottom:40px;
 }
 
 .avatar{
-    width:90px;
-    height:90px;
+
+    width:100px;
+    height:100px;
+
+    margin:auto;
 
     border-radius:50%;
 
@@ -73,66 +122,80 @@ body{
             #6366f1
         );
 
-    margin:auto;
-    margin-bottom:15px;
+    box-shadow:
+        0 0 40px
+        rgba(56,189,248,.4);
 }
 
-.profile h2{
-    margin-bottom:8px;
+.profile h1{
+
+    margin-top:18px;
+
+    font-size:30px;
 }
 
 .profile p{
-    color:#94a3b8;
-    font-size:14px;
+
+    margin-top:8px;
+
+    color:var(--sub);
 }
 
 /* 导航 */
 
+.nav{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+}
+
 .nav-btn{
 
-    width:100%;
+    padding:18px;
 
-    padding:15px;
-
-    margin-bottom:10px;
-
-    border:none;
-
-    border-radius:14px;
+    border-radius:18px;
 
     background:
         rgba(255,255,255,.04);
 
-    color:#fff;
-
     cursor:pointer;
 
-    text-align:left;
-
     transition:.25s;
+
+    border:
+        1px solid transparent;
 }
 
 .nav-btn:hover{
-    transform:translateX(8px);
-    background:
-        rgba(56,189,248,.15);
+
+    transform:
+        translateX(8px);
+
+    border-color:
+        rgba(56,189,248,.4);
 }
 
 .nav-btn.active{
-    background:#38bdf8;
-    color:#0f172a;
-    font-weight:700;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(56,189,248,.35),
+            rgba(99,102,241,.15)
+        );
+
+    border-color:
+        var(--blue);
 }
 
-/* 主体 */
+/* 主区域 */
 
 .main{
 
-    margin-left:300px;
-
-    width:calc(100% - 300px);
-
-    height:100vh;
+    flex:1;
 
     display:flex;
 
@@ -140,36 +203,47 @@ body{
 
     align-items:center;
 
-    padding:40px;
+    padding:50px;
 }
 
 /* 卡片 */
 
 .card{
 
-    width:700px;
-
-    background:
-        rgba(255,255,255,.05);
-
-    backdrop-filter:blur(30px);
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    border-radius:28px;
+    width:900px;
 
     overflow:hidden;
 
+    background:
+        var(--card);
+
+    backdrop-filter:
+        blur(30px);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:30px;
+
     box-shadow:
-        0 20px 60px
-        rgba(0,0,0,.4);
+        0 30px 80px
+        rgba(0,0,0,.45);
+
+    animation:
+        fade .35s;
 }
 
-.cover{
+.hero{
 
-    height:250px;
+    height:320px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:120px;
 
     background:
         linear-gradient(
@@ -180,122 +254,176 @@ body{
 }
 
 .content{
+
     padding:40px;
 }
 
-.platform{
-    font-size:32px;
-    margin-bottom:20px;
+.title{
+
+    font-size:42px;
+
+    font-weight:700;
 }
 
 .desc{
-    color:#94a3b8;
+
+    margin:20px 0;
+
     line-height:1.8;
+
+    color:#cbd5e1;
 }
 
-.btn{
+/* 数据 */
+
+.stats{
+
+    display:flex;
+
+    gap:50px;
+
+    margin:30px 0;
+}
+
+.stat b{
+
+    display:block;
+
+    font-size:32px;
+}
+
+/* 标签 */
+
+.tags{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-bottom:30px;
+}
+
+.tag{
+
+    padding:8px 16px;
+
+    border-radius:999px;
+
+    background:
+        rgba(255,255,255,.08);
+}
+
+/* 按钮 */
+
+.visit{
 
     display:inline-block;
 
-    margin-top:30px;
+    padding:16px 36px;
 
-    padding:14px 35px;
-
-    background:#38bdf8;
+    background:
+        var(--blue);
 
     color:#000;
 
-    border-radius:12px;
+    border-radius:14px;
 
     text-decoration:none;
 
     font-weight:700;
 }
 
-.stats{
+@keyframes fade{
 
-    display:flex;
+    from{
 
-    gap:40px;
+        opacity:0;
 
-    margin-top:25px;
+        transform:
+            translateY(20px);
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+    }
 }
 
-.stats div{
-    text-align:center;
-}
-
-.stats strong{
-    display:block;
-    font-size:24px;
-}
 </style>
 </head>
 
 <body>
 
-<div class="sidebar">
+<div class="wrapper">
 
-    <div class="profile">
+    <aside class="sidebar">
 
-        <div class="avatar"></div>
+        <div class="profile">
 
-        <h2>二哥</h2>
+            <div class="avatar"></div>
 
-        <p>
-            旅行 · 人文 · 纪录片
-        </p>
+            <h1>二哥</h1>
 
-    </div>
-
-    <div id="nav"></div>
-
-</div>
-
-<div class="main">
-
-    <div class="card">
-
-        <div class="cover"></div>
-
-        <div class="content">
-
-            <div class="platform" id="title">
-                📺 Bilibili
-            </div>
-
-            <div class="desc" id="desc">
-                分享旅行、人文和纪录片内容。
-            </div>
-
-            <div class="stats">
-
-                <div>
-                    <strong id="fans">
-                        0
-                    </strong>
-                    粉丝
-                </div>
-
-                <div>
-                    <strong id="works">
-                        0
-                    </strong>
-                    内容
-                </div>
-
-            </div>
-
-            <a
-                id="link"
-                class="btn"
-                target="_blank">
-                进入主页 →
-            </a>
+            <p>
+                旅行 × 人文 × 纪录片
+            </p>
 
         </div>
 
-    </div>
+        <div class="nav" id="nav"></div>
+
+    </aside>
+
+    <main class="main">
+
+        <div class="card">
+
+            <div class="hero" id="hero"></div>
+
+            <div class="content">
+
+                <div class="title" id="title"></div>
+
+                <div class="desc" id="desc"></div>
+
+                <div class="stats">
+
+                    <div class="stat">
+                        <b id="fans"></b>
+                        粉丝
+                    </div>
+
+                    <div class="stat">
+                        <b id="works"></b>
+                        内容
+                    </div>
+
+                    <div class="stat">
+                        <b id="views"></b>
+                        播放
+                    </div>
+
+                </div>
+
+                <div class="tags" id="tags"></div>
+
+                <a
+                    id="link"
+                    class="visit"
+                    target="_blank">
+
+                    进入主页 →
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
 
 </div>
 
@@ -304,65 +432,84 @@ body{
 const DATA=[
 
 {
-name:"📺 Bilibili",
-desc:"旅行｜人文｜纪录片创作",
+icon:"📺",
+name:"Bilibili",
+desc:"旅行、人文、乡村纪录片创作基地",
 fans:"12.3W",
 works:"326",
+views:"890W",
+tags:["纪录片","旅行","人文"],
 url:"https://space.bilibili.com/你的UID"
 },
 
 {
-name:"📕 小红书",
-desc:"生活方式与旅行记录",
+icon:"📕",
+name:"小红书",
+desc:"旅行生活与深度体验分享",
 fans:"8.5W",
 works:"588",
-url:"https://www.xiaohongshu.com"
+views:"230W",
+tags:["旅行","摄影","生活"],
+url:"https://www.xiaohongshu.com/user/profile/你的ID"
 },
 
 {
-name:"🎵 抖音",
-desc:"短视频与纪录片剪辑",
+icon:"🎵",
+name:"抖音",
+desc:"短视频与纪录片矩阵",
 fans:"23W",
 works:"1068",
-url:"https://www.douyin.com"
+views:"5200W",
+tags:["短视频","流量","剪辑"],
+url:"https://www.douyin.com/user/你的ID"
 },
 
 {
-name:"▶ YouTube",
+icon:"▶",
+name:"YouTube",
 desc:"海外旅行纪录片频道",
 fans:"3.2W",
 works:"135",
-url:"https://youtube.com"
+views:"420W",
+tags:["海外","纪录片","Vlog"],
+url:"https://youtube.com/@你的账号"
 },
 
 {
-name:"✖ X",
-desc:"全球社媒运营与资讯",
+icon:"✖",
+name:"X",
+desc:"全球社媒与资讯矩阵",
 fans:"1.5W",
 works:"208",
-url:"https://x.com"
+views:"95W",
+tags:["国际","资讯","社媒"],
+url:"https://x.com/你的账号"
 }
 
 ];
 
-const nav=document.getElementById('nav');
-
 function show(i){
 
-    document.getElementById('title').innerHTML=
-        DATA[i].name;
+    const d=DATA[i];
 
-    document.getElementById('desc').innerHTML=
-        DATA[i].desc;
+    hero.innerHTML=d.icon;
 
-    document.getElementById('fans').innerHTML=
-        DATA[i].fans;
+    title.innerHTML=d.name;
 
-    document.getElementById('works').innerHTML=
-        DATA[i].works;
+    desc.innerHTML=d.desc;
 
-    document.getElementById('link').href=
-        DATA[i].url;
+    fans.innerHTML=d.fans;
+
+    works.innerHTML=d.works;
+
+    views.innerHTML=d.views;
+
+    tags.innerHTML=
+        d.tags
+        .map(x=>`<span class="tag">${x}</span>`)
+        .join('');
+
+    link.href=d.url;
 
     document
         .querySelectorAll('.nav-btn')
@@ -373,14 +520,18 @@ function show(i){
         .classList.add('active');
 }
 
-DATA.forEach((p,i)=>{
+DATA.forEach((d,i)=>{
 
     nav.innerHTML+=`
-        <button
+
+        <div
             class="nav-btn ${i==0?'active':''}"
             onclick="show(${i})">
-            ${p.name}
-        </button>
+
+            ${d.icon} ${d.name}
+
+        </div>
+
     `;
 });
 
