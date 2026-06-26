@@ -1,29 +1,49 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>颜哥｜全平台聚合官网</title>
+<title>Creator Hub OS26</title>
 
 <style>
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
+:root{
+    --glass:
+        rgba(255,255,255,.08);
+
+    --border:
+        rgba(255,255,255,.12);
+
+    --text:
+        #ffffff;
+
+    --sub:
+        #94a3b8;
+}
+
 html,body{
+    width:100%;
     height:100%;
     overflow:hidden;
+
     font-family:
     -apple-system,
     BlinkMacSystemFont,
+    "SF Pro Display",
     "PingFang SC",
     sans-serif;
 }
 
 body{
+
     background:
     linear-gradient(
         135deg,
@@ -32,459 +52,449 @@ body{
         #1e293b,
         #312e81
     );
-    background-size:400% 400%;
-    animation:bg 18s ease infinite;
-    color:#fff;
+
+    background-size:
+        400% 400%;
+
+    animation:
+        bgMove 20s ease infinite;
+
+    color:white;
 }
 
-@keyframes bg{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
+@keyframes bgMove{
+
+    0%{
+        background-position:
+        0% 50%;
+    }
+
+    50%{
+        background-position:
+        100% 50%;
+    }
+
+    100%{
+        background-position:
+        0% 50%;
+    }
+}
+
+/* 启动画面 */
+
+.splash{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:9999;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#020617;
+
+    animation:
+        splashHide
+        2.5s
+        forwards;
+}
+
+.logo{
+
+    font-size:90px;
+
+    animation:
+        breathe
+        2s
+        infinite;
+}
+
+.name{
+
+    margin-top:20px;
+
+    font-size:32px;
+
+    font-weight:700;
+}
+
+.sub{
+
+    margin-top:10px;
+
+    color:#94a3b8;
+}
+
+@keyframes breathe{
+
+    50%{
+        transform:scale(1.1);
+    }
+}
+
+@keyframes splashHide{
+
+    80%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:0;
+        visibility:hidden;
+    }
+}
+
+/* 主界面 */
+
+.app{
+
+    display:flex;
+
+    width:100vw;
+
+    height:100vh;
 }
 
 /* 左侧 */
 
 .sidebar{
-    position:fixed;
-    left:0;
-    top:0;
 
-    width:300px;
+    width:320px;
+
     height:100vh;
 
     padding:30px;
 
-    background:
-    rgba(15,23,42,.75);
-
     backdrop-filter:
-    blur(25px);
+        blur(40px);
+
+    background:
+        rgba(15,23,42,.55);
 
     border-right:
-    1px solid rgba(255,255,255,.08);
+        1px solid var(--border);
 }
 
 .avatar{
-    width:120px;
-    height:120px;
 
-    margin:auto;
+    width:120px;
+
+    height:120px;
 
     border-radius:50%;
 
+    margin:auto;
+
     background:
-    linear-gradient(
-        135deg,
-        #38bdf8,
-        #6366f1
-    );
+        linear-gradient(
+            135deg,
+            #38bdf8,
+            #6366f1
+        );
 
     display:flex;
+
     justify-content:center;
+
     align-items:center;
 
-    font-size:45px;
-    font-weight:700;
+    font-size:48px;
 
-    box-shadow:
-    0 20px 60px
-    rgba(56,189,248,.3);
+    font-weight:700;
 }
 
 .username{
-    text-align:center;
-    font-size:32px;
-    font-weight:700;
+
     margin-top:20px;
+
+    text-align:center;
+
+    font-size:32px;
+
+    font-weight:700;
 }
 
 .bio{
-    text-align:center;
-    color:#94a3b8;
-    line-height:1.8;
+
     margin-top:10px;
+
+    text-align:center;
+
+    color:var(--sub);
+
+    line-height:1.8;
 }
 
-.line{
-    margin:30px 0;
-    height:1px;
-    background:
-    rgba(255,255,255,.08);
-}
+.menu{
 
-.nav{
+    margin-top:40px;
+
     display:flex;
+
     flex-direction:column;
+
     gap:12px;
 }
 
-.nav button{
+.menu button{
+
+    height:60px;
+
     border:none;
 
+    border-radius:20px;
+
     background:
-    rgba(30,41,59,.55);
-
-    backdrop-filter:
-    blur(20px);
-
-    border-radius:18px;
-
-    padding:18px;
+        rgba(255,255,255,.05);
 
     color:white;
 
-    cursor:pointer;
-
-    text-align:left;
-
     font-size:16px;
+
+    cursor:pointer;
 
     transition:.3s;
 }
 
-.nav button:hover{
+.menu button:hover{
+
     transform:
-    translateX(8px);
-}
+        translateX(8px);
 
-.nav button.active{
     background:
-    linear-gradient(
-        135deg,
-        #38bdf8,
-        #6366f1
-    );
-
-    box-shadow:
-    0 10px 30px
-    rgba(56,189,248,.35);
+        rgba(255,255,255,.12);
 }
 
 /* 右侧 */
 
 .main{
-    margin-left:300px;
 
-    width:
-    calc(100vw - 300px);
-
-    height:100vh;
-
-    overflow:auto;
+    flex:1;
 
     padding:30px;
+
+    overflow:auto;
 }
 
-.panel{
-    display:none;
+.hero{
 
-    min-height:
-    calc(100vh - 60px);
-
-    background:
-    rgba(15,23,42,.55);
-
-    backdrop-filter:
-    blur(25px);
+    height:220px;
 
     border-radius:30px;
 
-    padding:40px;
+    backdrop-filter:
+        blur(50px);
 
-    animation:fade .35s;
-}
+    background:
+        rgba(255,255,255,.08);
 
-.panel.active{
-    display:block;
-}
-
-@keyframes fade{
-    from{
-        opacity:0;
-        transform:
-        translateY(20px);
-    }
-    to{
-        opacity:1;
-        transform:none;
-    }
-}
-
-/* HERO */
-
-.hero{
-    height:240px;
-
-    border-radius:28px;
+    border:
+        1px solid
+        rgba(255,255,255,.1);
 
     padding:50px;
 
     display:flex;
-    align-items:center;
 
-    box-shadow:
-    0 20px 60px
-    rgba(0,0,0,.3);
+    flex-direction:column;
+
+    justify-content:center;
 }
 
-.hero-title{
-    font-size:50px;
-    font-weight:700;
+.hero h1{
+
+    font-size:48px;
 }
 
-.hero-sub{
+.hero p{
+
     margin-top:15px;
-    font-size:20px;
-    opacity:.9;
-}
 
-.card{
-    margin-top:40px;
-
-    background:
-    rgba(30,41,59,.55);
-
-    padding:40px;
-
-    border-radius:25px;
-
-    line-height:2;
-}
-
-.card h2{
-    margin-bottom:20px;
-}
-
-.card p{
     color:#cbd5e1;
 }
 
-.visit{
-    display:inline-block;
+.cards{
 
-    margin-top:40px;
+    margin-top:30px;
 
-    padding:18px 40px;
+    display:grid;
 
-    border-radius:18px;
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(260px,1fr)
+        );
+
+    gap:20px;
+}
+
+.card{
+
+    height:160px;
+
+    border-radius:30px;
+
+    backdrop-filter:
+        blur(40px);
 
     background:
-    linear-gradient(
-        135deg,
-        #38bdf8,
-        #6366f1
-    );
+        rgba(255,255,255,.06);
 
-    color:#fff;
+    border:
+        1px solid
+        rgba(255,255,255,.1);
 
-    text-decoration:none;
-
-    font-weight:700;
+    padding:25px;
 
     transition:.3s;
 }
 
-.visit:hover{
+.card:hover{
+
     transform:
-    translateY(-3px);
+        translateY(-10px);
+}
+
+.card-title{
+
+    font-size:22px;
+
+    font-weight:700;
+}
+
+.card-sub{
+
+    margin-top:15px;
+
+    color:#94a3b8;
 }
 
 @media(max-width:900px){
 
-    body{
-        overflow:auto;
+    .app{
+        flex-direction:column;
     }
 
     .sidebar{
-        position:relative;
         width:100%;
-        height:auto;
-    }
-
-    .main{
-        width:100%;
-        margin-left:0;
         height:auto;
     }
 }
+
 </style>
 </head>
 
 <body>
 
-<div class="sidebar">
+<div class="splash">
 
-    <div class="avatar">
-        颜
+    <div class="logo"></div>
+
+    <div class="name">
+        Creator Hub
     </div>
 
-    <div class="username">
-        颜哥
+    <div class="sub">
+        Apple OS26 Experience
     </div>
-
-    <div class="bio">
-        旅行 · 人文 · 纪录片创作者
-        <br>
-        全平台内容创作
-    </div>
-
-    <div class="line"></div>
-
-    <div class="nav" id="nav"></div>
 
 </div>
 
-<div class="main">
-    <div id="content"></div>
-</div>
+<div class="app">
 
-<script>
+    <div class="sidebar">
 
-const DATA=[
+        <div class="avatar">
+            昵称
+        </div>
 
-{
-    id:"bili",
-    icon:"📺",
-    name:"Bilibili",
-    color:"#00A1D6",
-    intro:"旅行人文纪录片创作者",
-    url:"https://space.bilibili.com/506524109?spm_id_from=333.337.0.0"
-},
+        <div class="username">
+            昵称
+        </div>
 
-{
-    id:"xhs",
-    icon:"📕",
-    name:"小红书",
-    color:"#FF2442",
-    intro:"旅行摄影与生活记录",
-    url:"https://www.xiaohongshu.com/"
-},
+        <div class="bio">
+            Travel · Human
+            <br>
+            Documentary Creator
+        </div>
 
-{
-    id:"dy",
-    icon:"🎵",
-    name:"抖音",
-    color:"#161823",
-    intro:"旅行短纪录片",
-    url:"https://www.douyin.com/"
-},
+        <div class="menu">
 
-{
-    id:"yt",
-    icon:"▶",
-    name:"YouTube",
-    color:"#FF0000",
-    intro:"海外旅行纪录片频道",
-    url:"https://youtube.com/channel/UC64R-hCddzIo8BgVQYAjAxg?si=HKoR3leAoHyoIPzP"
-},
+            <button>
+                📺 国内平台
+            </button>
 
-{
-    id:"x",
-    icon:"𝕏",
-    name:"X",
-    color:"#111111",
-    intro:"日常动态与观点分享",
-    url:"https://x.com/"
-}
+            <button>
+                ▶ 国际平台
+            </button>
 
-];
+            <button>
+                ♪ 流媒体
+            </button>
 
-const nav=document.getElementById("nav");
-const content=document.getElementById("content");
+            <button>
+                💼 商务合作
+            </button>
 
-DATA.forEach((p,i)=>{
+        </div>
 
-    nav.innerHTML+=`
-    <button
-    class="${i===0?'active':''}"
-    onclick="show('${p.id}',this)">
-    ${p.icon} ${p.name}
-    </button>`;
+    </div>
 
-    content.innerHTML+=`
+    <div class="main">
 
-    <div
-    id="${p.id}"
-    class="panel ${i===0?'active':''}">
+        <div class="hero">
 
-        <div
-        class="hero"
-        style="
-        background:
-        linear-gradient(
-        135deg,
-        ${p.color},
-        #312e81
-        )">
+            <h1>
+                🍎 Creator Hub OS26
+            </h1>
 
-            <div>
+            <p>
+                iPhoneOS26 + iPadOS26 + VisionOS
+            </p>
 
-                <div class="hero-title">
-                    ${p.icon} ${p.name}
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="card-title">
+                    📺 Bilibili
                 </div>
-
-                <div class="hero-sub">
-                    ${p.intro}
+                <div class="card-sub">
+                    中国视频创作平台
                 </div>
+            </div>
 
+            <div class="card">
+                <div class="card-title">
+                    📕 小红书
+                </div>
+                <div class="card-sub">
+                    旅行与生活记录
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    🎵 抖音
+                </div>
+                <div class="card-sub">
+                    短纪录片频道
+                </div>
             </div>
 
         </div>
 
-        <div class="card">
-
-            <h2>
-                ${p.name} 官方账号
-            </h2>
-
-            <p>
-                欢迎访问我的 ${p.name} 官方主页。
-            </p>
-
-            <p>
-                点击下方按钮，即可查看我的全部视频、
-                动态、作品及最新内容。
-            </p>
-
-        </div>
-
-        <a
-        href="${p.url}"
-        target="_blank"
-        class="visit">
-
-        进入 ${p.name} 官方主页 →
-
-        </a>
-
     </div>
 
-    `;
-});
-
-function show(id,btn){
-
-    document
-    .querySelectorAll('.panel')
-    .forEach(
-        x=>x.classList.remove('active')
-    );
-
-    document
-    .querySelectorAll('.nav button')
-    .forEach(
-        x=>x.classList.remove('active')
-    );
-
-    document
-    .getElementById(id)
-    .classList.add('active');
-
-    btn.classList.add('active');
-}
-
-</script>
+</div>
 
 </body>
 </html>
