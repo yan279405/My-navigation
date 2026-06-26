@@ -1,606 +1,388 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-
 <title>Creator Hub OS26</title>
 
 <style>
-    
-#light{
-
-    position:fixed;
-
-    width:300px;
-    height:300px;
-
-    border-radius:50%;
-
-    pointer-events:none;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(99,102,241,.25),
-            transparent 60%
-        );
-
-    transform:translate(-50%,-50%);
-
-    filter:blur(20px);
-
-    z-index:1;
-}
-    .app{
-    position:relative;
-    z-index:2;
-}
-    
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-:root{
-    --glass:
-        rgba(255,255,255,.08);
-
-    --border:
-        rgba(255,255,255,.12);
-
-    --text:
-        #ffffff;
-
-    --sub:
-        #94a3b8;
+:root {
+    --glass: rgba(255, 255, 255, .08);
+    --border: rgba(255, 255, 255, .12);
+    --text: #ffffff;
+    --sub: #94a3b8;
+    --bg-dark: #020617;
 }
 
-html,body{
-    width:100%;
-    height:100%;
-    overflow:auto;
-
-    font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "SF Pro Display",
-    "PingFang SC",
-    sans-serif;
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* 改为 hidden，防止全局滚动，主内容区单独滚动 */
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", sans-serif;
 }
 
-body{
-
+body {
     background:
         radial-gradient(circle at 20% 20%, #1e3a8a, transparent 40%),
         radial-gradient(circle at 80% 30%, #7c3aed, transparent 40%),
         radial-gradient(circle at 50% 80%, #0ea5e9, transparent 40%),
-        linear-gradient(135deg,#020617,#0f172a,#1e293b);
-
+        linear-gradient(135deg, var(--bg-dark), #0f172a, #1e293b);
     background-size: 200% 200%;
-
     animation: moveBg 12s ease infinite;
-
-    color:white;
+    color: var(--text);
 }
 
-@keyframes moveBg{
-
-    0%{
-        background-position:0% 50%;
-    }
-
-    50%{
-        background-position:100% 50%;
-    }
-
-    100%{
-        background-position:0% 50%;
-    }
+@keyframes moveBg {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-/* 启动画面 */
-
-.splash{
-
-    position:fixed;
-
-    inset:0;
-
-    z-index:9999;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-    background:#020617;
-
-    animation:
-        splashHide
-        2.5s
-        forwards;
+/* --- 鼠标跟随光效 --- */
+#light {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(99,102,241,.25), transparent 60%);
+    /* 初始状态移出屏幕或居中 */
+    transform: translate(-100%, -100%);
+    filter: blur(20px);
+    z-index: 1;
+    will-change: transform; /* 提示浏览器进行 GPU 加速优化 */
 }
 
-.logo{
-
-    font-size:90px;
-
-    animation:
-        breathe
-        2s
-        infinite;
+/* --- 启动画面 --- */
+.splash {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg-dark);
+    animation: splashHide 2.5s forwards;
 }
 
-.name{
-
-    margin-top:20px;
-
-    font-size:32px;
-
-    font-weight:700;
+.logo {
+    font-size: 90px;
+    animation: breathe 2s infinite;
 }
 
-.sub{
-
-    margin-top:10px;
-
-    color:#94a3b8;
+.name {
+    margin-top: 20px;
+    font-size: 32px;
+    font-weight: 700;
 }
 
-@keyframes breathe{
+.sub {
+    margin-top: 10px;
+    color: var(--sub);
+}
 
-    50%{
-        transform:scale(1.1);
+@keyframes breathe {
+    50% { transform: scale(1.1); }
+}
+
+@keyframes splashHide {
+    80% { opacity: 1; }
+    100% { 
+        opacity: 0; 
+        visibility: hidden; 
     }
 }
 
-@keyframes splashHide{
-
-    80%{
-        opacity:1;
-    }
-
-    100%{
-        opacity:0;
-        visibility:hidden;
-    }
+/* --- 主界面布局 --- */
+.app {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
 }
 
-/* 主界面 */
-
-.app{
-
-    display:flex;
-
-    width:100vw;
-
-    height:100vh;
+/* 左侧侧边栏 */
+.sidebar {
+    width: 320px;
+    height: 100vh;
+    padding: 30px;
+    backdrop-filter: blur(40px);
+    background: rgba(15, 23, 42, .55);
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
 }
 
-/* 左侧 */
-
-.sidebar{
-
-    width:320px;
-
-    height:100vh;
-
-    padding:30px;
-
-    backdrop-filter:
-        blur(40px);
-
-    background:
-        rgba(15,23,42,.55);
-
-    border-right:
-        1px solid var(--border);
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: auto;
+    background: linear-gradient(135deg, #38bdf8, #6366f1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    font-weight: 700;
 }
 
-.avatar{
-
-    width:120px;
-
-    height:120px;
-
-    border-radius:50%;
-
-    margin:auto;
-
-    background:
-        linear-gradient(
-            135deg,
-            #38bdf8,
-            #6366f1
-        );
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    font-size:48px;
-
-    font-weight:700;
+.username {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
 }
 
-.username{
-
-    margin-top:20px;
-
-    text-align:center;
-
-    font-size:32px;
-
-    font-weight:700;
+.bio {
+    margin-top: 10px;
+    text-align: center;
+    color: var(--sub);
+    line-height: 1.8;
 }
 
-.bio{
-
-    margin-top:10px;
-
-    text-align:center;
-
-    color:var(--sub);
-
-    line-height:1.8;
+.menu {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.menu{
-    margin-top:40px;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
+.menu button {
+    height: 60px;
+    border: none;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, .05);
+    color: var(--text);
+    font-size: 16px;
+    cursor: pointer;
+    transition: .25s;
 }
 
-.menu button{
-    height:60px;
-    border:none;
-    border-radius:20px;
-    background:rgba(255,255,255,.05);
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-    transition:.25s;
+.menu button:hover {
+    transform: translateX(8px);
+    background: rgba(255, 255, 255, .12);
 }
 
-.menu button:hover{
-    transform:translateX(8px);
-    background:rgba(255,255,255,.12);
+.menu button:active {
+    transform: scale(.96);
 }
 
-.menu button:active{
-    transform:scale(.96);
+.menu button.active {
+    background: linear-gradient(135deg, #38bdf8, #6366f1);
 }
 
-.menu button.active{
-    background:linear-gradient(135deg,#38bdf8,#6366f1);
-}
-/* 右侧 */
-
-.main{
-
-    flex:1;
-
-    padding:30px;
-
-    overflow:auto;
+/* 右侧主内容区 */
+.main {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto; /* 仅主内容区滚动 */
 }
 
-.hero{
-
-    height:220px;
-
-    border-radius:30px;
-
-    backdrop-filter:
-        blur(50px);
-
-    background:
-        rgba(255,255,255,.08);
-
-    border:
-        1px solid
-        rgba(255,255,255,.1);
-
-    padding:50px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
+.hero {
+    height: 220px;
+    border-radius: 30px;
+    backdrop-filter: blur(50px);
+    background: var(--glass);
+    border: 1px solid var(--border);
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.hero h1{
-
-    font-size:48px;
+.hero h1 {
+    font-size: 48px;
 }
 
-.hero p{
-
-    margin-top:15px;
-
-    color:#cbd5e1;
+.hero p {
+    margin-top: 15px;
+    color: #cbd5e1;
 }
 
-.cards{
-
-    margin-top:30px;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(260px,1fr)
-        );
-
-    gap:20px;
+.cards {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
 }
 
-.card{
-
-    position:relative;
-
-    height:160px;
-
-    border-radius:28px;
-
-    padding:25px;
-
-    cursor:pointer;
-
-    overflow:hidden;
-
-    background:
-        rgba(255,255,255,.06);
-
-    backdrop-filter:
-        blur(40px);
-
-    border:
-        1px solid rgba(255,255,255,.12);
-
-    transition:
-        all .35s ease;
-
-    box-shadow:
-        0 10px 40px rgba(0,0,0,.25);
+.card {
+    position: relative;
+    height: 160px;
+    border-radius: 28px;
+    padding: 25px;
+    cursor: pointer;
+    overflow: hidden;
+    background: rgba(255, 255, 255, .06);
+    backdrop-filter: blur(40px);
+    border: 1px solid var(--border);
+    transition: all .35s ease;
+    box-shadow: 0 10px 40px rgba(0,0,0,.25);
 }
 
 /* 🌈 Apple 光影扫过效果 */
-.card::before{
-
-    content:"";
-
-    position:absolute;
-
-    top:0;
-    left:-100%;
-
-    width:100%;
-    height:100%;
-
-    background:
-        linear-gradient(
-            120deg,
-            transparent,
-            rgba(255,255,255,.2),
-            transparent
-        );
-
-    transition:.6s;
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,.2), transparent);
+    transition: .6s;
 }
 
-.card:hover::before{
-    left:100%;
+.card:hover::before {
+    left: 100%;
 }
 
-.card:hover{
-
-    transform:
-        translateY(-10px)
-        scale(1.03);
-
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.35);
+.card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 60px rgba(0,0,0,.35);
 }
 
-.card:active{
-
-    transform:
-        scale(.95);
+.card:active {
+    transform: scale(.95);
 }
 
-.card-title{
-
-    font-size:22px;
-
-    font-weight:700;
+.card-title {
+    font-size: 22px;
+    font-weight: 700;
 }
 
-.card-sub{
-
-    margin-top:15px;
-
-    color:#94a3b8;
+.card-sub {
+    margin-top: 15px;
+    color: var(--sub);
 }
 
-@media(max-width:900px){
-
-    .app{
-        flex-direction:column;
+@media(max-width: 900px) {
+    .app {
+        flex-direction: column;
     }
-
-    .sidebar{
-        width:100%;
-        height:auto;
+    .sidebar {
+        width: 100%;
+        height: auto;
+    }
+    html, body {
+        overflow: auto; /* 手机端恢复全局滚动 */
     }
 }
-
 </style>
 </head>
 
 <body>
 
-<div class="splash">
-
+<div class="splash" id="splashScreen">
     <div class="logo"></div>
-
-    <div class="name">
-        Creator Hub
-    </div>
-
-    <div class="sub">
-        Apple OS26 Experience
-    </div>
-
+    <div class="name">Creator Hub</div>
+    <div class="sub">Apple OS26 Experience</div>
 </div>
 
 <div class="app">
-
     <div class="sidebar">
-
-        <div class="avatar">
-            昵称
-        </div>
-
-        <div class="username">
-            昵称
-        </div>
-
+        <div class="avatar">昵称</div>
+        <div class="username">昵称</div>
         <div class="bio">
-            Travel · Human
-            <br>
-            Documentary Creator
+            Travel · Human<br>Documentary Creator
         </div>
 
         <div class="menu">
-
-    <button onclick="showPage('cn')">
-        📺 国内平台
-    </button>
-
-    <button onclick="showPage('global')">
-        ▶ 国际平台
-    </button>
-
-    <button onclick="showPage('media')">
-        ♪ 流媒体
-    </button>
-
-    <button onclick="showPage('business')">
-        💼 商务合作
-    </button>
-
-</div>
-
+            <button data-type="cn" onclick="showPage('cn')">📺 国内平台</button>
+            <button data-type="global" onclick="showPage('global')">▶ 国际平台</button>
+            <button data-type="media" onclick="showPage('media')">♪ 流媒体</button>
+            <button data-type="business" onclick="showPage('business')">💼 商务合作</button>
+        </div>
     </div>
 
     <div class="main">
-
         <div class="hero">
-
-            <h1>
-                🍎 Creator Hub OS26
-            </h1>
-
-            <p>
-                iPhoneOS26 + iPadOS26 + VisionOS
-            </p>
-
+            <h1>🍎 Creator Hub OS26</h1>
+            <p>iPhoneOS26 + iPadOS26 + VisionOS</p>
         </div>
-
         <div id="page"></div>
-
-        </div>
-
     </div>
-
 </div>
-    
+
 <div id="light"></div>
     
-</body>
-    <script>
-
+<script>
 const DATA = {
-  cn:[
-    {icon:"📺",name:"Bilibili",desc:"中国视频创作平台",url:"https://space.bilibili.com"},
-    {icon:"📕",name:"小红书",desc:"旅行与生活记录",url:"https://xiaohongshu.com"},
-    {icon:"🎵",name:"抖音",desc:"短纪录片频道",url:"https://douyin.com"}
-  ],
-  global:[
-    {icon:"▶",name:"YouTube",desc:"全球视频平台",url:"https://youtube.com"},
-    {icon:"𝕏",name:"X",desc:"国际社交平台",url:"https://x.com"},
-    {icon:"📷",name:"Instagram",desc:"图片社交平台",url:"https://instagram.com"}
-  ],
-  media:[
-    {icon:"♪",name:"Spotify",desc:"音乐平台",url:"https://spotify.com"},
-    {icon:"N",name:"Netflix",desc:"流媒体平台",url:"https://netflix.com"},
-    {icon:"🍎",name:"Apple TV+",desc:"苹果影视平台",url:"https://tv.apple.com"}
-  ],
-  business:[
-    {icon:"💼",name:"商务合作",desc:"联系邮箱/合作",url:"mailto:example@email.com"}
-  ]
+    cn: [
+        {icon: "📺", name: "Bilibili", desc: "中国视频创作平台", url: "https://space.bilibili.com"},
+        {icon: "📕", name: "小红书", desc: "旅行与生活记录", url: "https://xiaohongshu.com"},
+        {icon: "🎵", name: "抖音", desc: "短纪录片频道", url: "https://douyin.com"}
+    ],
+    global: [
+        {icon: "▶", name: "YouTube", desc: "全球视频平台", url: "https://youtube.com"},
+        {icon: "𝕏", name: "X", desc: "国际社交平台", url: "https://x.com"},
+        {icon: "📷", name: "Instagram", desc: "图片社交平台", url: "https://instagram.com"}
+    ],
+    media: [
+        {icon: "♪", name: "Spotify", desc: "音乐平台", url: "https://open.spotify.com"}, /* 修复了错误的链接 */
+        {icon: "N", name: "Netflix", desc: "流媒体平台", url: "https://netflix.com"},
+        {icon: "🍎", name: "Apple TV+", desc: "苹果影视平台", url: "https://tv.apple.com"}
+    ],
+    business: [
+        {icon: "💼", name: "商务合作", desc: "联系邮箱/合作", url: "mailto:example@email.com"}
+    ]
 };
 
-function setActiveMenu(type){
-  document.querySelectorAll(".menu button")
-    .forEach(b=>b.classList.remove("active"));
-
-  const map = {
-    cn:0,
-    global:1,
-    media:2,
-    business:3
-  };
-
-  document.querySelectorAll(".menu button")[map[type]]
-    .classList.add("active");
+// 优化后的高亮逻辑：不再依赖固定的数组索引，而是依赖 data-type 属性
+function setActiveMenu(type) {
+    document.querySelectorAll(".menu button").forEach(btn => {
+        if (btn.dataset.type === type) {
+            btn.classList.add("active");
+        } else {
+            btn.classList.remove("active");
+        }
+    });
 }
 
-function showPage(type){
+function showPage(type) {
+    setActiveMenu(type);
+    
+    const page = document.getElementById("page");
+    page.innerHTML = `<div class="cards"></div>`;
+    const cards = page.querySelector(".cards");
 
-  setActiveMenu(type);
-
-  const page = document.getElementById("page");
-
-  page.innerHTML = `<div class="cards"></div>`;
-  const cards = page.querySelector(".cards");
-
-  DATA[type].forEach(item=>{
-
-    const div = document.createElement("div");
-    div.className = "card";
-
-    div.innerHTML = `
-      <div class="card-title">${item.icon} ${item.name}</div>
-      <div class="card-sub">${item.desc}</div>
-    `;
-
-    div.onclick = () => window.open(item.url, "_blank");
-
-    cards.appendChild(div);
-  });
+    DATA[type].forEach(item => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+            <div class="card-title">${item.icon} ${item.name}</div>
+            <div class="card-sub">${item.desc}</div>
+        `;
+        div.onclick = () => window.open(item.url, "_blank");
+        cards.appendChild(div);
+    });
 }
 
+// 页面初始化
 showPage("cn");
+
+// 优化后的鼠标跟随：使用 GPU 加速的 transform 属性代替修改 left/top，减少重排
+const light = document.getElementById("light");
 document.addEventListener("mousemove", e => {
-
-    const light =
-        document.getElementById("light");
-
-    light.style.left = e.clientX + "px";
-    light.style.top = e.clientY + "px";
+    // 鼠标在视口的位置减去一半的光效宽高(150px)使其居中
+    light.style.transform = `translate(${e.clientX - 150}px, ${e.clientY - 150}px)`;
 });
+
+// 动画结束后，彻底移除启动屏 DOM 节点，保持页面整洁
+setTimeout(() => {
+    const splash = document.getElementById("splashScreen");
+    if (splash) {
+        splash.remove();
+    }
+}, 2500); // 对应 CSS 动画的 2.5s 长度
 </script>
+</body>
 </html>
