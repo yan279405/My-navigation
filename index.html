@@ -13,7 +13,41 @@
     box-sizing:border-box;
 }
 
-body{
+body{/* 星空 */
+
+#stars{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:-3;
+}
+
+/* 鼠标流光 */
+
+#glow{
+
+    position:fixed;
+
+    width:500px;
+
+    height:500px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            rgba(56,189,248,.18),
+            transparent
+        );
+
+    filter:blur(80px);
+
+    pointer-events:none;
+
+    z-index:-2;
+}
     font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -59,6 +93,28 @@ body:before{
 /* 左侧 */
 
 .sidebar{
+
+    width:320px;
+
+    background:
+        rgba(15,23,42,.72);
+
+    backdrop-filter:
+        blur(40px);
+
+    -webkit-backdrop-filter:
+        blur(40px);
+
+    padding:30px;
+
+    border-right:
+        1px solid
+        rgba(255,255,255,.08);
+
+    box-shadow:
+        0 0 40px
+        rgba(0,0,0,.3);
+}
 
     width:320px;
 
@@ -196,6 +252,39 @@ body:before{
         rgba(255,255,255,.05);
 
     backdrop-filter:
+        blur(30px);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    margin-bottom:30px;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.45);
+
+    transition:.3s;
+}
+
+.card:hover{
+
+    transform:
+        translateY(-5px);
+
+    box-shadow:
+        0 30px 80px
+        rgba(56,189,248,.15);
+}
+
+    background:
+        rgba(255,255,255,.05);
+
+    backdrop-filter:
         blur(20px);
 
     border:
@@ -315,6 +404,45 @@ body:before{
 
 .work{
 
+    height:240px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #111827,
+            #1e293b
+        );
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:60px;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+    box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.3);
+}
+
+.work:hover{
+
+    transform:
+        scale(1.08)
+        translateY(-10px);
+
+    box-shadow:
+        0 20px 60px
+        rgba(56,189,248,.2);
+}
+
     height:180px;
 
     border-radius:16px;
@@ -360,6 +488,10 @@ body:before{
 </head>
 
 <body>
+
+<canvas id="stars"></canvas>
+
+<div id="glow"></div>
 
 <div class="app">
 
@@ -416,7 +548,21 @@ body:before{
 
             <div class="card">
 
-                <div class="bili-banner"></div>
+              <div class="bili-banner">
+
+    <div
+        style="
+            height:100%;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-size:100px">
+
+        📺
+
+    </div>
+
+</div>
 
                 <div class="bili-content">
 
@@ -575,8 +721,93 @@ function show(id,el){
 
     el.classList.add('active');
 }
+document.addEventListener(
+    'mousemove',
+    e=>{
 
+        glow.animate({
+
+            left:e.clientX-250+'px',
+
+            top:e.clientY-250+'px'
+
+        },{
+            duration:300,
+            fill:'forwards'
+        });
+
+    }
+);
 </script>
 
 </body>
 </html>
+const canvas=
+    document.getElementById(
+        'stars'
+    );
+
+const ctx=
+    canvas.getContext('2d');
+
+canvas.width=
+    innerWidth;
+
+canvas.height=
+    innerHeight;
+
+const stars=[];
+
+for(let i=0;i<200;i++){
+
+    stars.push({
+
+        x:Math.random()*canvas.width,
+
+        y:Math.random()*canvas.height,
+
+        r:Math.random()*2,
+
+        s:Math.random()*0.3+0.1
+    });
+}
+
+function animate(){
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    ctx.fillStyle=
+        '#ffffff';
+
+    stars.forEach(s=>{
+
+        ctx.beginPath();
+
+        ctx.arc(
+            s.x,
+            s.y,
+            s.r,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+        s.y+=s.s;
+
+        if(s.y>
+            canvas.height)
+            s.y=0;
+    });
+
+    requestAnimationFrame(
+        animate
+    );
+}
+
+animate();
