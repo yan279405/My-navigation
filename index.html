@@ -243,7 +243,11 @@ body{
     gap:12px;
 }
 
-.menu button{
+.menu button:active{
+
+    transform:
+        scale(.95);
+}
 
     height:60px;
 
@@ -356,10 +360,25 @@ body{
     transition:.3s;
 }
 
+.card{
+
+    cursor:pointer;
+
+    transition:
+        .25s;
+}
+
 .card:hover{
 
     transform:
-        translateY(-10px);
+        translateY(-8px)
+        scale(1.02);
+}
+
+.card:active{
+
+    transform:
+        scale(.95);
 }
 
 .card-title{
@@ -427,23 +446,23 @@ body{
 
         <div class="menu">
 
-            <button>
-                📺 国内平台
-            </button>
+    <button onclick="showPage('cn')">
+        📺 国内平台
+    </button>
 
-            <button>
-                ▶ 国际平台
-            </button>
+    <button onclick="showPage('global')">
+        ▶ 国际平台
+    </button>
 
-            <button>
-                ♪ 流媒体
-            </button>
+    <button onclick="showPage('media')">
+        ♪ 流媒体
+    </button>
 
-            <button>
-                💼 商务合作
-            </button>
+    <button onclick="showPage('business')">
+        💼 商务合作
+    </button>
 
-        </div>
+</div>
 
     </div>
 
@@ -461,34 +480,7 @@ body{
 
         </div>
 
-        <div class="cards">
-
-            <div class="card">
-                <div class="card-title">
-                    📺 Bilibili
-                </div>
-                <div class="card-sub">
-                    中国视频创作平台
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">
-                    📕 小红书
-                </div>
-                <div class="card-sub">
-                    旅行与生活记录
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">
-                    🎵 抖音
-                </div>
-                <div class="card-sub">
-                    短纪录片频道
-                </div>
-            </div>
+        <div id="page"></div>
 
         </div>
 
@@ -497,4 +489,125 @@ body{
 </div>
 
 </body>
+    <script>
+
+const DATA={
+
+cn:[
+{
+icon:"📺",
+name:"Bilibili",
+desc:"中国视频创作平台",
+url:"#"
+},
+{
+icon:"📕",
+name:"小红书",
+desc:"旅行与生活记录",
+url:"#"
+},
+{
+icon:"🎵",
+name:"抖音",
+desc:"短纪录片频道",
+url:"#"
+}
+],
+
+global:[
+{
+icon:"▶",
+name:"YouTube",
+desc:"全球视频平台",
+url:"#"
+},
+{
+icon:"𝕏",
+name:"X",
+desc:"国际社交平台",
+url:"#"
+},
+{
+icon:"📷",
+name:"Instagram",
+desc:"图片社交平台",
+url:"#"
+}
+],
+
+media:[
+{
+icon:"♪",
+name:"Spotify",
+desc:"音乐平台",
+url:"#"
+},
+{
+icon:"N",
+name:"Netflix",
+desc:"流媒体平台",
+url:"#"
+},
+{
+icon:"🍎",
+name:"Apple TV+",
+desc:"苹果影视平台",
+url:"#"
+}
+],
+
+business:[
+{
+icon:"💼",
+name:"商务合作",
+desc:"合作邮箱",
+url:"#"
+}
+]
+
+};
+
+function showPage(type){
+
+const page=
+document.getElementById("page");
+
+page.innerHTML=
+'<div class="cards"></div>';
+
+const cards=
+page.querySelector(".cards");
+
+DATA[type].forEach(item=>{
+
+cards.innerHTML+=`
+
+<div
+class="card"
+onclick="
+window.open(
+'${item.url}',
+'_blank'
+)">
+
+<div class="card-title">
+${item.icon}
+${item.name}
+</div>
+
+<div class="card-sub">
+${item.desc}
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+showPage('cn');
+
+</script>
 </html>
