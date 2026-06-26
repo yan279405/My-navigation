@@ -233,49 +233,35 @@ body{
 }
 
 .menu{
-
     margin-top:40px;
-
     display:flex;
-
     flex-direction:column;
-
     gap:12px;
 }
 
-.menu button:active{
-
-    transform:
-        scale(.95);
-}
-
+.menu button{
     height:60px;
-
     border:none;
-
     border-radius:20px;
-
-    background:
-        rgba(255,255,255,.05);
-
+    background:rgba(255,255,255,.05);
     color:white;
-
     font-size:16px;
-
     cursor:pointer;
-
-    transition:.3s;
+    transition:.25s;
 }
 
 .menu button:hover{
-
-    transform:
-        translateX(8px);
-
-    background:
-        rgba(255,255,255,.12);
+    transform:translateX(8px);
+    background:rgba(255,255,255,.12);
 }
 
+.menu button:active{
+    transform:scale(.96);
+}
+
+.menu button.active{
+    background:linear-gradient(135deg,#38bdf8,#6366f1);
+}
 /* 右侧 */
 
 .main{
@@ -491,123 +477,68 @@ body{
 </body>
     <script>
 
-const DATA={
-
-cn:[
-{
-icon:"📺",
-name:"Bilibili",
-desc:"中国视频创作平台",
-url:"#"
-},
-{
-icon:"📕",
-name:"小红书",
-desc:"旅行与生活记录",
-url:"#"
-},
-{
-icon:"🎵",
-name:"抖音",
-desc:"短纪录片频道",
-url:"#"
-}
-],
-
-global:[
-{
-icon:"▶",
-name:"YouTube",
-desc:"全球视频平台",
-url:"#"
-},
-{
-icon:"𝕏",
-name:"X",
-desc:"国际社交平台",
-url:"#"
-},
-{
-icon:"📷",
-name:"Instagram",
-desc:"图片社交平台",
-url:"#"
-}
-],
-
-media:[
-{
-icon:"♪",
-name:"Spotify",
-desc:"音乐平台",
-url:"#"
-},
-{
-icon:"N",
-name:"Netflix",
-desc:"流媒体平台",
-url:"#"
-},
-{
-icon:"🍎",
-name:"Apple TV+",
-desc:"苹果影视平台",
-url:"#"
-}
-],
-
-business:[
-{
-icon:"💼",
-name:"商务合作",
-desc:"合作邮箱",
-url:"#"
-}
-]
-
+const DATA = {
+  cn:[
+    {icon:"📺",name:"Bilibili",desc:"中国视频创作平台",url:"https://space.bilibili.com"},
+    {icon:"📕",name:"小红书",desc:"旅行与生活记录",url:"https://xiaohongshu.com"},
+    {icon:"🎵",name:"抖音",desc:"短纪录片频道",url:"https://douyin.com"}
+  ],
+  global:[
+    {icon:"▶",name:"YouTube",desc:"全球视频平台",url:"https://youtube.com"},
+    {icon:"𝕏",name:"X",desc:"国际社交平台",url:"https://x.com"},
+    {icon:"📷",name:"Instagram",desc:"图片社交平台",url:"https://instagram.com"}
+  ],
+  media:[
+    {icon:"♪",name:"Spotify",desc:"音乐平台",url:"https://spotify.com"},
+    {icon:"N",name:"Netflix",desc:"流媒体平台",url:"https://netflix.com"},
+    {icon:"🍎",name:"Apple TV+",desc:"苹果影视平台",url:"https://tv.apple.com"}
+  ],
+  business:[
+    {icon:"💼",name:"商务合作",desc:"联系邮箱/合作",url:"mailto:example@email.com"}
+  ]
 };
+
+function setActiveMenu(type){
+  document.querySelectorAll(".menu button")
+    .forEach(b=>b.classList.remove("active"));
+
+  const map = {
+    cn:0,
+    global:1,
+    media:2,
+    business:3
+  };
+
+  document.querySelectorAll(".menu button")[map[type]]
+    .classList.add("active");
+}
 
 function showPage(type){
 
-const page=
-document.getElementById("page");
+  setActiveMenu(type);
 
-page.innerHTML=
-'<div class="cards"></div>';
+  const page = document.getElementById("page");
 
-const cards=
-page.querySelector(".cards");
+  page.innerHTML = `<div class="cards"></div>`;
+  const cards = page.querySelector(".cards");
 
-DATA[type].forEach(item=>{
+  DATA[type].forEach(item=>{
 
-cards.innerHTML+=`
+    const div = document.createElement("div");
+    div.className = "card";
 
-<div
-class="card"
-onclick="
-window.open(
-'${item.url}',
-'_blank'
-)">
+    div.innerHTML = `
+      <div class="card-title">${item.icon} ${item.name}</div>
+      <div class="card-sub">${item.desc}</div>
+    `;
 
-<div class="card-title">
-${item.icon}
-${item.name}
-</div>
+    div.onclick = () => window.open(item.url, "_blank");
 
-<div class="card-sub">
-${item.desc}
-</div>
-
-</div>
-
-`;
-
-});
-
+    cards.appendChild(div);
+  });
 }
 
-showPage('cn');
+showPage("cn");
 
 </script>
 </html>
