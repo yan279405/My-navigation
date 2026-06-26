@@ -1,65 +1,392 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>我的全平台聚合空间</title>
-    <style>
-        body { margin: 0; display: flex; height: 100vh; background: #0f172a; color: #f8fafc; font-family: sans-serif; }
-        .sidebar { width: 280px; background: #1e293b; padding: 20px; border-right: 1px solid #334155; }
-        .main-content { flex-grow: 1; padding: 40px; display: flex; align-items: center; justify-content: center; text-align: center; }
-        .nav-btn { display: block; width: 100%; padding: 12px; margin-bottom: 10px; background: #334155; color: white; border: none; cursor: pointer; text-align: left; border-radius: 8px; transition: 0.3s; }
-        .nav-btn.active { background: #38bdf8; color: #0f172a; font-weight: bold; }
-        .panel { display: none; width: 100%; height: 100%; }
-        .panel.active { display: block; }
-        .visit-btn { display: inline-block; padding: 15px 30px; background: #38bdf8; color: #0f172a; text-decoration: none; border-radius: 8px; font-weight: bold; margin-top: 20px; }
-        iframe { width: 100%; height: 100%; border: none; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>我的全平台聚合空间</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    overflow:hidden;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #1e3a8a,
+            #020617
+        );
+
+    color:#fff;
+}
+
+/* 左侧 */
+
+.sidebar{
+
+    width:300px;
+    height:100vh;
+
+    position:fixed;
+    left:0;
+    top:0;
+
+    padding:30px;
+
+    background:rgba(15,23,42,.85);
+
+    backdrop-filter:blur(25px);
+
+    border-right:
+        1px solid
+        rgba(255,255,255,.08);
+}
+
+/* 头像 */
+
+.profile{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.avatar{
+    width:90px;
+    height:90px;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #38bdf8,
+            #6366f1
+        );
+
+    margin:auto;
+    margin-bottom:15px;
+}
+
+.profile h2{
+    margin-bottom:8px;
+}
+
+.profile p{
+    color:#94a3b8;
+    font-size:14px;
+}
+
+/* 导航 */
+
+.nav-btn{
+
+    width:100%;
+
+    padding:15px;
+
+    margin-bottom:10px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.04);
+
+    color:#fff;
+
+    cursor:pointer;
+
+    text-align:left;
+
+    transition:.25s;
+}
+
+.nav-btn:hover{
+    transform:translateX(8px);
+    background:
+        rgba(56,189,248,.15);
+}
+
+.nav-btn.active{
+    background:#38bdf8;
+    color:#0f172a;
+    font-weight:700;
+}
+
+/* 主体 */
+
+.main{
+
+    margin-left:300px;
+
+    width:calc(100% - 300px);
+
+    height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px;
+}
+
+/* 卡片 */
+
+.card{
+
+    width:700px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    backdrop-filter:blur(30px);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.4);
+}
+
+.cover{
+
+    height:250px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #38bdf8,
+            #6366f1
+        );
+}
+
+.content{
+    padding:40px;
+}
+
+.platform{
+    font-size:32px;
+    margin-bottom:20px;
+}
+
+.desc{
+    color:#94a3b8;
+    line-height:1.8;
+}
+
+.btn{
+
+    display:inline-block;
+
+    margin-top:30px;
+
+    padding:14px 35px;
+
+    background:#38bdf8;
+
+    color:#000;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    font-weight:700;
+}
+
+.stats{
+
+    display:flex;
+
+    gap:40px;
+
+    margin-top:25px;
+}
+
+.stats div{
+    text-align:center;
+}
+
+.stats strong{
+    display:block;
+    font-size:24px;
+}
+</style>
 </head>
+
 <body>
 
-    <aside class="sidebar" id="sidebar"></aside>
+<div class="sidebar">
 
-    <main class="main-content" id="main-content">
-        </main>
+    <div class="profile">
 
-    <script>
-        // 🚀 后台配置区
-        const CONFIG = {
-            platforms: [
-                { id: "bili", name: "📺 Bilibili", url: "https://space.bilibili.com/你的UID", type: "link" },
-                { id: "xhs", name: "📕 小红书", url: "https://www.xiaohongshu.com/user/profile/你的ID", type: "link" },
-                { id: "douyin", name: "🎵 抖音", url: "https://www.douyin.com/user/...", type: "link" }
-            ]
-        };
+        <div class="avatar"></div>
 
-        function render() {
-            const sidebar = document.getElementById('sidebar');
-            const main = document.getElementById('main-content');
-            
-            CONFIG.platforms.forEach((p, i) => {
-                // 渲染左侧按钮
-                sidebar.innerHTML += `<button class="nav-btn ${i === 0 ? 'active' : ''}" onclick="show('${p.id}', this)">${p.name}</button>`;
-                
-                // 渲染右侧内容：统一采用跳转按钮，保证 100% 可用
-                main.innerHTML += `
-                    <div id="${p.id}" class="panel ${i === 0 ? 'active' : ''}">
-                        <div style="padding-top: 20%;">
-                            <h1>${p.name}</h1>
-                            <p>点击下方按钮，即可跳转到我的官方主页</p>
-                            <a href="${p.url}" target="_blank" class="visit-btn">点击直达主页 →</a>
-                        </div>
-                    </div>
-                `;
-            });
-        }
+        <h2>二哥</h2>
 
-        function show(id, btn) {
-            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            btn.classList.add('active');
-        }
-        render();
-    </script>
+        <p>
+            旅行 · 人文 · 纪录片
+        </p>
+
+    </div>
+
+    <div id="nav"></div>
+
+</div>
+
+<div class="main">
+
+    <div class="card">
+
+        <div class="cover"></div>
+
+        <div class="content">
+
+            <div class="platform" id="title">
+                📺 Bilibili
+            </div>
+
+            <div class="desc" id="desc">
+                分享旅行、人文和纪录片内容。
+            </div>
+
+            <div class="stats">
+
+                <div>
+                    <strong id="fans">
+                        0
+                    </strong>
+                    粉丝
+                </div>
+
+                <div>
+                    <strong id="works">
+                        0
+                    </strong>
+                    内容
+                </div>
+
+            </div>
+
+            <a
+                id="link"
+                class="btn"
+                target="_blank">
+                进入主页 →
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const DATA=[
+
+{
+name:"📺 Bilibili",
+desc:"旅行｜人文｜纪录片创作",
+fans:"12.3W",
+works:"326",
+url:"https://space.bilibili.com/你的UID"
+},
+
+{
+name:"📕 小红书",
+desc:"生活方式与旅行记录",
+fans:"8.5W",
+works:"588",
+url:"https://www.xiaohongshu.com"
+},
+
+{
+name:"🎵 抖音",
+desc:"短视频与纪录片剪辑",
+fans:"23W",
+works:"1068",
+url:"https://www.douyin.com"
+},
+
+{
+name:"▶ YouTube",
+desc:"海外旅行纪录片频道",
+fans:"3.2W",
+works:"135",
+url:"https://youtube.com"
+},
+
+{
+name:"✖ X",
+desc:"全球社媒运营与资讯",
+fans:"1.5W",
+works:"208",
+url:"https://x.com"
+}
+
+];
+
+const nav=document.getElementById('nav');
+
+function show(i){
+
+    document.getElementById('title').innerHTML=
+        DATA[i].name;
+
+    document.getElementById('desc').innerHTML=
+        DATA[i].desc;
+
+    document.getElementById('fans').innerHTML=
+        DATA[i].fans;
+
+    document.getElementById('works').innerHTML=
+        DATA[i].works;
+
+    document.getElementById('link').href=
+        DATA[i].url;
+
+    document
+        .querySelectorAll('.nav-btn')
+        .forEach(x=>x.classList.remove('active'));
+
+    document
+        .querySelectorAll('.nav-btn')[i]
+        .classList.add('active');
+}
+
+DATA.forEach((p,i)=>{
+
+    nav.innerHTML+=`
+        <button
+            class="nav-btn ${i==0?'active':''}"
+            onclick="show(${i})">
+            ${p.name}
+        </button>
+    `;
+});
+
+show(0);
+
+</script>
+
 </body>
 </html>
