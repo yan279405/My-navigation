@@ -499,13 +499,16 @@ const DATA = {
 };
 
 function setActiveMenu(type) {
-    document.querySelectorAll(".menu button").forEach(btn => {
-        if (btn.dataset.type === type) {
-            btn.classList.add("active");
-        } else {
-            btn.classList.remove("active");
-        }
-    });
+  // 直接遍历所有菜单按钮
+  document.querySelectorAll(".menu button").forEach(btn => {
+    // 检查按钮是否包含 onclick 事件中传入的 type
+    // 注意：需要给 HTML 按钮添加 data-type 属性，或者根据 onclick 属性判断
+    if (btn.getAttribute('onclick').includes(type)) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
 }
 
 function showPage(type) {
