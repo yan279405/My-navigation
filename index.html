@@ -2,313 +2,469 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>二哥｜全平台聚合主页</title>
+<title>二哥｜全平台聚合官网</title>
 
 <style>
+
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html,body{
+height:100%;
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"PingFang SC",
+sans-serif;
+overflow:hidden;
 }
 
 body{
-    background:
-        linear-gradient(
-            135deg,
-            #0f172a,
-            #1e293b,
-            #312e81
-        );
-    color:#fff;
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "PingFang SC",
-        sans-serif;
-    overflow:hidden;
+background:
+linear-gradient(
+135deg,
+#020617,
+#0f172a,
+#1e293b,
+#312e81
+);
+background-size:400% 400%;
+animation:bgMove 18s ease infinite;
+color:#fff;
+}
+
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 
 /* 左侧 */
+
 .sidebar{
-    position:fixed;
-    left:0;
-    top:0;
-    width:300px;
-    height:100vh;
+position:fixed;
+left:0;
+top:0;
+width:300px;
+height:100vh;
 
-    background:rgba(15,23,42,.85);
-    backdrop-filter:blur(25px);
+background:
+rgba(15,23,42,.7);
 
-    border-right:
-        1px solid rgba(255,255,255,.08);
+backdrop-filter:
+blur(25px);
 
-    padding:30px;
+border-right:
+1px solid rgba(255,255,255,.08);
+
+padding:30px;
+overflow:auto;
 }
 
 .avatar{
-    width:100px;
-    height:100px;
-    border-radius:50%;
-    background:#334155;
-    margin:auto;
-    margin-bottom:20px;
+width:110px;
+height:110px;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+border-radius:50%;
 
-    font-size:40px;
+margin:auto;
+
+background:
+linear-gradient(
+135deg,
+#38bdf8,
+#6366f1
+);
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:45px;
+font-weight:bold;
+
+box-shadow:
+0 20px 50px
+rgba(56,189,248,.3);
 }
 
-.name{
-    text-align:center;
-    font-size:28px;
-    font-weight:700;
+.username{
+margin-top:20px;
+font-size:30px;
+font-weight:700;
+text-align:center;
 }
 
-.desc{
-    text-align:center;
-    color:#94a3b8;
-    margin-top:10px;
-    margin-bottom:30px;
+.bio{
+margin-top:10px;
+text-align:center;
+color:#94a3b8;
+line-height:1.7;
 }
 
-.nav-btn{
-    width:100%;
-    border:none;
-    cursor:pointer;
-
-    padding:16px;
-    margin-bottom:12px;
-
-    background:#1e293b;
-    color:white;
-
-    border-radius:14px;
-
-    text-align:left;
-
-    transition:.3s;
+.line{
+margin:30px 0;
+height:1px;
+background:
+rgba(255,255,255,.08);
 }
 
-.nav-btn:hover{
-    transform:translateX(8px);
-    background:#334155;
+.nav{
+display:flex;
+flex-direction:column;
+gap:12px;
 }
 
-.nav-btn.active{
-    background:
-        linear-gradient(
-            135deg,
-            #38bdf8,
-            #6366f1
-        );
+.nav button{
+
+padding:18px;
+
+background:
+rgba(30,41,59,.8);
+
+border:none;
+
+color:#fff;
+
+border-radius:16px;
+
+cursor:pointer;
+
+font-size:16px;
+
+text-align:left;
+
+transition:.3s;
+}
+
+.nav button:hover{
+transform:
+translateX(8px);
+}
+
+.nav button.active{
+background:
+linear-gradient(
+135deg,
+#38bdf8,
+#6366f1
+);
+
+box-shadow:
+0 10px 30px
+rgba(56,189,248,.35);
 }
 
 /* 右侧 */
+
 .main{
-    margin-left:300px;
-    height:100vh;
-    overflow:auto;
+margin-left:300px;
+height:100vh;
+overflow:auto;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+padding:50px;
 
-    padding:50px;
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
 .panel{
-    display:none;
+display:none;
+width:100%;
+max-width:1000px;
 
-    width:100%;
-    max-width:900px;
+background:
+rgba(15,23,42,.6);
 
-    background:
-        rgba(30,41,59,.8);
+backdrop-filter:
+blur(25px);
 
-    backdrop-filter:blur(20px);
+border-radius:30px;
 
-    border-radius:30px;
+padding:50px;
 
-    padding:50px;
+box-shadow:
+0 20px 60px
+rgba(0,0,0,.35);
 
-    animation:fade .35s;
+animation:fade .4s;
 }
 
 .panel.active{
-    display:block;
+display:block;
 }
 
 @keyframes fade{
-    from{
-        opacity:0;
-        transform:translateY(20px);
-    }
-    to{
-        opacity:1;
-        transform:none;
-    }
+from{
+opacity:0;
+transform:
+translateY(20px);
+}
+to{
+opacity:1;
+transform:none;
+}
 }
 
 .platform{
-    font-size:42px;
-    margin-bottom:20px;
+font-size:42px;
+font-weight:700;
 }
 
-.info{
-    font-size:20px;
-    line-height:2;
-    color:#cbd5e1;
-}
-
-.visit{
-    display:inline-block;
-
-    margin-top:30px;
-
-    padding:16px 35px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #38bdf8,
-            #6366f1
-        );
-
-    color:white;
-    text-decoration:none;
-
-    border-radius:15px;
-
-    transition:.3s;
-}
-
-.visit:hover{
-    transform:translateY(-3px);
+.desc{
+margin-top:20px;
+font-size:18px;
+color:#cbd5e1;
+line-height:2;
 }
 
 .stats{
-    display:flex;
-    gap:20px;
-    margin-top:25px;
+display:grid;
+grid-template-columns:
+repeat(3,1fr);
+
+gap:20px;
+
+margin-top:35px;
 }
 
-.card{
-    background:#0f172a;
-    padding:20px;
-    border-radius:15px;
-    flex:1;
+.stat{
+background:
+rgba(30,41,59,.7);
+
+padding:25px;
+
+border-radius:20px;
 }
 
-.card h3{
-    color:#94a3b8;
-    font-size:14px;
+.stat-title{
+color:#94a3b8;
+font-size:14px;
 }
 
-.card p{
-    font-size:24px;
-    margin-top:10px;
+.stat-value{
+font-size:28px;
+margin-top:10px;
+font-weight:700;
+}
+
+.section{
+margin-top:40px;
+}
+
+.section h3{
+margin-bottom:20px;
+}
+
+.cards{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.work{
+flex:1;
+min-width:180px;
+
+height:120px;
+
+border-radius:18px;
+
+background:
+linear-gradient(
+135deg,
+#1e293b,
+#334155
+);
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:14px;
+
+transition:.3s;
+}
+
+.work:hover{
+transform:
+translateY(-8px);
+}
+
+.visit{
+display:inline-block;
+
+margin-top:40px;
+
+padding:16px 35px;
+
+border-radius:16px;
+
+text-decoration:none;
+
+color:#fff;
+
+font-weight:700;
+
+background:
+linear-gradient(
+135deg,
+#38bdf8,
+#6366f1
+);
+
+transition:.3s;
+}
+
+.visit:hover{
+transform:
+translateY(-3px);
 }
 
 @media(max-width:900px){
 
-    body{
-        overflow:auto;
-    }
-
-    .sidebar{
-        position:relative;
-        width:100%;
-        height:auto;
-    }
-
-    .main{
-        margin-left:0;
-        height:auto;
-    }
+body{
+overflow:auto;
 }
+
+.sidebar{
+position:relative;
+width:100%;
+height:auto;
+}
+
+.main{
+margin-left:0;
+height:auto;
+padding:20px;
+}
+
+.stats{
+grid-template-columns:1fr;
+}
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- 左侧 -->
 <div class="sidebar">
 
-    <div class="avatar">👤</div>
+<div class="avatar">
+二
+</div>
 
-    <div class="name">二哥</div>
+<div class="username">
+二哥
+</div>
 
-    <div class="desc">
-        旅行 · 人文 · 纪录片创作者
-    </div>
+<div class="bio">
+旅行 · 人文 · 纪录片创作者
+<br>
+全平台内容创作
+</div>
 
-    <div id="nav"></div>
+<div class="line"></div>
+
+<div class="nav" id="nav"></div>
 
 </div>
 
-<!-- 右侧 -->
 <div class="main">
 
-    <div id="content"></div>
+<div id="content"></div>
 
 </div>
 
 <script>
 
-const CONFIG = [
+const DATA=[
 
 {
-    id:"bili",
-    icon:"📺",
-    name:"Bilibili",
-    fans:"15万+",
-    works:"300+",
-    intro:"旅行人文纪录片创作者",
-    url:"https://space.bilibili.com/你的UID"
+id:"bili",
+icon:"📺",
+name:"Bilibili",
+fans:"15.8万",
+works:"356",
+likes:"120万",
+intro:"旅行人文纪录片创作者",
+url:"https://space.bilibili.com/你的UID",
+latest:[
+"云南村落纪录片",
+"东北乡村系列",
+"川西人文纪录"
+]
 },
 
 {
-    id:"xhs",
-    icon:"📕",
-    name:"小红书",
-    fans:"3万+",
-    works:"200+",
-    intro:"旅行摄影生活分享",
-    url:"https://www.xiaohongshu.com"
+id:"xhs",
+icon:"📕",
+name:"小红书",
+fans:"3.2万",
+works:"218",
+likes:"58万",
+intro:"旅行摄影与生活记录",
+url:"https://www.xiaohongshu.com/",
+latest:[
+"新疆旅行",
+"西藏摄影",
+"乡村记录"
+]
 },
 
 {
-    id:"dy",
-    icon:"🎵",
-    name:"抖音",
-    fans:"8万+",
-    works:"500+",
-    intro:"短纪录片与旅行Vlog",
-    url:"https://www.douyin.com"
+id:"dy",
+icon:"🎵",
+name:"抖音",
+fans:"8.6万",
+works:"580",
+likes:"230万",
+intro:"旅行短纪录片",
+url:"https://www.douyin.com/",
+latest:[
+"贵州乡村",
+"东北赶集",
+"云南生活"
+]
 },
 
 {
-    id:"yt",
-    icon:"▶",
-    name:"YouTube",
-    fans:"1万+",
-    works:"100+",
-    intro:"海外旅行纪录片频道",
-    url:"https://youtube.com"
+id:"yt",
+icon:"▶",
+name:"YouTube",
+fans:"1.2万",
+works:"105",
+likes:"35万",
+intro:"海外旅行纪录片频道",
+url:"https://youtube.com/",
+latest:[
+"Japan",
+"Thailand",
+"China"
+]
 },
 
 {
-    id:"x",
-    icon:"𝕏",
-    name:"X",
-    fans:"5000+",
-    works:"1000+",
-    intro:"实时动态与观点分享",
-    url:"https://x.com"
+id:"x",
+icon:"𝕏",
+name:"X",
+fans:"5000",
+works:"1200",
+likes:"20万",
+intro:"日常动态与观点",
+url:"https://x.com/",
+latest:[
+"旅行见闻",
+"摄影分享",
+"日常更新"
+]
 }
 
 ];
@@ -316,78 +472,109 @@ const CONFIG = [
 const nav=document.getElementById("nav");
 const content=document.getElementById("content");
 
-CONFIG.forEach((p,i)=>{
+DATA.forEach((p,i)=>{
 
-    nav.innerHTML+=`
-    <button
-        class="nav-btn ${i==0?'active':''}"
-        onclick="show('${p.id}',this)">
-        ${p.icon} ${p.name}
-    </button>
-    `;
+nav.innerHTML+=`
+<button
+class="${i===0?'active':''}"
+onclick="show('${p.id}',this)">
+${p.icon} ${p.name}
+</button>
+`;
 
-    content.innerHTML+=`
-    <div class="panel ${i==0?'active':''}"
-         id="${p.id}">
+content.innerHTML+=`
 
-        <div class="platform">
-            ${p.icon} ${p.name}
-        </div>
+<div
+id="${p.id}"
+class="panel ${i===0?'active':''}">
 
-        <div class="info">
-            ${p.intro}
-        </div>
+<div class="platform">
+${p.icon} ${p.name}
+</div>
 
-        <div class="stats">
+<div class="desc">
+${p.intro}
+</div>
 
-            <div class="card">
-                <h3>粉丝</h3>
-                <p>${p.fans}</p>
-            </div>
+<div class="stats">
 
-            <div class="card">
-                <h3>作品</h3>
-                <p>${p.works}</p>
-            </div>
+<div class="stat">
+<div class="stat-title">
+粉丝
+</div>
+<div class="stat-value">
+${p.fans}
+</div>
+</div>
 
-        </div>
+<div class="stat">
+<div class="stat-title">
+作品
+</div>
+<div class="stat-value">
+${p.works}
+</div>
+</div>
 
-        <div style="margin-top:30px;">
-            欢迎访问我的 ${p.name} 官方主页，
-            浏览全部视频、动态和内容更新。
-        </div>
+<div class="stat">
+<div class="stat-title">
+点赞
+</div>
+<div class="stat-value">
+${p.likes}
+</div>
+</div>
 
-        <a
-            class="visit"
-            href="${p.url}"
-            target="_blank">
+</div>
 
-            进入 ${p.name} →
-        </a>
+<div class="section">
 
-    </div>
-    `;
+<h3>
+最新内容
+</h3>
+
+<div class="cards">
+
+${p.latest.map(
+x=>`<div class="work">${x}</div>`
+).join('')}
+
+</div>
+
+</div>
+
+<a
+href="${p.url}"
+target="_blank"
+class="visit">
+
+进入 ${p.name} 官方主页 →
+
+</a>
+
+</div>
+`;
 });
 
 function show(id,btn){
 
-    document
-        .querySelectorAll('.panel')
-        .forEach(
-            p=>p.classList.remove('active')
-        );
+document
+.querySelectorAll('.panel')
+.forEach(
+p=>p.classList.remove('active')
+);
 
-    document
-        .querySelectorAll('.nav-btn')
-        .forEach(
-            p=>p.classList.remove('active')
-        );
+document
+.querySelectorAll('.nav button')
+.forEach(
+p=>p.classList.remove('active')
+);
 
-    document
-        .getElementById(id)
-        .classList.add('active');
+document
+.getElementById(id)
+.classList.add('active');
 
-    btn.classList.add('active');
+btn.classList.add('active');
 }
 
 </script>
