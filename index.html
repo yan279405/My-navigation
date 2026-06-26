@@ -16,7 +16,6 @@
 html,body{
     height:100%;
     overflow:hidden;
-
     font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -33,15 +32,12 @@ body{
         #1e293b,
         #312e81
     );
-
     background-size:400% 400%;
-
-    animation:bgMove 20s ease infinite;
-
+    animation:bg 18s ease infinite;
     color:#fff;
 }
 
-@keyframes bgMove{
+@keyframes bg{
     0%{background-position:0% 50%;}
     50%{background-position:100% 50%;}
     100%{background-position:0% 50%;}
@@ -62,15 +58,16 @@ body{
     background:
     rgba(15,23,42,.75);
 
-    backdrop-filter:blur(25px);
+    backdrop-filter:
+    blur(25px);
 
     border-right:
     1px solid rgba(255,255,255,.08);
 }
 
 .avatar{
-    width:110px;
-    height:110px;
+    width:120px;
+    height:120px;
 
     margin:auto;
 
@@ -87,39 +84,33 @@ body{
     justify-content:center;
     align-items:center;
 
-    font-size:42px;
+    font-size:45px;
     font-weight:700;
 
     box-shadow:
-    0 20px 50px
+    0 20px 60px
     rgba(56,189,248,.3);
 }
 
 .username{
     text-align:center;
-    font-size:30px;
+    font-size:32px;
     font-weight:700;
-
     margin-top:20px;
 }
 
 .bio{
     text-align:center;
-
-    margin-top:10px;
-
     color:#94a3b8;
-
     line-height:1.8;
+    margin-top:10px;
 }
 
 .line{
+    margin:30px 0;
     height:1px;
-
     background:
     rgba(255,255,255,.08);
-
-    margin:30px 0;
 }
 
 .nav{
@@ -132,17 +123,22 @@ body{
     border:none;
 
     background:
-    rgba(30,41,59,.8);
+    rgba(30,41,59,.55);
 
-    color:#fff;
+    backdrop-filter:
+    blur(20px);
+
+    border-radius:18px;
 
     padding:18px;
 
-    border-radius:16px;
+    color:white;
 
     cursor:pointer;
 
     text-align:left;
+
+    font-size:16px;
 
     transition:.3s;
 }
@@ -152,25 +148,17 @@ body{
     translateX(8px);
 }
 
-.nav button{
-
+.nav button.active{
     background:
-    rgba(30,41,59,.55);
+    linear-gradient(
+        135deg,
+        #38bdf8,
+        #6366f1
+    );
 
-    backdrop-filter:
-    blur(20px);
-
-    border:
-    1px solid
-    rgba(255,255,255,.05);
-
-    padding:20px;
-
-    border-radius:18px;
-
-    font-size:17px;
-
-    transition:.35s;
+    box-shadow:
+    0 10px 30px
+    rgba(56,189,248,.35);
 }
 
 /* 右侧 */
@@ -191,12 +179,8 @@ body{
 .panel{
     display:none;
 
-    width:100%;
-
     min-height:
     calc(100vh - 60px);
-
-    padding:60px;
 
     background:
     rgba(15,23,42,.55);
@@ -206,7 +190,9 @@ body{
 
     border-radius:30px;
 
-    animation:fade .4s;
+    padding:40px;
+
+    animation:fade .35s;
 }
 
 .panel.active{
@@ -225,30 +211,43 @@ body{
     }
 }
 
-.platform{
+/* HERO */
+
+.hero{
+    height:240px;
+
+    border-radius:28px;
+
+    padding:50px;
+
+    display:flex;
+    align-items:center;
+
+    box-shadow:
+    0 20px 60px
+    rgba(0,0,0,.3);
+}
+
+.hero-title{
     font-size:50px;
     font-weight:700;
 }
 
-.desc{
-    margin-top:20px;
-
+.hero-sub{
+    margin-top:15px;
     font-size:20px;
-
-    color:#cbd5e1;
-
-    line-height:2;
+    opacity:.9;
 }
 
 .card{
-    margin-top:50px;
-
-    padding:40px;
-
-    border-radius:24px;
+    margin-top:40px;
 
     background:
     rgba(30,41,59,.55);
+
+    padding:40px;
+
+    border-radius:25px;
 
     line-height:2;
 }
@@ -277,7 +276,7 @@ body{
         #6366f1
     );
 
-    color:white;
+    color:#fff;
 
     text-decoration:none;
 
@@ -304,12 +303,11 @@ body{
     }
 
     .main{
-        margin-left:0;
         width:100%;
+        margin-left:0;
         height:auto;
     }
 }
-
 </style>
 </head>
 
@@ -317,33 +315,12 @@ body{
 
 <div class="sidebar">
 
-    <div class=".avatar{
-    width:120px;
-    height:120px;
-
-    margin:auto;
-
-    border-radius:50%;
-
-    overflow:hidden;
-
-    box-shadow:
-    0 20px 60px
-    rgba(56,189,248,.35);
-}
-
-.avatar img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}">
-    <img
-        src="你的头像链接"
-        alt="avatar">
-</div>
+    <div class="avatar">
+        颜
+    </div>
 
     <div class="username">
-        颜2哥
+        颜哥
     </div>
 
     <div class="bio">
@@ -372,7 +349,7 @@ const DATA=[
     name:"Bilibili",
     color:"#00A1D6",
     intro:"旅行人文纪录片创作者",
-    url:"..."
+    url:"https://space.bilibili.com/你的UID"
 },
 
 {
@@ -381,7 +358,7 @@ const DATA=[
     name:"小红书",
     color:"#FF2442",
     intro:"旅行摄影与生活记录",
-    url:"..."
+    url:"https://www.xiaohongshu.com/"
 },
 
 {
@@ -390,7 +367,7 @@ const DATA=[
     name:"抖音",
     color:"#161823",
     intro:"旅行短纪录片",
-    url:"..."
+    url:"https://www.douyin.com/"
 },
 
 {
@@ -399,7 +376,7 @@ const DATA=[
     name:"YouTube",
     color:"#FF0000",
     intro:"海外旅行纪录片频道",
-    url:"..."
+    url:"https://youtube.com/"
 },
 
 {
@@ -408,7 +385,7 @@ const DATA=[
     name:"X",
     color:"#111111",
     intro:"日常动态与观点分享",
-    url:"..."
+    url:"https://x.com/"
 }
 
 ];
@@ -420,79 +397,39 @@ DATA.forEach((p,i)=>{
 
     nav.innerHTML+=`
     <button
-        class="${i===0?'active':''}"
-        onclick="show('${p.id}',this)">
-        ${p.icon} ${p.name}
-    </button>
-    `;
+    class="${i===0?'active':''}"
+    onclick="show('${p.id}',this)">
+    ${p.icon} ${p.name}
+    </button>`;
 
     content.innerHTML+=`
 
     <div
-        id="${p.id}"
-        class="panel ${i===0?'active':''}">
+    id="${p.id}"
+    class="panel ${i===0?'active':''}">
 
-        <div class=".hero{
-
-    height:220px;
-
-    border-radius:28px;
-
-    padding:50px;
-
-    display:flex;
-
-    align-items:center;
-
-    margin-bottom:40px;
-
-    background:
-    linear-gradient(
+        <div
+        class="hero"
+        style="
+        background:
+        linear-gradient(
         135deg,
-        #2563eb,
-        #7c3aed
-    );
+        ${p.color},
+        #312e81
+        )">
 
-    box-shadow:
-    0 20px 60px
-    rgba(0,0,0,.35);
-}
+            <div>
 
-.hero-title{
+                <div class="hero-title">
+                    ${p.icon} ${p.name}
+                </div>
 
-    font-size:48px;
+                <div class="hero-sub">
+                    ${p.intro}
+                </div>
 
-    font-weight:700;
-}
+            </div>
 
-.hero-sub{
-
-    margin-top:15px;
-
-    font-size:20px;
-
-    opacity:.9;
-}">
-
-    <div>
-
-        <div class="hero-title">
-            ${p.icon} ${p.name}
-        </div>
-
-        <div class="hero-sub">
-            ${p.intro}
-        </div>
-
-    </div>
-
-</div>
-<div class="platform">
-            ${p.icon} ${p.name}
-        </div>
-
-        <div class="desc">
-            ${p.intro}
         </div>
 
         <div class="card">
@@ -506,18 +443,18 @@ DATA.forEach((p,i)=>{
             </p>
 
             <p>
-                点击下方按钮，即可浏览我的全部内容、
-                最新动态以及作品更新。
+                点击下方按钮，即可查看我的全部视频、
+                动态、作品及最新内容。
             </p>
 
         </div>
 
         <a
-            href="${p.url}"
-            target="_blank"
-            class="visit">
+        href="${p.url}"
+        target="_blank"
+        class="visit">
 
-            进入 ${p.name} 官方主页 →
+        进入 ${p.name} 官方主页 →
 
         </a>
 
@@ -531,13 +468,13 @@ function show(id,btn){
     document
     .querySelectorAll('.panel')
     .forEach(
-        p=>p.classList.remove('active')
+        x=>x.classList.remove('active')
     );
 
     document
     .querySelectorAll('.nav button')
     .forEach(
-        p=>p.classList.remove('active')
+        x=>x.classList.remove('active')
     );
 
     document
