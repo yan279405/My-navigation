@@ -8,7 +8,6 @@
     :root {
         --bg-dark: #000000;
         --sidebar-bg: rgba(28, 28, 30, 0.8);
-        --glass-bg: rgba(0, 0, 0, 0.8);
         --text-main: #ffffff;
         --text-secondary: #8e8e93;
         --accent: #0a84ff;
@@ -28,83 +27,44 @@
         display: flex;
     }
 
-    /* --- 顶部栏 (新增) --- */
-    .header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 60px;
-        background: var(--glass-bg);
-        backdrop-filter: blur(20px);
-        border-bottom: 1px solid var(--glass-border);
-        display: flex;
-        align-items: center;
-        padding: 0 20px;
-        z-index: 100;
-    }
-    .header-title { font-size: 18px; font-weight: 700; }
-
-    /* --- 侧边栏 --- */
+    /* 侧边栏 - 增加滑动支持 */
     .sidebar {
         width: 280px;
         background: var(--sidebar-bg);
         backdrop-filter: blur(30px);
         border-right: 1px solid var(--glass-border);
-        padding: 80px 20px 20px 20px; /* 顶部预留给header */
+        padding: 40px 20px;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 20px;
         z-index: 10;
+        overflow-y: auto; /* 关键修改：允许侧边栏滑动 */
+        height: 100vh;
     }
 
-    .profile-zone { text-align: center; margin-bottom: 20px; }
-    .avatar { width: 60px; height: 60px; border-radius: 16px; background: #333; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+    .profile-zone { text-align: center; margin-bottom: 20px; flex-shrink: 0; }
+    .avatar { width: 80px; height: 80px; border-radius: 20px; background: #333; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; }
     
     .nav-item {
-        padding: 12px 16px;
+        padding: 14px 18px;
         border-radius: 12px;
         cursor: pointer;
         display: flex;
         align-items: center;
+        gap: 12px;
         transition: 0.3s;
         color: var(--text-secondary);
+        flex-shrink: 0;
     }
     .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
     .nav-item.active { background: var(--accent); color: white; font-weight: 600; }
 
-    /* --- 底部栏 --- */
-   /* --- 优化后的底部栏 --- */
-    .tab-bar {
-        display: none;
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        background: var(--glass-bg);
-        backdrop-filter: blur(20px);
-        padding-bottom: env(safe-area-inset-bottom);
-        border-top: 1px solid var(--glass-border);
-        z-index: 100;
-        
-        /* 关键修复代码 */
-        overflow-x: auto;         /* 允许横向滚动 */
-        white-space: nowrap;      /* 强制内容不换行 */
-        -webkit-overflow-scrolling: touch; /* 开启 iOS 平滑滚动 */
-        touch-action: pan-x;      /* 允许浏览器处理横向手势，防止被页面滚动拦截 */
-    }
-
-    /* 确保底部栏里的每一个 tab 项不被压缩 */
-    .tab-bar .nav-item {
-        display: inline-flex;     /* 允许并排排列 */
-        flex-shrink: 0;           /* 防止项目被压缩导致容器不再需要滚动 */
-        padding: 8px 16px;
-    }
-
-    /* --- 主内容区 --- */
+    /* 主内容区 */
     .main {
         flex: 1;
         overflow-y: auto;
-        padding: 80px 40px 40px 40px; /* 顶部避开header */
+        padding: 40px;
+        padding-bottom: 100px;
     }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
@@ -120,22 +80,19 @@
     .card:hover { background: rgba(255,255,255,0.1); }
 
     @media (max-width: 768px) {
-        .sidebar { display: none; }
-        .tab-bar { display: flex; }
-        .main { padding: 80px 20px 100px 20px; }
+        .sidebar { width: 100%; border-right: none; height: auto; overflow-y: visible; padding: 20px; }
+        body { flex-direction: column; }
+        .main { padding: 20px; padding-bottom: 120px; }
+        .grid { grid-template-columns: 1fr; }
     }
 </style>
 </head>
 <body>
 
-<header class="header" id="header">
-    <div class="header-title" id="title">Creator Hub</div>
-</header>
-
 <nav class="sidebar" id="sidebar"></nav>
-<div class="tab-bar" id="tabbar"></div>
 
 <main class="main">
+    <h1 id="title" style="margin-bottom: 20px;">Creator Hub</h1>
     <div class="grid" id="grid"></div>
 </main>
 
@@ -210,12 +167,9 @@
     function render(key) {
         const data = DATA[key];
         document.getElementById('title').innerText = data.name;
-        
-        // 更新所有导航项的状态
         document.querySelectorAll('.nav-item').forEach(el => {
             el.classList.toggle('active', el.dataset.key === key);
         });
-
         const grid = document.getElementById('grid');
         grid.innerHTML = data.items.map(item => `
             <div class="card" onclick="window.open('${item.url}', '_blank')">
@@ -227,9 +181,6 @@
     }
 
     const sidebar = document.getElementById('sidebar');
-    const tabbar = document.getElementById('tabbar');
-    
-    // 初始化侧边栏头部
     sidebar.innerHTML = `
         <div class="profile-zone">
             <div class="avatar"></div>
@@ -237,7 +188,6 @@
         </div>
     `;
 
-    // 渲染菜单
     Object.keys(DATA).forEach(key => {
         const item = document.createElement('div');
         item.className = 'nav-item';
@@ -245,13 +195,6 @@
         item.innerHTML = `<span>${DATA[key].name}</span>`;
         item.onclick = () => render(key);
         sidebar.appendChild(item);
-
-        const tab = document.createElement('div');
-        tab.className = 'nav-item';
-        tab.dataset.key = key;
-        tab.innerHTML = `<span>${DATA[key].name}</span>`;
-        tab.onclick = () => render(key);
-        tabbar.appendChild(tab);
     });
 
     render('cn'); 
