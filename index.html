@@ -17,134 +17,82 @@
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-    body {
-        margin: 0;
-        background: var(--bg-dark);
-        color: var(--text-main);
-        font-family: var(--font-stack);
-        height: 100vh;
-        display: flex;
-        overflow: hidden;
-    }
+    body { margin: 0; background: var(--bg-dark); color: var(--text-main); font-family: var(--font-stack); height: 100vh; display: flex; overflow: hidden; }
 
-    /* ==========================================================================
-       【桌面端 / iPad 横屏大屏布局】
-       ========================================================================== */
+    /* ==================== 大屏模式 (macOS / iPad 横屏) ==================== */
     .sidebar {
-        width: 280px;
-        background: var(--sidebar-bg);
-        backdrop-filter: blur(30px);
-        -webkit-backdrop-filter: blur(30px);
-        border-right: 1px solid var(--glass-border);
-        padding: 40px 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        overflow-y: auto;
-        flex-shrink: 0;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 1000;
+        width: 280px; background: var(--sidebar-bg); backdrop-filter: blur(30px);
+        border-right: 1px solid var(--glass-border); padding: 40px 20px;
+        display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex-shrink: 0;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 1000;
     }
 
     .profile-zone { text-align: center; margin-bottom: 20px; transition: opacity 0.2s; }
     .avatar { width: 80px; height: 80px; border-radius: 20px; background: #333; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; }
     
-    .nav-item {
-        padding: 14px 18px;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: background 0.2s, color 0.2s;
-        color: var(--text-secondary);
-        white-space: nowrap;
-    }
+    .nav-item { padding: 14px 18px; border-radius: 12px; cursor: pointer; transition: 0.3s; color: var(--text-secondary); white-space: nowrap; overflow: hidden; }
     .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
     .nav-item.active { background: var(--accent); color: white; font-weight: 600; }
 
-    /* 主内容区基本样式 */
-    .main {
-        flex: 1;
-        overflow-y: auto;
-        padding: 40px;
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s;
-    }
-
+    .main { flex: 1; overflow-y: auto; padding: 40px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
-    .card {
-        background: rgba(255,255,255,0.05);
-        padding: 20px;
-        border-radius: 16px;
-        border: 1px solid var(--glass-border);
-        cursor: pointer;
-        transition: transform 0.2s, background 0.2s;
-    }
-    .card:active { transform: scale(0.97); }
+    .card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.2s; }
     .card:hover { background: rgba(255,255,255,0.1); }
 
-    /* ==========================================================================
-       【移动端 iOS / iPad 竖屏 特殊适配逻辑】
-       ========================================================================== */
+    /* 遮罩层 - 用于点击空白处关闭 */
+    .overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 999; }
+
+    /* ==================== 移动端 / 窄屏全适配 (iOS26 / iPad 竖屏) ==================== */
     @media (max-width: 768px) {
-        /* 1. 侧边栏变为左侧“悬浮触控窄条”状态 */
+        /* 侧边栏常驻窄边框状态 */
         .sidebar {
             position: fixed;
             left: 0;
             top: 0;
-            height: 100vh;
-            width: 60px; /* 缩减成极窄的触发区域 */
-            padding: 30px 8px;
-            background: rgba(28, 28, 30, 0.3); /* 平时半透明隐藏 */
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border-right: 1px solid rgba(255,255,255,0.05);
+            height: 100%;
+            width: 50px; /* 默认常驻缩小的极窄边框宽度 */
+            padding: 30px 5px;
+            align-items: center;
         }
 
-        /* 隐藏窄条状态下的头像区与文字，只留纯窄条触发 */
-        .sidebar .profile-zone, 
-        .sidebar .nav-item span { 
-            opacity: 0; 
-            pointer-events: none; 
-        }
-        .sidebar .nav-item { padding: 12px 0; text-align: center; }
+        /* 隐藏大头像，改为极小圆点或直接不显 */
+        .profile-zone { opacity: 0; height: 0; margin-bottom: 0; overflow: hidden; }
+        
+        /* 窄版导航文字隐藏 */
+        .nav-item span { display: none; }
+        .nav-item { width: 36px; height: 36px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 50%; position: relative; }
+        /* 使用纯色圆点或缩写临时代替图标 */
+        .nav-item::before { content: "•"; font-size: 18px; color: var(--text-secondary); }
+        .nav-item.active::before { color: #fff; }
 
-        /* 2. 当触摸、长按或悬浮在侧边栏触发处时，展开完整内容 */
-        .sidebar:hover,
-        .sidebar:active,
-        .sidebar.touch-active {
-            width: 260px;
-            background: var(--sidebar-bg);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
+        /* 当触摸激活完整菜单时 (展开至屏幕 1/4 处或固定 260px) */
+        .sidebar.active {
+            width: 70vw; /* 约等同于 iPhone 的 1/4 至 1/3 布局效果，或设为 260px */
+            max-width: 280px;
+            align-items: stretch;
             padding: 40px 20px;
-            box-shadow: 15px 0 30px rgba(0,0,0,0.7);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.6);
         }
-        .sidebar:hover .profile-zone,
-        .sidebar:active .profile-zone,
-        .sidebar.touch-active .profile-zone,
-        .sidebar:hover .nav-item span,
-        .sidebar:active .nav-item span,
-        .sidebar.touch-active .nav-item span { 
-            opacity: 1; 
-            pointer-events: auto; 
-        }
-        .sidebar:hover .nav-item,
-        .sidebar:active .nav-item,
-        .sidebar.touch-active .nav-item { padding: 14px 18px; text-align: left; }
+        .sidebar.active .profile-zone { opacity: 1; height: auto; margin-bottom: 20px; }
+        .sidebar.active .nav-item { width: 100%; height: auto; padding: 14px 18px; border-radius: 12px; justify-content: flex-start; }
+        .sidebar.active .nav-item span { display: inline; }
+        .sidebar.active .nav-item::before { display: none; }
 
-        /* 3. 右侧主内容区：整体向右移动，定位在屏幕约 1/4 处起步 */
+        /* 【关键改动】主内容区向右移动，空出左边框，彻底防止误触 */
         .main {
-            padding: 30px 20px;
-            /* 向右平移屏幕的 23% (近似1/4)，确保内容完全不被平时和展开的悬浮条遮挡 */
-            transform: translateX(23vw); 
-            width: 77vw;
-            flex-shrink: 0;
+            padding: 25px 20px 25px 70px; /* 左边距留出 70px 完美避开最左侧卡片误触 */
         }
-        .grid { grid-template-columns: 1fr; } /* 窄屏卡片单列平铺 */
+        
+        .grid { grid-template-columns: 1fr; }
+        .sidebar.active ~ .overlay { display: block; }
     }
 </style>
 </head>
 <body>
 
-<nav class="sidebar" id="sidebar"></nav>
+<div class="overlay" onclick="closeMenu()"></div>
+
+<nav class="sidebar" id="sidebar" onclick="handleSidebarTouch(event)"></nav>
 
 <main class="main">
     <h1 id="title" style="margin-bottom: 20px;">Creator Hub</h1>
@@ -152,7 +100,6 @@
 </main>
 
 <script>
-    // 完整数据集（100%还原最初提供的全部核心平台数据）
     const DATA = {
         cn: { name: '国内平台', items: [
             {icon: "📺", name: "Bilibili", desc: "中国视频创作平台", url: "https://space.bilibili.com"},
@@ -220,6 +167,28 @@
         ]}
     };
 
+    const sidebar = document.getElementById('sidebar');
+
+    // 移动端核心控制逻辑
+    function handleSidebarTouch(e) {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.add('active');
+            e.stopPropagation();
+        }
+    }
+
+    function closeMenu() {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove('active');
+        }
+    }
+
+    function handleNavClick(key, e) {
+        render(key);
+        closeMenu();
+        if(e) e.stopPropagation(); // 阻止冒泡
+    }
+
     function render(key) {
         const data = DATA[key];
         document.getElementById('title').innerText = data.name;
@@ -234,9 +203,7 @@
         `).join('');
     }
 
-    const sidebar = document.getElementById('sidebar');
-    
-    // 初始化渲染侧边栏结构
+    // 初始化基础 DOM 结构
     sidebar.innerHTML = `
         <div class="profile-zone">
             <div class="avatar"></div>
@@ -248,28 +215,10 @@
         const item = document.createElement('div');
         item.className = 'nav-item';
         item.dataset.key = key;
-        // 包裹一层 span 以便在移动端非活动状态下精准隐藏文字
         item.innerHTML = `<span>${DATA[key].name}</span>`;
-        item.onclick = (e) => {
-            render(key);
-            // 点击后主动移除移动端的展开状态
-            sidebar.classList.remove('touch-active');
-            e.stopPropagation();
-        };
+        item.onclick = (e) => handleNavClick(key, e);
         sidebar.appendChild(item);
     });
-
-    // 针对移动端(iOS/iPadOS等没有传统Hover物理设备的触摸屏)优化
-    sidebar.addEventListener('touchstart', function() {
-        sidebar.classList.add('touch-active');
-    }, {passive: true});
-
-    // 点击屏幕其他区域时，自动收起侧边栏窄条
-    document.addEventListener('touchstart', function(e) {
-        if (!sidebar.contains(e.target)) {
-            sidebar.classList.remove('touch-active');
-        }
-    }, {passive: true});
 
     render('cn'); 
 </script>
