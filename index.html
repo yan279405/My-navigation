@@ -304,9 +304,10 @@
     const dock = document.getElementById('dock');
     const grid = document.getElementById('grid');
 
-    // 加入最新的 Apple 官方正版 Logo 作为 Launchpad (Dock 第一枚图标)
+    // 1. 加入最新的 Apple 官方正版 Logo 作为 Launchpad (Dock 第一枚图标)
+    // 修复：直接在这里加上 onclick 事件，点击时重置回默认的 'cn' 视图
     dock.innerHTML = `
-        <div class="dock-item launchpad" title="Launchpad">
+        <div class="dock-item launchpad" title="Launchpad" onclick="renderApps('cn')">
             <svg viewBox="0 0 1024 1024"><path d="M781.1 585.4c-3.7-93.2 76.2-137.9 79.5-139.9-43.3-63.5-110.6-72.2-134.5-73.2-57.4-5.9-112.4 34.2-141.5 34.2-29.3 0-73.4-33.7-121.6-32.8-63.5.9-122.1 37.1-154.9 94.1-66.3 115.1-16.9 285.4 47 378 31.4 45.4 68.5 95.8 117.6 94.1 47-1.8 64.9-30.3 121.6-30.3 56.4 0 72.8 30.3 121.6 29.3 50-.9 83.3-45.9 114.5-91.2 36.1-52.8 51.1-104.1 52.1-106.8-2.2-1-98.9-37.9-105.9-129.5zM578.1 272.1c42.8-51.9 71.4-124 63.5-196.1-61.9 2.5-136.9 41.2-181.3 93.2-39.6 45.4-74.2 118.8-64.7 189.6 69.1 5.4 139.7-34.8 182.5-86.7z"/></svg>
         </div>
         <div class="dock-divider"></div>
@@ -314,6 +315,9 @@
 
     function renderApps(key) {
         const data = DATA[key];
+        
+        // 修复：增加容错判断，防止传入不存在的 key 导致页面崩溃
+        if (!data) return; 
         
         // 更新 Dock 状态
         document.querySelectorAll('.dock-item[data-key]').forEach(el => {
@@ -333,38 +337,23 @@
         document.getElementById('main').scrollTop = 0;
     }
 
-    // 渲染 Dock 导航分类
-// 1. 动态生成 Dock 项目（排除 home 数据，防止重复生成图标）
-Object.keys(DATA).forEach(key => {
-    if (key === 'home') return; // 跳过 home 键，因为它已经写死在 HTML 的最左侧了
-    
-    const item = document.createElement('div');
-    item.className = 'dock-item';
-    item.dataset.key = key;
-    item.innerHTML = `
-        <div class="dock-icon" style="background: ${DATA[key].dockBg || 'rgba(255,255,255,0.1)'}">
-            ${DATA[key].dockIcon || '📁'}
-        </div>
-        <div class="dock-tooltip">${DATA[key].name}</div>
-    `;
-    item.onclick = () => renderApps(key);
-    dock.appendChild(item);
-});
+    // 2. 动态生成 Dock 项目
+    Object.keys(DATA).forEach(key => {
+        const item = document.createElement('div');
+        item.className = 'dock-item';
+        item.dataset.key = key;
+        item.title = DATA[key].name; // 鼠标悬停显示分类名
+        
+        // 修复：使用数据字典里正确的属性名 `short` 来显示 Emoji
+        item.innerHTML = DATA[key].short; 
+        
+        item.onclick = () => renderApps(key);
+        dock.appendChild(item);
+    });
 
-// 2. 为最左侧的“主页”图标绑定点击事件 —— 实现“桌面内返回主页”
-const homeBtn = document.querySelector('.dock-item[data-key="home"]');
-if (homeBtn) {
-    homeBtn.onclick = () => {
-        // 直接在桌面内部调用渲染函数，加载你的 'home' 分类数据
-        renderApps('home'); 
-    };
-}
-
-// 3. 页面首次加载时，默认渲染主页视图
-renderApps('home');
-
-    // 默认点亮第一屏
-    renderApps('cn'); 
+    // 3. 页面首次加载时，默认渲染第一屏视图
+    // 修复：删除了报错的 renderApps('home')，直接点亮 'cn'
+    renderApps('cn');
 </script>
 </body>
 </html>
