@@ -7,7 +7,6 @@
 <style>
     :root {
         --bg-dark: #000000;
-        --sidebar-bg: rgba(28, 28, 30, 0.85);
         --text-main: #ffffff;
         --text-secondary: #8e8e93;
         --accent: #0a84ff;
@@ -28,10 +27,10 @@
     }
 
     /* ==================== 桌面端 & iPad 横屏 默认样式 ==================== */
+    /* 核心改动：移除了 background 和 backdrop-filter，变为完全透明 */
     .sidebar {
         width: 280px;
-        background: var(--sidebar-bg);
-        backdrop-filter: blur(30px);
+        background: transparent; 
         border-right: 1px solid var(--glass-border);
         padding: 40px 20px;
         display: flex;
@@ -70,7 +69,7 @@
 
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
     
-    /* 右侧卡片：改为内容居中偏左排版 */
+    /* 右侧卡片：内容居中偏左排版 */
     .card {
         background: rgba(255,255,255,0.05);
         padding: 20px;
@@ -79,7 +78,6 @@
         cursor: pointer;
         transition: transform 0.2s, background 0.2s;
         
-        /* 核心改动：容器级水平居中，内部文本左对齐（居中偏左） */
         display: flex;
         flex-direction: column;
         align-items: center; 
@@ -88,7 +86,6 @@
     .card:active { transform: scale(0.97); }
     .card:hover { background: rgba(255,255,255,0.1); }
     
-    /* 确保卡片内部的文字块有固定合理的基准宽度，形成美观的偏左排列结构 */
     .card-content {
         width: 100%;
         max-width: 180px; 
@@ -96,7 +93,7 @@
 
     /* ==================== 移动端适配 (iOS26 / iPad 竖屏) ==================== */
     @media (max-width: 768px) {
-        /* 1. 纯粹常驻的固定窄边框，完全删除了展开触发器 */
+        /* 核心改动：移动端同样保持透明背景 */
         .sidebar {
             position: fixed;
             left: 0;
@@ -105,14 +102,13 @@
             width: 60px; 
             padding: 30px 0;
             align-items: center;
+            background: transparent; 
         }
 
-        /* 窄栏模式下的头像 */
         .avatar { width: 32px; height: 32px; border-radius: 50%; font-size: 16px; margin-bottom: 0; }
         .profile-name { display: none; }
         .profile-zone { margin-bottom: 20px; }
 
-        /* 纯小圆点分类导航，无需点击放大 */
         .nav-item span { display: none; }
         .nav-item {
             width: 40px;
@@ -124,13 +120,11 @@
         .nav-item::before { content: "•"; font-size: 20px; color: var(--text-secondary); }
         .nav-item.active::before { color: #ffffff; }
 
-        /* 2. 主内容区安全右移，保持不误触 */
         .main {
             padding: 30px 20px 30px 80px; 
         }
         .grid { grid-template-columns: 1fr; }
         
-        /* 卡片内文本基准宽度微调（移动端单列） */
         .card-content { max-width: 85%; }
     }
 </style>
@@ -220,7 +214,6 @@
         document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.key === key));
         const grid = document.getElementById('grid');
         
-        // 渲染卡片：应用居中偏左容器结构
         grid.innerHTML = data.items.map(item => `
             <div class="card" onclick="window.open('${item.url}', '_blank')">
                 <div class="card-content">
@@ -232,7 +225,6 @@
         `).join('');
     }
 
-    // 初始化左侧基本结构
     sidebar.innerHTML = `
         <div class="profile-zone">
             <div class="avatar"></div>
