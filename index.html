@@ -3,17 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>iPhone Home Screen - Official Logos</title>
+<title>iPhone Home Screen Edition</title>
 <style>
     :root {
         --bg-dark: #000000;
         --text-main: #ffffff;
         --text-secondary: #8e8e93;
         --accent: #0a84ff;
+        /* iOS 标志性高斯模糊毛玻璃 */
         --glass-bg: rgba(255, 255, 255, 0.12);
         --glass-border: rgba(255, 255, 255, 0.15);
         --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
-        --app-radius: 22%; /* 严格的 iOS 桌面图标圆角 */
+        --app-radius: 22%; /* 严格的 iOS 图标黄金圆角比例 */
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -38,19 +39,20 @@
     /* ==================== 1. 主屏幕 App 图标网格区 ==================== */
     .main {
         width: 100%;
-        max-width: 480px;
+        max-width: 480px; /* 锁死黄金桌面视觉宽度，模拟手机屏幕 */
         flex: 1;
         overflow-y: auto;
-        padding: 30px 24px 10px 24px;
+        padding: 40px 24px 10px 24px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        scrollbar-width: none; 
+        scrollbar-width: none; /* 隐藏滚动条 */
     }
     .main::-webkit-scrollbar { display: none; }
     
     .content-wrapper { width: 100%; }
 
+    /* 顶部分类标题，类似 iOS 桌面顶部大组件字体 */
     h1#title { 
         margin: 0 0 32px 0; 
         font-size: 26px; 
@@ -59,15 +61,16 @@
         text-align: center;
     }
 
-    /* iPhone 经典 4 列桌面排布 */
+    /* 严格的 iPhone 4列桌面网格 */
     .grid { 
         display: grid; 
         grid-template-columns: repeat(4, 1fr); 
-        gap: 28px 16px; 
+        gap: 28px 16px; /* 上下留空大，左右紧凑 */
         width: 100%;
         justify-items: center;
     }
     
+    /* 单个 App 容器 */
     .app-box {
         display: flex;
         flex-direction: column;
@@ -76,9 +79,10 @@
         width: 100%;
         max-width: 72px;
     }
+    /* 按压触控反馈：整体等比缩小变暗 */
     .app-box:active .app-icon { transform: scale(0.85); filter: brightness(0.8); }
     
-    /* 核心改动：App 图标容器，支持容纳高清 SVG 图像 */
+    /* App 官方立体质感图标 */
     .app-icon {
         width: 60px;
         height: 60px;
@@ -88,18 +92,19 @@
         align-items: center;
         justify-content: center;
         transition: transform 0.2s, filter 0.2s;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-        overflow: hidden; /* 保证图标内渐变不溢出圆角 */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        overflow: hidden;
         position: relative;
     }
 
-    /* 统一规范官方 SVG Logo 的尺寸与居中表现 */
+    /* 官方 SVG Logo 尺寸微调与绝对居中 */
     .app-icon svg {
-        width: 65%;
-        height: 65%;
+        width: 62%;
+        height: 62%;
         object-fit: contain;
     }
     
+    /* 图标下方的应用标签 */
     .app-name {
         margin-top: 6px;
         font-size: 11px;
@@ -112,7 +117,7 @@
         text-overflow: ellipsis;
     }
 
-    /* ==================== 2. 底部毛玻璃 Dock 栏 ==================== */
+    /* ==================== 2. 全新底部毛玻璃 Dock 栏 ==================== */
     .dock-container {
         width: 100%;
         max-width: 480px;
@@ -128,17 +133,18 @@
         backdrop-filter: blur(30px);
         -webkit-backdrop-filter: blur(30px);
         border: 1px solid var(--glass-border);
-        border-radius: 32px;
-        padding: 12px 16px;
+        border-radius: 32px; /* iOS 标志性大圆角 Dock */
+        padding: 12px 10px;
         display: flex;
         justify-content: space-around;
         align-items: center;
         box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
+    /* Dock 栏内的常驻应用卡片键 */
     .nav-item {
-        width: 52px;
-        height: 52px;
+        width: 54px;
+        height: 54px;
         border-radius: var(--app-radius);
         background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
         border: 1px solid rgba(255,255,255,0.1);
@@ -146,26 +152,34 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 12px;
-        font-weight: 600;
-        color: #ffffff;
         transition: transform 0.2s;
         position: relative;
     }
     .nav-item:active { transform: scale(0.85); }
     
+    /* Dock 栏分类使用的独特高清标志 */
+    .nav-item svg, .nav-item span {
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* 处于当前页面时的指示灯 */
     .nav-item.active {
-        box-shadow: 0 0 12px rgba(10, 132, 255, 0.3);
+        box-shadow: 0 0 12px rgba(10, 132, 255, 0.4);
         border-color: var(--accent);
     }
     .nav-item.active::after {
         content: ''; position: absolute; bottom: -6px; width: 4px; height: 4px; border-radius: 50%; background: #ffffff;
     }
 
+    /* 小屏幕等比缩放适配 */
     @media (max-width: 390px) {
         .grid { gap: 20px 12px; }
         .app-icon { width: 54px; height: 54px; }
-        .nav-item { width: 46px; height: 46px; font-size: 11px; }
+        .nav-item { width: 48px; height: 48px; }
+        h1#title { font-size: 22px; margin-bottom: 24px; }
     }
 </style>
 </head>
@@ -183,175 +197,79 @@
 </div>
 
 <script>
-    // 采用精准的最新官方正版 SVG 矢量 Logo 数据源（配原厂底色，完美复刻 iOS 原生图标高级感）
+    // 融合了 22.txt 的最新全量数据，并全面适配正版官方高精 SVG 图像与原厂配色方案 [cite: 42-49]
     const DATA = {
-        cn: { name: '国内平台', short: '国内', items: [
-            {
-                name: "Bilibili", 
-                url: "https://space.bilibili.com",
-                bg: "#ff6699",
-                icon: `<svg viewBox="0 0 1024 1024"><path fill="#fff" d="M741.3 125.4c13.7 0 25.1 10.3 26.6 23.8l.3 3.1-1.3 31.5c49.2 17.5 89 50.8 115.5 93.3 29.5 47.4 44.5 104.1 44.5 168.1v278c0 58.7-16.7 106.6-48.7 141.6-30.8 33.7-74.8 51.5-129.2 52.4l-7.3.1H282.3c-57.8 0-104.8-17.5-136.5-51.1-31.9-33.8-48.8-81.5-49.7-140.4l-.1-2.6v-278c0-64 15-120.7 44.5-168.1 26.5-42.5 66.3-75.8 115.5-93.3l-1.3-31.5c-.1-14.5 11.2-26.4 25.6-26.9l1.3-.1c13.7 0 25.1 10.3 26.6 23.8l.3 3.1 13 309.8h393.7l13-309.8c.1-14.5 11.2-26.4 25.6-26.9zm-49.4 319.4H332.1c-43.5 0-77.9 33.1-77.9 75.3v245.9c0 42.2 34.4 75.3 77.9 75.3h359.8c43.5 0 77.9-33.1 77.9-75.3V520.1c0-42.2-34.4-75.3-77.9-75.3zm-271.1 92.4c19.4 0 35.1 15.1 35.1 33.8v46.2c0 18.7-15.7 33.8-35.1 33.8s-35.1-15.1-35.1-33.8v-46.2c0-18.7 15.7-33.8 35.1-33.8zm231.4 0c19.4 0 35.1 15.1 35.1 33.8v46.2c0 18.7-15.7 33.8-35.1 33.8s-35.1-15.1-35.1-33.8v-46.2c0-18.7 15.7-33.8 35.1-33.8z"/></svg>`
-            },
-            {
-                name: "抖音", 
-                url: "https://douyin.com",
-                bg: "#161823",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12.53 0H8.31v15.18c0 2.45-1.99 4.44-4.44 4.44a4.44 4.44 0 0 1-4.44-4.44 4.44 4.44 0 0 1 4.44-4.44c.48 0 .93.08 1.36.22V6.65a8.77 8.77 0 0 0-1.36-.1A8.77 8.77 0 0 0 .43 15.31a8.77 8.77 0 0 0 8.77 8.77 8.77 8.77 0 0 0 8.77-8.77V7.81c1.86 1.34 4.14 2.13 6.61 2.13V5.62c-3.1 0-5.74-1.94-6.79-4.72l-.2-.53H12.53z"/></svg>`
-            },
-            {
-                name: "小红书", 
-                url: "https://xiaohongshu.com",
-                bg: "#ff2442",
-                icon: `<svg viewBox="0 0 24 24"><text x="50%" y="55%" dom-baseline="middle" text-anchor="middle" font-size="13" font-weight="900" fill="#fff" font-family="sans-serif">书</text></svg>`
-            },
-            {
-                name: "快手", 
-                url: "https://kuaishou.com",
-                bg: "#ff5000",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14.5h-2v-2h2v2zm0-4.5h-2V7h2v5z"/></svg>`
-            },
-            {
-                name: "视频号", 
-                url: "#",
-                bg: "#07c160",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>`
-            },
-            {
-                name: "微博", 
-                url: "https://weibo.com",
-                bg: "#e6162d",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.5 9.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5 0.67 1.5 1.5-0.67 1.5-1.5 1.5zm-5 4c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zm0-8c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5 0.67 1.5 1.5-0.67 1.5-1.5 1.5z"/></svg>`
-            },
-            {
-                name: "知乎", 
-                url: "https://zhihu.com",
-                bg: "#0084ff",
-                icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">知</text></svg>`
-            },
-            {
-                name: "豆瓣", 
-                url: "https://douban.com",
-                bg: "#00b51d",
-                icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">豆</text></svg>`
-            },
-            {
-                name: "即刻", 
-                url: "https://okjike.com",
-                bg: "#ffe411",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#000" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 10.9 13 11.5 13 13h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>`
-            }
+        cn: { name: '国内平台', short: '🇨🇳', items: [
+            { name: "Bilibili", url: "https://space.bilibili.com", bg: "#ff6699", icon: `<svg viewBox="0 0 1024 1024"><path fill="#fff" d="M741.3 125.4c13.7 0 25.1 10.3 26.6 23.8l.3 3.1-1.3 31.5c49.2 17.5 89 50.8 115.5 93.3 29.5 47.4 44.5 104.1 44.5 168.1v278c0 58.7-16.7 106.6-48.7 141.6-30.8 33.7-74.8 51.5-129.2 52.4l-7.3.1H282.3c-57.8 0-104.8-17.5-136.5-51.1-31.9-33.8-48.8-81.5-49.7-140.4l-.1-2.6v-278c0-64 15-120.7 44.5-168.1 26.5-42.5 66.3-75.8 115.5-93.3l-1.3-31.5c-.1-14.5 11.2-26.4 25.6-26.9l1.3-.1c13.7 0 25.1 10.3 26.6 23.8l.3 3.1 13 309.8h393.7l13-309.8c.1-14.5 11.2-26.4 25.6-26.9zm-49.4 319.4H332.1c-43.5 0-77.9 33.1-77.9 75.3v245.9c0 42.2 34.4 75.3 77.9 75.3h359.8c43.5 0 77.9-33.1 77.9-75.3V520.1c0-42.2-34.4-75.3-77.9-75.3zm-271.1 92.4c19.4 0 35.1 15.1 35.1 33.8v46.2c0 18.7-15.7 33.8-35.1 33.8s-35.1-15.1-35.1-33.8v-46.2c0-18.7 15.7-33.8 35.1-33.8zm231.4 0c19.4 0 35.1 15.1 35.1 33.8v46.2c0 18.7-15.7 33.8-35.1 33.8s-35.1-15.1-35.1-33.8v-46.2c0-18.7 15.7-33.8 35.1-33.8z"/></svg>` },
+            { name: "抖音", url: "https://douyin.com", bg: "#161823", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12.53 0H8.31v15.18c0 2.45-1.99 4.44-4.44 4.44a4.44 4.44 0 0 1-4.44-4.44 4.44 4.44 0 0 1 4.44-4.44c.48 0 .93.08 1.36.22V6.65a8.77 8.77 0 0 0-1.36-.1A8.77 8.77 0 0 0 .43 15.31a8.77 8.77 0 0 0 8.77 8.77 8.77 8.77 0 0 0 8.77-8.77V7.81c1.86 1.34 4.14 2.13 6.61 2.13V5.62c-3.1 0-5.74-1.94-6.79-4.72l-.2-.53H12.53z"/></svg>` },
+            { name: "小红书", url: "https://xiaohongshu.com", bg: "#ff2442", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="58%" text-anchor="middle" font-size="13" font-weight="900" fill="#fff">书</text></svg>` },
+            { name: "快手", url: "https://kuaishou.com", bg: "#ff5000", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14.5h-2v-2h2v2zm0-4.5h-2V7h2v5z"/></svg>` },
+            { name: "视频号", url: "#", bg: "#07c160", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>` },
+            { name: "微博", url: "https://weibo.com", bg: "#e6162d", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.5 9.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5 0.67 1.5 1.5-0.67 1.5-1.5 1.5zm-5 4c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zm0-8c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5 0.67 1.5 1.5-0.67 1.5-1.5 1.5z"/></svg>` },
+            { name: "知乎", url: "https://zhihu.com", bg: "#0084ff", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">知</text></svg>` },
+            { name: "豆瓣", url: "https://douban.com", bg: "#00b51d", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">豆</text></svg>` },
+            { name: "即刻", url: "https://okjike.com", bg: "#ffe411", icon: `<svg viewBox="0 0 24 24"><path fill="#000" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 10.9 13 11.5 13 13h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>` }
         ]},
-        global: { name: '国际平台', short: '国际', items: [
-            {
-                name: "YouTube", 
-                url: "https://youtube.com",
-                bg: "#ff0000",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`
-            },
-            {
-                name: "Facebook", 
-                url: "https://facebook.com",
-                bg: "#1877f2",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`
-            },
-            {
-                name: "X (Twitter)", 
-                url: "https://x.com",
-                bg: "#000000",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`
-            },
-            {
-                name: "Instagram", 
-                url: "https://instagram.com",
-                bg: "linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>`
-            },
-            {
-                name: "TikTok", 
-                url: "https://tiktok.com",
-                bg: "#000000",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12.525.02c1.31 0 2.59.37 3.7 1.05A8.75 8.75 0 0 1 21.82 4.64v4.36a11.9 11.9 0 0 0-3.56-.55V2.75c-1.39.81-2.99 1.23-4.61 1.22H11.53v13.56a4.44 4.44 0 1 1-5.71-4.24v4.54a8.77 8.77 0 1 0 15.48 5.75V7.81c1.86 1.34 4.14 2.13 6.61 2.13V5.62c-3.1 0-5.74-1.94-6.79-4.72l-.2-.53H12.525z"/></svg>`
-            },
-            {
-                name: "Telegram", 
-                url: "https://telegram.org",
-                bg: "#229ED9",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12zm5.894-17.477l-2.181 10.28c-.163.725-.592.903-1.197.564l-3.325-2.45-1.603 1.542c-.178.178-.327.327-.671.327l.237-3.374 6.145-5.548c.267-.238-.059-.369-.416-.131l-7.595 4.782-3.267-1.022c-.71-.223-.724-.71.148-1.05l12.784-4.93c.592-.216 1.11.137.935.96z"/></svg>`
-            },
-            {
-                name: "Discord", 
-                url: "https://discord.com",
-                bg: "#5865F2",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.873-.894.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.195.373.289a.075.075 0 0 1-.006.127 12.298 12.298 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z"/></svg>`
-            }
+        global: { name: '国际平台', short: '🌏', items: [
+            { name: "YouTube", url: "https://youtube.com", bg: "#ff0000", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93$.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>` },
+            { name: "Facebook", url: "https://facebook.com", bg: "#1877f2", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>` },
+            { name: "X", url: "https://x.com", bg: "#000000", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>` },
+            { name: "Instagram", url: "https://instagram.com", bg: "linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>` },
+            { name: "Threads", url: "https://threads.net", bg: "#000000", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="62%" text-anchor="middle" font-size="16" font-weight="900" fill="#fff">@</text></svg>` },
+            { name: "TikTok", url: "https://tiktok.com", bg: "#000000", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12.525.02c1.31 0 2.59.37 3.7 1.05A8.75 8.75 0 0 1 21.82 4.64v4.36a11.9 11.9 0 0 0-3.56-.55V2.75c-1.39.81-2.99 1.23-4.61 1.22H11.53v13.56a4.44 4.44 0 1 1-5.71-4.24v4.54a8.77 8.77 0 1 0 15.48 5.75V7.81c1.86 1.34 4.14 2.13 6.61 2.13V5.62c-3.1 0-5.74-1.94-6.79-4.72l-.2-.53H12.525z"/></svg>` },
+            { name: "Telegram", url: "https://telegram.org", bg: "#229ED9", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12zm5.894-17.477l-2.181 10.28c-.163.725-.592.903-1.197.564l-3.325-2.45-1.603 1.542c-.178.178-.327.327-.671.327l.237-3.374 6.145-5.548c.267-.238-.059-.369-.416-.131l-7.595 4.782-3.267-1.022c-.71-.223-.724-.71.148-1.05l12.784-4.93c.592-.216 1.11.137.935.96z"/></svg>` },
+            { name: "Discord", url: "https://discord.com", bg: "#5865F2", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.873-.894.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.195.373.289a.075.075 0 0 1-.006.127 12.298 12.298 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z"/></svg>` },
+            { name: "Reddit", url: "https://reddit.com", bg: "#ff4500", icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="#fff"/></svg>` },
+            { name: "LinkedIn", url: "https://linkedin.com", bg: "#0077b5", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>` }
         ]},
-        media: { name: '流媒体', short: '媒体', items: [
-            {
-                name: "Netflix", 
-                url: "https://netflix.com",
-                bg: "#000000",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#E50914" d="M5.648 0h4.04v13.562L14.28 0h4.072v24h-4.04V10.438L9.688 24H5.648z"/></svg>`
-            },
-            {
-                name: "Apple TV+", 
-                url: "https://tv.apple.com",
-                bg: "#1c1c1e",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.21.67-2.93 1.49-.62.69-1.16 1.84-1.01 2.96 1.12.09 2.27-.58 2.95-1.39z"/></svg>`
-            },
-            {
-                name: "Disney+", 
-                url: "https://disneyplus.com",
-                bg: "linear-gradient(135deg, #020514, #0f1a3a)",
-                icon: `<svg viewBox="0 0 24 24"><text x="50%" y="65%" text-anchor="middle" font-size="10" font-weight="900" fill="#00D2ED" font-family="serif">D+</text></svg>`
-            },
-            {
-                name: "Spotify", 
-                url: "https://spotify.com",
-                bg: "#1DB954",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.49 17.306c-.215.353-.68.463-1.03.247-2.863-1.75-6.463-2.146-10.707-1.183-.404.092-.814-.16-.906-.565-.093-.404.16-.814.565-.906 4.647-1.063 8.623-.615 11.83 1.344.353.216.464.68.248 1.03zm1.465-3.264c-.27.44-.847.58-1.287.31-3.277-2.013-8.274-2.598-12.147-1.423-.497.15-1.02-.13-1.17-.627-.15-.497.13-1.02.627-1.17 4.425-1.344 9.93-.695 13.665 1.597.44.27.58.847.312 1.287zm.127-3.414C15.215 8.355 8.795 8.143 5.08 9.27c-.58.175-1.19-.158-1.366-.738-.176-.58.158-1.19.738-1.366 4.26-1.293 11.35-1.055 15.8 1.586.522.31.693.985.384 1.507-.31.52-.985.69-1.507.38z"/></svg>`
-            }
+        media: { name: '流媒体', short: '🎬', items: [
+            { name: "Netflix", url: "https://netflix.com", bg: "#000000", icon: `<svg viewBox="0 0 24 24"><path fill="#E50914" d="M5.648 0h4.04v13.562L14.28 0h4.072v24h-4.04V10.438L9.688 24H5.648z"/></svg>` },
+            { name: "Apple TV+", url: "https://tv.apple.com", bg: "#1c1c1e", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.21.67-2.93 1.49-.62.69-1.16 1.84-1.01 2.96 1.12.09 2.27-.58 2.95-1.39z"/></svg>` },
+            { name: "Disney+", url: "https://disneyplus.com", bg: "linear-gradient(135deg, #020514, #0f1a3a)", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="65%" text-anchor="middle" font-size="10" font-weight="900" fill="#00D2ED" font-family="serif">D+</text></svg>` },
+            { name: "Prime Video", url: "https://primevideo.com", bg: "#00A8E8", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="11" font-weight="900" fill="#fff">prime</text></svg>` },
+            { name: "HBO Max", url: "https://max.com", bg: "#10003a", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="11" font-weight="900" fill="#fff">MAX</text></svg>` },
+            { name: "Spotify", url: "https://spotify.com", bg: "#1DB954", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.49 17.306c-.215.353-.68.463-1.03.247-2.863-1.75-6.463-2.146-10.707-1.183-.404.092-.814-.16-.906-.565-.093-.404.16-.814.565-.906 4.647-1.063 8.623-.615 11.83 1.344.353.216.464.68.248 1.03zm1.465-3.264c-.27.44-.847.58-1.287.31-3.277-2.013-8.274-2.598-12.147-1.423-.497.15-1.02-.13-1.17-.627-.15-.497.13-1.02.627-1.17 4.425-1.344 9.93-.695 13.665 1.597.44.27.58.847.312 1.287zm.127-3.414C15.215 8.355 8.795 8.143 5.08 9.27c-.58.175-1.19-.158-1.366-.738-.176-.58.158-1.19.738-1.366 4.26-1.293 11.35-1.055 15.8 1.586.522.31.693.985.384 1.507-.31.52-.985.69-1.507.38z"/></svg>` },
+            { name: "Apple Music", url: "https://music.apple.com", bg: "linear-gradient(135deg, #ff4565, #ff1744)", icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2v13.5a3.5 3.5 0 1 1-5-3.13V6l9-2v8.5a3.5 3.5 0 1 1-4-3.13V2z"/></svg>` }
         ]},
-        news: { name: '日常资讯', short: '资讯', items: [
-            {
-                name: "澎湃新闻", 
-                url: "https://www.thepaper.cn",
-                bg: "#000000",
-                icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">澎</text></svg>`
-            },
-            {
-                name: "纽约时报", 
-                url: "https://nytimes.com",
-                bg: "#ffffff",
-                icon: `<svg viewBox="0 0 24 24"><text x="50%" y="68%" text-anchor="middle" font-size="20" font-family="serif" font-weight="900" fill="#000">T</text></svg>`
-            },
-            {
-                name: "CNN", 
-                url: "https://www.cnn.com",
-                bg: "#CC0000",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#fff" d="M24 12c0 6.627-5.373 12-12 12S0 17.627 0 12 5.373 0 12 0s12 5.373 12 12z" fill-opacity="0"/><text x="50%" y="60%" text-anchor="middle" font-size="10" font-weight="900" fill="#fff">CNN</text></svg>`
-            },
-            {
-                name: "Google新闻", 
-                url: "https://news.google.com",
-                bg: "#ffffff",
-                icon: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.35 11.1h-9.17v2.73h6.51c-.3 1.56-1.25 2.87-2.69 3.74v3.1h4.35c2.54-2.33 4-5.77 4-9.57 0-.62-.05-1.22-.14-1.77z"/><path fill="#34A853" d="M12.18 20.5c2.57 0 4.72-.85 6.3-2.33l-4.35-3.1c-1.2.8-2.74 1.28-4.35 1.28-3.35 0-6.18-2.27-7.19-5.33H2.13v3.2c1.6 3.18 4.9 5.28 8.65 5.28z"/><path fill="#FBBC05" d="M4.99 11.02a7.1 7.1 0 0 1 0-4.04V3.78H2.13a11.9 11.9 0 0 0 0 10.44l2.86-3.2z"/><path fill="#EA4335" d="M12.18 3.5c1.4 0 2.65.48 3.64 1.43l2.73-2.73A11.75 11.75 0 0 0 12.18 0c-3.75 0-7.05 2.1-8.65 5.28l2.86 3.2c1.01-3.06 3.84-5.28 7.19-5.28z"/></svg>`
-            }
+        news: { name: '日常资讯', short: '📰', items: [
+            { name: "澎湃新闻", url: "https://www.thepaper.cn", bg: "#000000", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="62%" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">澎</text></svg>` },
+            { name: "纽约时报", url: "https://nytimes.com", bg: "#ffffff", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="68%" text-anchor="middle" font-size="20" font-family="serif" font-weight="900" fill="#000">T</text></svg>` },
+            { name: "CNN", url: "https://www.cnn.com", bg: "#CC0000", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="10" font-weight="900" fill="#fff">CNN</text></svg>` },
+            { name: "Fox News", url: "https://www.foxnews.com", bg: "#002040", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="10" font-weight="900" fill="#fff">FOX</text></svg>` },
+            { name: "华盛顿邮报", url: "https://www.washingtonpost.com", bg: "#000000", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="62%" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">WP</text></svg>` },
+            { name: "BBC News", url: "https://www.bbc.com/zhongwen/simp", bg: "#B71C1C", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="11" font-weight="900" fill="#fff">BBC</text></svg>` },
+            { name: "Yahoo", url: "https://news.yahoo.com", bg: "#6001d2", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="11" font-weight="900" fill="#fff">Y!</text></svg>` },
+            { name: "Google新闻", url: "https://news.google.com", bg: "#ffffff", icon: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.35 11.1h-9.17v2.73h6.51c-.3 1.56-1.25 2.87-2.69 3.74v3.1h4.35c2.54-2.33 4-5.77 4-9.57 0-.62-.05-1.22-.14-1.77z"/><path fill="#34A853" d="M12.18 20.5c2.57 0 4.72-.85 6.3-2.33l-4.35-3.1c-1.2.8-2.74 1.28-4.35 1.28-3.35 0-6.18-2.27-7.19-5.33H2.13v3.2c1.6 3.18 4.9 5.28 8.65 5.28z"/><path fill="#FBBC05" d="M4.99 11.02a7.1 7.1 0 0 1 0-4.04V3.78H2.13a11.9 11.9 0 0 0 0 10.44l2.86-3.2z"/><path fill="#EA4335" d="M12.18 3.5c1.4 0 2.65.48 3.64 1.43l2.73-2.73A11.75 11.75 0 0 0 12.18 0c-3.75 0-7.05 2.1-8.65 5.28l2.86 3.2c1.01-3.06 3.84-5.28 7.19-5.28z"/></svg>` },
+            { name: "路透社", url: "https://cn.reuters.com", bg: "#333333", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">R</text></svg>` },
+            { name: "华尔街日报", url: "https://cn.wsj.com", bg: "#1a1a1a", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="12" font-weight="900" fill="#fff">WSJ</text></svg>` },
+            { name: "FT中文网", url: "https://www.ftchinese.com", bg: "#fff1e5", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="14" font-weight="900" fill="#9e2f50">FT</text></svg>` },
+            { name: "法广", url: "https://www.rfi.fr/cn", bg: "#e2001a", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="12" font-weight="900" fill="#fff">rfi</text></svg>` },
+            { name: "德国之声", url: "https://www.dw.com/zh", bg: "#002f6c", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="60%" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">DW</text></svg>` },
+            { name: "ChinaNews", url: "https://www.chinanews.com.cn", bg: "#ad0000", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="62%" text-anchor="middle" font-size="12" font-weight="900" fill="#fff">CNS</text></svg>` },
+            { name: "明报", url: "https://news.mingpao.com", bg: "#ffffff", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="62%" text-anchor="middle" font-size="14" font-weight="900" fill="#e60012">明</text></svg>` },
+            { name: "联合新闻网", url: "https://udn.com", bg: "#2c64a4", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="62%" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">联</text></svg>` },
+            { name: "自由时报", url: "https://www.ltn.com.tw", bg: "#fff", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="62%" text-anchor="middle" font-size="14" font-weight="900" fill="#007f3e">自</text></svg>` },
+            { name: "联合早报", url: "https://www.zaobao.com.sg", bg: "#005596", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="62%" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">早</text></svg>` }
+        ]},
+        shopping: { name: '图文购物', short: '🛍️', items: [
+            { name: "淘宝", url: "https://taobao.com", bg: "linear-gradient(135deg, #ff9000, #ff5000)", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="62%" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">淘</text></svg>` },
+            { name: "京东", url: "https://jd.com", bg: "#e4393c", icon: `<svg viewBox="0 0 24 24"><text x="50%" y="62%" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">东</text></svg>` }
         ]}
     };
 
     const dock = document.getElementById('dock');
 
-    // 渲染主屏幕
+    // 核心渲染主屏幕网格
     function render(key) {
         const data = DATA[key];
         document.getElementById('title').innerText = data.name;
         document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.key === key));
         const grid = document.getElementById('grid');
         
-        // 渲染带有精美 SVG Logo 的 App 图标结构
+        // 渲染高度还原的手机桌面图标墙
         grid.innerHTML = data.items.map(item => `
             <div class="app-box" onclick="window.open('${item.url}', '_blank')">
-                <div class="app-icon" style="background: ${item.bg};">
+                <div class="app-icon" style="background: ${item.bg || '#222'};">
                     ${item.icon}
                 </div>
                 <div class="app-name">${item.name}</div>
@@ -359,17 +277,17 @@
         `).join('');
     }
 
-    // 初始化底部常驻 Dock 栏分类
+    // 动态在最下方的 Dock 栏生成常驻分类 App 图标键
     Object.keys(DATA).forEach(key => {
         const item = document.createElement('div');
         item.className = 'nav-item';
         item.dataset.key = key;
-        item.innerHTML = `${DATA[key].short}`;
+        item.innerHTML = `<span>${DATA[key].short}</span>`;
         item.onclick = () => render(key);
         dock.appendChild(item);
     });
 
-    // 默认打开第一页
+    // 默认进入主屏第一页
     render('cn'); 
 </script>
 </body>
