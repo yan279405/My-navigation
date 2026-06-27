@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Creator Hub OS26</title>
+<title>Creator Hub OS26 - Multi-Column</title>
 <style>
     :root {
         --bg-dark: #000000;
@@ -26,117 +26,181 @@
         overflow: hidden;
     }
 
-    /* ==================== 桌面端 & iPad 横屏 默认样式 ==================== */
-    /* 核心改动：移除了 background 和 backdrop-filter，变为完全透明 */
+    /* ==================== 【全新核心】三栏式黄金比例布局 ==================== */
+    
+    /* 1. 左侧导航栏 - 占 1/4 */
     .sidebar {
-        width: 280px;
+        width: 25vw;
+        max-width: 280px;
+        min-width: 200px;
         background: transparent; 
         border-right: 1px solid var(--glass-border);
-        padding: 40px 20px;
+        padding: 40px 24px;
         display: flex;
         flex-direction: column;
         gap: 12px;
         overflow-y: auto;
         flex-shrink: 0;
-        z-index: 1000;
     }
 
-    .profile-zone { text-align: center; margin-bottom: 20px; }
-    .avatar { width: 80px; height: 80px; border-radius: 20px; background: #333; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; }
-    .profile-name { font-weight: 600; }
-    
-    .nav-item {
-        padding: 14px 18px;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.2s;
-        color: var(--text-secondary);
-        white-space: nowrap;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-    }
-    .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
-    .nav-item.active { background: var(--accent); color: white; font-weight: 600; }
-
-    /* 右侧主内容区 */
+    /* 2. 中间主内容栏 - 占 2/4 */
     .main {
         flex: 1;
         overflow-y: auto;
         padding: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* 让整个主内容区域在中间居中 */
+    }
+    
+    .content-wrapper {
+        width: 100%;
+        max-width: 800px; /* 限制中间内容最大宽度，防止超大屏拉伸变形 */
     }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+    /* 中间卡片容器：保持居中平铺 */
+    .grid { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+        gap: 18px; 
+        width: 100%;
+    }
     
-    /* 右侧卡片：内容居中偏左排版 */
+    /* 卡片内部：您要求的容器居中、文字偏左排版 */
     .card {
         background: rgba(255,255,255,0.05);
-        padding: 20px;
+        padding: 22px;
         border-radius: 16px;
         border: 1px solid var(--glass-border);
         cursor: pointer;
         transition: transform 0.2s, background 0.2s;
-        
         display: flex;
         flex-direction: column;
         align-items: center; 
-        text-align: left;    
     }
     .card:active { transform: scale(0.97); }
-    .card:hover { background: rgba(255,255,255,0.1); }
+    .card:hover { background: rgba(255,255,255,0.08); }
     
     .card-content {
         width: 100%;
-        max-width: 180px; 
+        max-width: 170px; /* 精准控制偏左对齐的基准线 */
+        text-align: left;
     }
 
-    /* ==================== 移动端适配 (iOS26 / iPad 竖屏) ==================== */
+    /* 3. 右侧设置栏 - 占 1/4 */
+    .panel-right {
+        width: 25vw;
+        max-width: 280px;
+        min-width: 200px;
+        background: transparent;
+        border-left: 1px solid var(--glass-border);
+        padding: 40px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        overflow-y: auto;
+        flex-shrink: 0;
+    }
+
+    /* ==================== 基础组件样式 ==================== */
+    .profile-zone { text-align: center; margin-bottom: 20px; }
+    .avatar { width: 76px; height: 76px; border-radius: 20px; background: #222; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 30px; border: 1px solid var(--glass-border); }
+    .profile-name { font-weight: 600; font-size: 17px; }
+    
+    .nav-item {
+        padding: 12px 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
+    .nav-item.active { background: var(--accent); color: white; font-weight: 600; }
+
+    /* 右侧控制组样式 */
+    .section-title { font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .setting-card { background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); border-radius: 12px; padding: 14px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
+
+    /* ==================== iOS / iPadOS 响应式断点适配 ==================== */
+    
+    /* 中屏设备 (iPad 竖屏 / 台前调度小窗口) */
+    @media (max-width: 1024px) {
+        .panel-right { display: none; } /* 自动折叠右边栏 */
+        .sidebar { width: 280px; }
+    }
+
+    /* 紧凑型小屏设备 (iPhone / iOS) */
     @media (max-width: 768px) {
-        /* 核心改动：移动端同样保持透明背景 */
+        /* 左边栏变成您最满意的常驻不误触窄长条 */
         .sidebar {
             position: fixed;
             left: 0;
             top: 0;
             height: 100%;
             width: 60px; 
+            min-width: 60px;
             padding: 30px 0;
             align-items: center;
-            background: transparent; 
         }
-
         .avatar { width: 32px; height: 32px; border-radius: 50%; font-size: 16px; margin-bottom: 0; }
         .profile-name { display: none; }
         .profile-zone { margin-bottom: 20px; }
 
         .nav-item span { display: none; }
-        .nav-item {
-            width: 40px;
-            height: 40px;
-            padding: 0;
-            justify-content: center;
-            border-radius: 50%;
-        }
+        .nav-item { width: 40px; height: 40px; padding: 0; justify-content: center; border-radius: 50%; }
         .nav-item::before { content: "•"; font-size: 20px; color: var(--text-secondary); }
         .nav-item.active::before { color: #ffffff; }
 
+        /* 主视窗自适应向右挪开，空出安全区，同时卡片宽度占满整行 */
         .main {
             padding: 30px 20px 30px 80px; 
+            align-items: stretch;
         }
         .grid { grid-template-columns: 1fr; }
-        
         .card-content { max-width: 85%; }
+        
+        .panel-right { display: none; }
     }
 </style>
 </head>
 <body>
 
+<!-- 左栏：全局导航 (1/4) -->
 <nav class="sidebar" id="sidebar"></nav>
 
+<!-- 中栏：卡片工作区 (2/4 居中) -->
 <main class="main">
-    <h1 id="title" style="margin-bottom: 20px;">Creator Hub</h1>
-    <div class="grid" id="grid"></div>
+    <div class="content-wrapper">
+        <h1 id="title" style="margin: 0 0 24px 0; font-size: 28px; font-weight: 700;">Creator Hub</h1>
+        <div class="grid" id="grid"></div>
+    </div>
 </main>
+
+<!-- 右栏：系统设置与小部件 (1/4) -->
+<aside class="panel-right">
+    <div>
+        <div class="section-title">Control Center</div>
+        <div class="setting-card">
+            <span>Focus Mode</span>
+            <span style="color: var(--accent); font-weight: 600;">ON</span>
+        </div>
+    </div>
+    <div>
+        <div class="section-title">System Status</div>
+        <div class="setting-card" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; width: 100%;">
+                <span>iCloud Sync</span>
+                <span style="color: #34c759;">Updated</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; width: 100%;">
+                <span>Storage</span>
+                <span style="color: var(--text-secondary);">64% Used</span>
+            </div>
+        </div>
+    </div>
+</aside>
 
 <script>
     const DATA = {
@@ -218,13 +282,14 @@
             <div class="card" onclick="window.open('${item.url}', '_blank')">
                 <div class="card-content">
                     <div style="font-size: 24px; margin-bottom: 10px;">${item.icon}</div>
-                    <div style="font-weight: 600;">${item.name}</div>
-                    <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">${item.desc}</div>
+                    <div style="font-weight: 600; line-height: 1.3;">${item.name}</div>
+                    <div style="font-size: 13px; color: var(--text-secondary); margin-top: 5px; line-height: 1.4;">${item.desc}</div>
                 </div>
             </div>
         `).join('');
     }
 
+    // 初始化左侧基本结构
     sidebar.innerHTML = `
         <div class="profile-zone">
             <div class="avatar"></div>
