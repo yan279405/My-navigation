@@ -7,11 +7,13 @@
 <style>
     :root {
         --bg-dark: #000000;
-        --glass-bg: rgba(20, 20, 20, 0.95);
+        --sidebar-bg: rgba(28, 28, 30, 0.8);
+        --glass-bg: rgba(0, 0, 0, 0.8);
         --text-main: #ffffff;
         --text-secondary: #8e8e93;
-        --accent: #ff453a;
+        --accent: #0a84ff;
         --glass-border: rgba(255, 255, 255, 0.1);
+        --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -20,75 +22,125 @@
         margin: 0;
         background: var(--bg-dark);
         color: var(--text-main);
-        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+        font-family: var(--font-stack);
         height: 100vh;
+        overflow: hidden;
         display: flex;
-        flex-direction: column;
     }
 
-    /* 顶部滚动菜单 */
-    .top-scroll-nav {
+    /* --- 顶部栏 (新增) --- */
+    .header {
         position: fixed;
-        top: 0; width: 100%; height: 50px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
         background: var(--glass-bg);
         backdrop-filter: blur(20px);
-        display: flex; align-items: center;
-        overflow-x: auto; white-space: nowrap;
-        padding: 0 10px;
-        scrollbar-width: none;
-        z-index: 100;
         border-bottom: 1px solid var(--glass-border);
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        z-index: 100;
     }
-    .top-scroll-nav::-webkit-scrollbar { display: none; }
-    .tab-item {
-        padding: 0 15px; color: var(--text-secondary); cursor: pointer;
-        font-size: 15px; height: 100%; display: flex; align-items: center;
-    }
-    .tab-item.active { color: white; font-weight: 700; border-bottom: 2px solid white; }
+    .header-title { font-size: 18px; font-weight: 700; }
 
-    /* 主内容区 */
-    .main { flex: 1; overflow-y: auto; padding: 70px 20px 90px 20px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
-    .card {
-        background: rgba(255,255,255,0.05); padding: 20px; border-radius: 16px;
-        border: 1px solid var(--glass-border); cursor: pointer;
+    /* --- 侧边栏 --- */
+    .sidebar {
+        width: 280px;
+        background: var(--sidebar-bg);
+        backdrop-filter: blur(30px);
+        border-right: 1px solid var(--glass-border);
+        padding: 80px 20px 20px 20px; /* 顶部预留给header */
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 10;
     }
 
-    /* 底部固定菜单 */
-    .bottom-nav {
-        position: fixed; bottom: 0; width: 100%; height: 65px;
+    .profile-zone { text-align: center; margin-bottom: 20px; }
+    .avatar { width: 60px; height: 60px; border-radius: 16px; background: #333; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+    
+    .nav-item {
+        padding: 12px 16px;
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        transition: 0.3s;
+        color: var(--text-secondary);
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
+    .nav-item.active { background: var(--accent); color: white; font-weight: 600; }
+
+    /* --- 底部栏 --- */
+   /* --- 优化后的底部栏 --- */
+    .tab-bar {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
         background: var(--glass-bg);
-        display: flex; justify-content: space-around; align-items: center;
+        backdrop-filter: blur(20px);
         padding-bottom: env(safe-area-inset-bottom);
         border-top: 1px solid var(--glass-border);
         z-index: 100;
+        
+        /* 关键修复代码 */
+        overflow-x: auto;         /* 允许横向滚动 */
+        white-space: nowrap;      /* 强制内容不换行 */
+        -webkit-overflow-scrolling: touch; /* 开启 iOS 平滑滚动 */
+        touch-action: pan-x;      /* 允许浏览器处理横向手势，防止被页面滚动拦截 */
     }
-    .nav-btn { display: flex; flex-direction: column; align-items: center; color: var(--text-secondary); font-size: 11px; }
-    .nav-btn.active { color: white; }
-    .add-icon { 
-        width: 40px; height: 30px; background: white; color: black; 
-        border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px;
+
+    /* 确保底部栏里的每一个 tab 项不被压缩 */
+    .tab-bar .nav-item {
+        display: inline-flex;     /* 允许并排排列 */
+        flex-shrink: 0;           /* 防止项目被压缩导致容器不再需要滚动 */
+        padding: 8px 16px;
+    }
+
+    /* --- 主内容区 --- */
+    .main {
+        flex: 1;
+        overflow-y: auto;
+        padding: 80px 40px 40px 40px; /* 顶部避开header */
+    }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+    .card {
+        background: rgba(255,255,255,0.05);
+        padding: 20px;
+        border-radius: 16px;
+        border: 1px solid var(--glass-border);
+        cursor: pointer;
+        transition: transform 0.2s, background 0.2s;
+    }
+    .card:active { transform: scale(0.97); }
+    .card:hover { background: rgba(255,255,255,0.1); }
+
+    @media (max-width: 768px) {
+        .sidebar { display: none; }
+        .tab-bar { display: flex; }
+        .main { padding: 80px 20px 100px 20px; }
     }
 </style>
 </head>
 <body>
 
-<div class="top-scroll-nav" id="topNav"></div>
+<header class="header" id="header">
+    <div class="header-title" id="title">Creator Hub</div>
+</header>
+
+<nav class="sidebar" id="sidebar"></nav>
+<div class="tab-bar" id="tabbar"></div>
 
 <main class="main">
     <div class="grid" id="grid"></div>
 </main>
 
-<div class="bottom-nav">
-    <div class="nav-btn active"><span>首页</span></div>
-    <div class="nav-btn"><span>视频</span></div>
-    <div class="add-icon">+</div>
-    <div class="nav-btn"><span>商城</span></div>
-    <div class="nav-btn"><span>我的</span></div>
-</div>
-
 <script>
-   const DATA = {
+    const DATA = {
         cn: { name: '国内平台', items: [
             {icon: "📺", name: "Bilibili", desc: "中国视频创作平台", url: "https://space.bilibili.com"},
             {icon: "🎵", name: "抖音", desc: "短纪录片频道", url: "https://douyin.com"},
@@ -142,6 +194,10 @@
             {icon: "🇱🇹", name: "自由时报", desc: "自由时报电子报", url: "https://www.ltn.com.tw"},
             {icon: "🇸🇬", name: "联合早报", desc: "国际版首页", url: "https://www.zaobao.com.sg"}
         ]},
+        graphic: { name: '图文', items: [
+            {icon: "🛍️", name: "淘宝", desc: "在线购物", url: "https://taobao.com"},
+            {icon: "🛍️", name: "京东", desc: "在线购物", url: "https://jd.com"}
+        ]},
         other: { name: '其他', items: [
             {icon: "⚪", name: "待定", desc: "空数据测试", url: "#"}
         ]},
@@ -151,31 +207,54 @@
         ]}
     };
 
-    // 渲染顶部滚动菜单
-    const topNav = document.getElementById('topNav');
-    Object.keys(DATA).forEach(key => {
-        const div = document.createElement('div');
-        div.className = `tab-item ${key === 'cn' ? 'active' : ''}`;
-        div.innerText = DATA[key].name;
-        div.onclick = () => {
-            document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active'));
-            div.classList.add('active');
-            render(key);
-        };
-        topNav.appendChild(div);
-    });
-
     function render(key) {
+        const data = DATA[key];
+        document.getElementById('title').innerText = data.name;
+        
+        // 更新所有导航项的状态
+        document.querySelectorAll('.nav-item').forEach(el => {
+            el.classList.toggle('active', el.dataset.key === key);
+        });
+
         const grid = document.getElementById('grid');
-        grid.innerHTML = DATA[key].items.map(item => `
+        grid.innerHTML = data.items.map(item => `
             <div class="card" onclick="window.open('${item.url}', '_blank')">
-                <div style="font-size: 20px;">${item.icon} ${item.name}</div>
-                <div style="font-size: 12px; color: var(--text-secondary);">${item.desc}</div>
+                <div style="font-size: 24px; margin-bottom: 10px;">${item.icon}</div>
+                <div style="font-weight: 600;">${item.name}</div>
+                <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">${item.desc}</div>
             </div>
         `).join('');
     }
 
-    render('cn');
+    const sidebar = document.getElementById('sidebar');
+    const tabbar = document.getElementById('tabbar');
+    
+    // 初始化侧边栏头部
+    sidebar.innerHTML = `
+        <div class="profile-zone">
+            <div class="avatar"></div>
+            <div style="font-weight: 600;">颜途的视界</div>
+        </div>
+    `;
+
+    // 渲染菜单
+    Object.keys(DATA).forEach(key => {
+        const item = document.createElement('div');
+        item.className = 'nav-item';
+        item.dataset.key = key;
+        item.innerHTML = `<span>${DATA[key].name}</span>`;
+        item.onclick = () => render(key);
+        sidebar.appendChild(item);
+
+        const tab = document.createElement('div');
+        tab.className = 'nav-item';
+        tab.dataset.key = key;
+        tab.innerHTML = `<span>${DATA[key].name}</span>`;
+        tab.onclick = () => render(key);
+        tabbar.appendChild(tab);
+    });
+
+    render('cn'); 
 </script>
 </body>
 </html>
