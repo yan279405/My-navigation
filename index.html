@@ -2,10 +2,10 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Creator Hub OS26 - Perfect Fixed Edition</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<title>Creator Hub OS26 - Premium Multi-Platform Edition</title>
 <style>
-    /* ==================== 1. 全局核心变量 ==================== */
+    /* ==================== 1. 全局核心变量与 Apple 级色彩体系 ==================== */
     :root {
         --bg-system: #000000;
         --sidebar-bg: rgba(28, 28, 30, 0.6);
@@ -16,16 +16,17 @@
         --text-secondary: #8e8e93;
         --accent: #0a84ff;
         
-        --icon-radius: 18%;
-        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        --card-hover-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+        --icon-radius: 22%; /* 完美的 Apple App 图标圆率 */
+        --card-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        --card-hover-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
         --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
     }
 
+    /* 原生明亮模式适配 */
     @media (prefers-color-scheme: light) {
         :root {
             --bg-system: #f2f2f7; 
-            --sidebar-bg: rgba(242, 242, 247, 0.7); 
+            --sidebar-bg: rgba(242, 242, 247, 0.75); 
             --card-bg: rgba(255, 255, 255, 0.7);
             --card-hover-bg: #ffffff;
             --glass-border: rgba(0, 0, 0, 0.06);
@@ -33,7 +34,7 @@
             --text-secondary: #6c6c70;
             --accent: #007aff;
             --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            --card-hover-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+            --card-hover-shadow: 0 12px 26px rgba(0, 0, 0, 0.08);
         }
     }
 
@@ -47,13 +48,14 @@
         height: 100vh;
         width: 100vw;
         display: flex; 
-        flex-direction: row; /* Mac / iPad横屏 默认左侧边栏布局 */
+        flex-direction: row; /* 【建议1】Mac固定大横屏 & iPad横屏：经典的桌面左侧双栏布局 */
         overflow: hidden;
         user-select: none;
+        -webkit-user-select: none;
         transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    /* ==================== 2. 侧边栏基础样式（大屏版） ==================== */
+    /* ==================== 2. 侧边栏：桌面级形态 (Mac 端 & iPad 横屏) ==================== */
     .sidebar {
         width: 280px;
         background: var(--sidebar-bg);
@@ -67,6 +69,7 @@
         overflow-y: auto;
         flex-shrink: 0;
         z-index: 10;
+        transition: width 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), padding 0.25s, flex-direction 0.25s;
     }
     .sidebar::-webkit-scrollbar { display: none; }
 
@@ -78,13 +81,13 @@
     .avatar { 
         width: 76px; 
         height: 76px; 
-        border-radius: 22%; 
+        border-radius: 24%; 
         background: linear-gradient(135deg, #2c2c2e, #1c1c1e); 
         margin: 0 auto 12px; 
         display: flex; 
         align-items: center; 
         justify-content: center; 
-        font-size: 32px; 
+        font-size: 34px; 
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         border: 1px solid rgba(255,255,255,0.05);
     }
@@ -105,7 +108,7 @@
         padding: 12px 16px;
         border-radius: 10px;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         color: var(--text-secondary);
         font-size: 14px;
         font-weight: 500;
@@ -125,17 +128,16 @@
         background: var(--accent); 
         color: #ffffff; 
         font-weight: 600; 
-        box-shadow: 0 4px 12px rgba(10, 132, 255, 0.15);
+        box-shadow: 0 4px 14px rgba(10, 132, 255, 0.2);
     }
 
-    /* ==================== 3. 主内容区域 ==================== */
+    /* ==================== 3. 主内容视窗与动态多栏网格 ==================== */
     .main {
         flex: 1;
         overflow-y: auto;
         padding: 40px 48px;
         background-color: transparent;
         scroll-behavior: smooth;
-        padding-bottom: 40px;
     }
 
     h1#title {
@@ -145,13 +147,14 @@
         margin: 0 0 24px 0;
     }
 
+    /* 【建议4】动态自适应多栏网格：大屏幕完美舒展 5-6 列，缩小无缝缩减，防拉伸防变形 */
     .grid { 
         display: grid; 
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
         gap: 20px; 
     }
 
-    /* ==================== 4. 极致光感卡片 ==================== */
+    /* ==================== 4. 【建议4】极致光感卡片与流光渐变底座 ==================== */
     .card {
         background: var(--card-bg);
         padding: 20px;
@@ -166,6 +169,7 @@
         overflow: hidden;
     }
 
+    /* 【建议4】精细高光微边缘：通过双层微透明边框消除大屏及暗黑模式下的沉闷感 */
     .card::before {
         content: '';
         position: absolute;
@@ -190,6 +194,7 @@
     }
     .card:active { transform: scale(0.97) translateY(-2px); }
 
+    /* 【建议4】流光斜渐变图标壳（135deg 契合品牌色） */
     .icon-wrapper {
         width: 48px;
         height: 48px;
@@ -199,7 +204,7 @@
         justify-content: center;
         font-size: 22px;
         margin-bottom: 14px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.18);
         border: 1px solid rgba(255,255,255,0.1);
     }
 
@@ -215,52 +220,62 @@
         overflow: hidden;
     }
 
-    /* ==================== 5. 完美的设备自适应（核心修复点） ==================== */
+    /* ==================== 5. 精准跨端响应式引擎 ==================== */
     
-    /* 【iPad 纵屏模式】 侧边栏缩回纯图标，内容依然在右侧 */
+    /* 【建议3】形态 B：iPad 纵屏模式（智能收纳，进化为窄版纯图标形态） */
     @media (min-width: 769px) and (max-width: 1024px) {
-        .sidebar { width: 88px; padding: 40px 12px; align-items: center; }
-        .profile-zone { display: none; }
-        .nav-item { width: 52px; height: 52px; padding: 0; justify-content: center; border-radius: 14px; }
+        .sidebar { 
+            width: 84px; 
+            padding: 40px 0; 
+            align-items: center; 
+        }
+        .profile-zone { display: none; } /* 优雅规避宽度挤压 */
+        .nav-item { 
+            width: 50px; 
+            height: 50px; 
+            padding: 0; 
+            justify-content: center; 
+            border-radius: 14px; 
+        }
         .nav-item span:first-child { font-size: 20px; }
-        .nav-item span:last-child { display: none; }
+        .nav-item span:last-child { display: none; } /* 完美收纳文字 */
         .main { padding: 40px 32px; }
     }
 
-    /* 【iPhone / 手机窄屏形态】 彻底改变布局方向：内容在上，Dock栏强制锁死在底部 */
+    /* 【建议2】形态 C：iPhone 移动端形态（布局重构，Dock 栏牢牢锁死在最底部） */
     @media (max-width: 768px) {
-        body { flex-direction: column-reverse; } /* 用 column-reverse 强制将 HTML 里排在前面的 sidebar 压到屏幕底部 */
+        body { flex-direction: column-reverse; } /* 彻底用流向把控制栏压在最底部 */
         
         .sidebar {
             width: 100%;
-            height: 64px; /* 固定的原生底部 Dock 栏高度 */
+            height: calc(64px + env(safe-area-inset-bottom)); /* 智能加上 iOS 底部安全区，防止被 Home 条挡住 */
             flex-direction: row; 
             overflow-x: auto;
             border-right: none;
-            border-top: 1px solid var(--glass-border); /* 变成顶边框划分线 */
-            padding: 8px 16px;
-            gap: 12px;
+            border-top: 1px solid var(--glass-border); 
+            padding: 8px 16px calc(8px + env(safe-area-inset-bottom)) 16px;
+            gap: 10px;
             background: var(--sidebar-bg);
-            justify-content: space-around; /* 均匀分布，更像原生App底栏 */
+            justify-content: space-around; /* 均匀分布成标准的原生底部 Tab 样式 */
         }
         
         .profile-zone { display: none; }
         
         .nav-item {
-            padding: 0 16px;
+            padding: 0 12px;
             height: 100%;
-            border-radius: 8px;
-            font-size: 13px;
-            gap: 6px;
+            border-radius: 10px;
+            font-size: 12px;
+            gap: 4px;
             flex: 1;
+            flex-direction: column; /* 图标在上、文字在下的标准原生 App 逻辑 */
             justify-content: center;
         }
         .nav-item span:first-child { font-size: 16px; }
         
-        /* 手机端主视窗防遮挡优化 */
         .main { 
             flex: 1; 
-            padding: 24px 20px 40px 20px; 
+            padding: 24px 20px 32px 20px; 
             overflow-y: auto; 
         }
         h1#title { font-size: 24px; margin-bottom: 16px; }
@@ -271,11 +286,11 @@
         .card-desc { font-size: 12px; margin-top: 4px; }
     }
 
-    /* 【iPhone 矮横屏极限状态防护】 保持右边内容、左边小Dock栏，绝不乱变形 */
+    /* 形态 D：iPhone 意外被横放时的防崩溃矮横屏微调 */
     @media (max-height: 450px) and (max-width: 932px) {
         body { flex-direction: row; }
-        .sidebar { width: 80px; height: 100vh; padding: 10px 5px; gap: 4px; border-right: 1px solid var(--glass-border); border-top: none; justify-content: flex-start; }
-        .nav-item { width: 44px; height: 44px; padding: 0; justify-content: center; }
+        .sidebar { width: 76px; height: 100vh; padding: 12px 0; gap: 4px; border-right: 1px solid var(--glass-border); border-top: none; justify-content: flex-start; align-items: center; }
+        .nav-item { width: 44px; height: 44px; padding: 0; justify-content: center; flex-direction: row; }
         .nav-item span:last-child { display: none; }
         .main { padding: 16px 24px; }
         h1#title { font-size: 20px; margin-bottom: 10px; }
@@ -293,7 +308,7 @@
 </main>
 
 <script>
-    // 已彻底清空删除 graphic 与 business 分类
+    // 【建议5】干净利落的精简数据集：彻底删除 graphic 与 business，聚焦三大最强核心领域
     const DATA = {
         cn: { name: '国内平台', short: '🇨🇳', items: [
             {icon: "📺", name: "Bilibili", desc: "中国视频创作平台", url: "https://space.bilibili.com", bg: "linear-gradient(135deg, #ff73a1, #ff457d)"},
@@ -370,7 +385,8 @@
         
         const grid = document.getElementById('grid');
         grid.innerHTML = data.items.map(item => {
-            const isLightBg = item.bg && item.bg.includes('#ffffff');
+            // 对白底图标（如纽约时报等）在暗黑模式下的反色优化
+            const isLightBg = item.bg && (item.bg.includes('#ffffff') || item.bg.includes('#fff5eb'));
             const iconColor = isLightBg ? '#000000' : '#ffffff';
             
             return `
@@ -384,14 +400,16 @@
             `;
         }).join('');
         
+        // 丝滑返回顶部
         document.querySelector('.main').scrollTop = 0;
     }
 
-    // 渲染 Dock / 菜单项
+    // 渲染 Dock 栏及菜单项
     Object.keys(DATA).forEach(key => {
         const item = document.createElement('div');
         item.className = 'nav-item';
         item.dataset.key = key;
+        // 注入图标与分类名字
         item.innerHTML = `<span>${DATA[key].short}</span><span>${DATA[key].name}</span>`;
         item.onclick = () => render(key);
         navContainer.appendChild(item);
