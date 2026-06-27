@@ -3,17 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Creator OS26 - Icon Edition</title>
+<title>iPhone Home Screen Edition</title>
 <style>
     :root {
         --bg-dark: #000000;
         --text-main: #ffffff;
         --text-secondary: #8e8e93;
         --accent: #0a84ff;
+        /* iOS 标志性毛玻璃效果 */
+        --glass-bg: rgba(255, 255, 255, 0.12);
         --glass-border: rgba(255, 255, 255, 0.15);
         --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-        /* iOS 官方 App 圆角比例 */
-        --app-radius: 22%; 
+        --app-radius: 22%; /* 完美的 iOS 图标圆角比例 */
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -25,123 +26,84 @@
         font-family: var(--font-stack);
         height: 100vh;
         display: flex;
+        flex-direction: column;
         overflow: hidden;
         width: 100vw;
         user-select: none;
-    }
-
-    /* ==================== 严格 1:2:1 手机桌面级全同步架构 ==================== */
-    
-    /* 1. 左栏 (左侧 Dock 栏样式) - 占 25% */
-    .sidebar {
-        width: 25vw;
-        background: transparent; 
-        border-right: 1px solid var(--glass-border);
-        padding: 40px 0;
-        display: flex;
-        flex-direction: column;
         align-items: center;
-        gap: 20px;
-        overflow-y: auto;
-        flex-shrink: 0;
+        justify-content: space-between;
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
     }
 
-    /* 类似手机桌面顶部的 Profile 头像 */
-    .profile-zone { text-align: center; margin-bottom: 10px; }
-    .avatar { 
-        width: 60px; height: 60px; 
-        border-radius: var(--app-radius); 
-        background: linear-gradient(135deg, #2c2c2e, #1c1c1e); 
-        margin: 0 auto; display: flex; align-items: center; justify-content: center; 
-        font-size: 26px; border: 1px solid var(--glass-border); 
-    }
-    
-    /* 左侧分类导航：全部重构为 iOS 应用图标样式 */
-    .nav-item {
-        width: 55px;
-        height: 55px;
-        border-radius: var(--app-radius);
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid var(--glass-border);
-        cursor: pointer;
-        transition: transform 0.2s, background 0.2s;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        font-weight: 500;
-        color: var(--text-secondary);
-        position: relative;
-    }
-    .nav-item:active { transform: scale(0.9); }
-    /* 激活状态类似手机下载/选中的高亮蓝点或发光边框 */
-    .nav-item.active { 
-        background: rgba(10, 132, 255, 0.2); 
-        border-color: var(--accent); 
-        color: white; 
-        font-weight: 600;
-    }
-    /* 在图标下方优雅地用一个小点标记当前激活的分类 */
-    .nav-item.active::after {
-        content: ''; position: absolute; bottom: -8px; width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
-    }
-
-    /* 2. 中栏 (主屏幕 App 网格区) - 占 50% */
+    /* ==================== 1. 主屏幕 App 图标网格区 ==================== */
     .main {
-        width: 50vw;
+        width: 100%;
+        max-width: 480px; /* 锁死 iPhone Plus/Max 级别的黄金桌面视觉宽度 */
         flex: 1;
         overflow-y: auto;
-        padding: 40px 20px;
+        padding: 30px 24px 10px 24px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        /* 隐藏滚动条，让它看起来更像原生 App */
+        scrollbar-width: none; 
     }
+    .main::-webkit-scrollbar { display: none; }
     
     .content-wrapper {
         width: 100%;
-        max-width: 520px; /* 约束宽度，完美对齐手机一屏图标的视觉感 */
     }
 
-    /* 严格的 App 桌面网格布局 */
+    /* 顶部分类大标题，类似手机桌面顶部的 Widget 或时间小字 */
+    h1#title { 
+        margin: 0 0 32px 0; 
+        font-size: 26px; 
+        font-weight: 700; 
+        letter-spacing: -0.5px;
+        text-align: center;
+        color: var(--text-main);
+    }
+
+    /* 严格的 iPhone 4列/5列 桌面网格 */
     .grid { 
         display: grid; 
-        grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); 
-        gap: 24px 20px; /* 上下间距大，左右间距紧凑，符合手机桌面特征 */
+        grid-template-columns: repeat(4, 1fr); /* 绝大多数 iPhone 一行放 4 个应用 */
+        gap: 28px 16px; /* 上下间距大，左右紧凑 */
         width: 100%;
         justify-items: center;
     }
     
-    /* 单个 App 图标整体架构 */
+    /* 单个 App 容器 */
     .app-box {
         display: flex;
         flex-direction: column;
         align-items: center;
         cursor: pointer;
-        width: 70px;
+        width: 100%;
+        max-width: 72px;
     }
-    .app-box:active .app-icon { transform: scale(0.88); }
+    .app-box:active .app-icon { transform: scale(0.85); filter: brightness(0.7); }
     
-    /* 1:1 严格圆角正方形 App 图标 */
+    /* 正方形 App 图标 */
     .app-icon {
         width: 60px;
         height: 60px;
         border-radius: var(--app-radius);
-        background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.03));
-        border: 1px solid var(--glass-border);
+        background: linear-gradient(135deg, #2c2c2e, #1c1c1e);
+        border: 1px solid rgba(255,255,255,0.05);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 28px;
-        transition: transform 0.2s, background-color 0.2s;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        transition: transform 0.2s, filter 0.2s;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
-    .app-box:hover .app-icon { background: rgba(255,255,255,0.12); }
     
-    /* App 下方的文字：绝对水平居中，偏左对齐在这里不适用图标流，直接居中最好看 */
+    /* 图标下方的应用名称 */
     .app-name {
         margin-top: 6px;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 400;
         color: #ffffff;
         text-align: center;
@@ -149,93 +111,95 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        letter-spacing: 0.2px;
     }
 
-    /* 3. 右栏 (iOS 桌面大组件 Widget 栏) - 占 25% */
-    .panel-right {
-        width: 25vw;
-        background: transparent;
-        border-left: 1px solid var(--glass-border);
-        padding: 40px 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        overflow-y: auto;
-        flex-shrink: 0;
-        align-items: center;
-    }
-
-    /* iOS 标志性 Squircle 智能小组件卡片 */
-    .widget { 
+    /* ==================== 2. 全新底部毛玻璃 Dock 栏 ==================== */
+    .dock-container {
         width: 100%;
-        max-width: 180px;
-        aspect-ratio: 1 / 1; /* 1:1 正方形小组件 */
-        background: linear-gradient(135deg, #1c1c1e, #2c2c2e); 
-        border: 1px solid var(--glass-border); 
-        border-radius: 22px; 
-        padding: 16px; 
-        font-size: 13px; 
-        display: flex; 
-        flex-direction: column;
-        justify-content: space-between;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        max-width: 480px;
+        padding: 0 16px 16px 16px; /* 留出底部横条安全距离 */
+        display: flex;
+        justify-content: center;
+        box-sizing: border-box;
     }
-    .widget-title { font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
 
-    /* ==================== 跨端全固定自适应微调 ==================== */
-    @media (max-width: 834px) {
-        .sidebar, .panel-right { padding: 20px 8px; gap: 14px; }
-        .main { padding: 20px 10px; }
-        
-        /* 稍微缩小图标尺寸以完美适应小屏手机和竖屏iPad */
-        .avatar { width: 44px; height: 44px; font-size: 20px; }
-        .nav-item { width: 44px; height: 44px; font-size: 10px; }
-        .app-box { width: 55px; }
-        .app-icon { width: 48px; height: 48px; font-size: 22px; }
-        .app-name { font-size: 10px; }
-        .grid { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 16px 12px; }
-        .widget { max-width: 130px; padding: 10px; font-size: 11px; }
-        h1#title { font-size: 20px !important; margin-bottom: 16px !important; text-align: center; }
+    .dock {
+        width: 100%;
+        background: var(--glass-bg);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        border: 1px solid var(--glass-border);
+        border-radius: 32px; /* iOS 标志性大圆角 Dock */
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    /* Dock 栏里的常驻应用图标键 */
+    .nav-item {
+        width: 54px;
+        height: 54px;
+        border-radius: var(--app-radius);
+        background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+        border: 1px solid rgba(255,255,255,0.1);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 600;
+        color: #ffffff;
+        transition: transform 0.2s;
+        position: relative;
+    }
+    .nav-item:active { transform: scale(0.85); }
+    
+    /* 处于当前页面的高亮白点指示器 */
+    .nav-item.active {
+        box-shadow: 0 0 12px rgba(10, 132, 255, 0.3);
+        border-color: var(--accent);
+    }
+    .nav-item.active::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #ffffff;
+    }
+
+    /* ==================== 小屏等比缩放适配 ==================== */
+    @media (max-width: 390px) {
+        .grid { gap: 20px 12px; }
+        .app-icon { width: 54px; height: 54px; font-size: 24px; }
+        .nav-item { width: 48px; height: 48px; }
+        h1#title { font-size: 22px; margin-bottom: 24px; }
     }
 </style>
 </head>
 <body>
 
-<!-- 左栏：Dock 图标组 (1/4) -->
-<nav class="sidebar" id="sidebar"></nav>
-
-<!-- 中栏：主屏 App 图标网格 (2/4) -->
+<!-- 主屏幕 App 区域 -->
 <main class="main">
     <div class="content-wrapper">
-        <h1 id="title" style="margin: 0 0 28px 0; font-size: 24px; font-weight: 700; color: var(--text-secondary);">主屏幕</h1>
+        <h1 id="title">国内平台</h1>
         <div class="grid" id="grid"></div>
     </div>
 </main>
 
-<!-- 右栏：桌面小组件 (1/4) -->
-<aside class="panel-right">
-    <!-- 小组件 1 -->
-    <div class="widget">
-        <div class="widget-title">控制中心</div>
-        <div style="font-size: 28px; margin: 5px 0;">🌙</div>
-        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-            <span style="color: var(--text-secondary);">专注模式</span>
-            <span style="color: var(--accent); font-weight: 600;">开启</span>
-        </div>
-    </div>
-    
-    <!-- 小组件 2 -->
-    <div class="widget" style="background: linear-gradient(135deg, #0a84ff, #0056b3);">
-        <div class="widget-title" style="color: rgba(255,255,255,0.7)">iCloud</div>
-        <div style="font-size: 28px; margin: 5px 0;">☁️</div>
-        <div style="font-size: 11px; color: #ffffff; font-weight: 500;">数据同步已就绪</div>
-    </div>
-</aside>
+<!-- 底部常驻 Dock 栏 -->
+<div class="dock-container">
+    <nav class="dock" id="dock"></nav>
+</div>
 
 <script>
-    // 数据源保持完整不变
+    // 数据源保持一致
     const DATA = {
-        cn: { name: '国内', short: '🇨🇳', items: [
+        cn: { name: '国内平台', short: '国内', items: [
             {icon: "📺", name: "Bilibili", url: "https://space.bilibili.com"},
             {icon: "🎵", name: "抖音", url: "https://douyin.com"},
             {icon: "📕", name: "小红书", url: "https://xiaohongshu.com"},
@@ -246,7 +210,7 @@
             {icon: "🟢", name: "豆瓣", url: "https://douban.com"},
             {icon: "⚫", name: "即刻", url: "https://okjike.com"}
         ]},
-        global: { name: '国际', short: 'Language🌏', items: [
+        global: { name: '国际平台', short: '国际', items: [
             {icon: "▶", name: "YouTube", url: "https://youtube.com"},
             {icon: "f", name: "Facebook", url: "https://facebook.com"},
             {icon: "𝕏", name: "X", url: "https://x.com"},
@@ -258,7 +222,7 @@
             {icon: "👽", name: "Reddit", url: "https://reddit.com"},
             {icon: "💼", name: "LinkedIn", url: "https://linkedin.com"}
         ]},
-        media: { name: '流媒体', short: '🎬', items: [
+        media: { name: '流媒体', short: '媒体', items: [
             {icon: "N", name: "Netflix", url: "https://netflix.com"},
             {icon: "🍎", name: "Apple TV+", url: "https://tv.apple.com"},
             {icon: "D", name: "Disney+", url: "https://disneyplus.com"},
@@ -267,7 +231,7 @@
             {icon: "♪", name: "Spotify", url: "https://spotify.com"},
             {icon: "🎵", name: "Music", url: "https://music.apple.com"}
         ]},
-        news: { name: '资讯', short: '📰', items: [
+        news: { name: '日常资讯', short: '资讯', items: [
             {icon: "📰", name: "澎湃新闻", url: "https://www.thepaper.cn"},
             {icon: "📰", name: "纽约时报", url: "https://nytimes.com"},
             {icon: "📺", name: "CNN", url: "https://www.cnn.com"},
@@ -275,37 +239,20 @@
             {icon: "🗞️", name: "华盛顿邮报", url: "https://www.washingtonpost.com"},
             {icon: "🇬🇧", name: "BBC News", url: "https://www.bbc.com/zhongwen/simp"},
             {icon: "⚡", name: "Yahoo", url: "https://news.yahoo.com"},
-            {icon: "📰", name: "Google", url: "https://news.google.com"},
-            {icon: "🏢", name: "路透社", url: "https://cn.reuters.com"},
-            {icon: "💼", name: "华尔街日报", url: "https://cn.wsj.com"},
-            {icon: "💰", name: "FT中文网", url: "https://www.ftchinese.com"},
-            {icon: "🇫🇷", name: "法广", url: "https://www.rfi.fr/cn"},
-            {icon: "🇩🇪", name: "德国之声", url: "https://www.dw.com/zh"},
-            {icon: "🇨🇳", name: "ChinaNews", url: "https://www.chinanews.com.cn"},
-            {icon: "明", name: "明报", url: "https://news.mingpao.com"},
-            {icon: "联", name: "联合新闻网", url: "https://udn.com"},
-            {icon: "🇱🇹", name: "自由时报", url: "https://www.ltn.com.tw"},
-            {icon: "🇸🇬", name: "联合早报", url: "https://www.zaobao.com.sg"}
-        ]},
-        graphic: { name: '图文', short: '🛍️', items: [
-            {icon: "🛍️", name: "淘宝", url: "https://taobao.com"},
-            {icon: "🛍️", name: "京东", url: "https://jd.com"}
-        ]},
-        business: { name: '商务', short: '✉️', items: [
-            {icon: "💼", name: "商务合作", url: "mailto:example@email.com"},
-            {icon: "📊", name: "Media Kit", url: "#"}
+            {icon: "📰", name: "Google", url: "https://news.google.com"}
         ]}
     };
 
-    const sidebar = document.getElementById('sidebar');
+    const dock = document.getElementById('dock');
 
+    // 核心渲染主屏幕网格
     function render(key) {
         const data = DATA[key];
         document.getElementById('title').innerText = data.name;
         document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.key === key));
         const grid = document.getElementById('grid');
         
-        // 渲染为主屏幕 App 图标结构
+        // 生成纯正的 iPhone 图标流
         grid.innerHTML = data.items.map(item => `
             <div class="app-box" onclick="window.open('${item.url}', '_blank')">
                 <div class="app-icon">${item.icon}</div>
@@ -314,23 +261,17 @@
         `).join('');
     }
 
-    // 初始化左侧基本结构
-    sidebar.innerHTML = `
-        <div class="profile-zone">
-            <div class="avatar"></div>
-        </div>
-    `;
-    
-    // 生成左侧 Dock 栏图标（取分类名字的前两个字或简短标识）
+    // 动态在底部 Dock 生成 4 个主常驻应用分类
     Object.keys(DATA).forEach(key => {
         const item = document.createElement('div');
         item.className = 'nav-item';
         item.dataset.key = key;
-        item.innerHTML = `${DATA[key].name.substring(0,2)}`;
+        item.innerHTML = `${DATA[key].short}`;
         item.onclick = () => render(key);
-        sidebar.appendChild(item);
+        dock.appendChild(item);
     });
 
+    // 首次进入主页默认加载第一页
     render('cn'); 
 </script>
 </body>
