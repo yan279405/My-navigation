@@ -7,7 +7,7 @@
 <style>
     :root {
         --bg-dark: #000000;
-        --sidebar-bg: rgba(28, 28, 30, 0.8);
+        --sidebar-bg: rgba(28, 28, 30, 0.9);
         --text-main: #ffffff;
         --text-secondary: #8e8e93;
         --accent: #0a84ff;
@@ -17,83 +17,44 @@
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-    body {
-        margin: 0;
-        background: var(--bg-dark);
-        color: var(--text-main);
-        font-family: var(--font-stack);
-        height: 100vh;
-        display: flex; /* 默认横屏/桌面布局 */
-        overflow: hidden;
-    }
+    body { margin: 0; background: var(--bg-dark); color: var(--text-main); font-family: var(--font-stack); height: 100vh; display: flex; overflow: hidden; }
 
-    /* 侧边栏：适配 iPad/Mac */
+    /* 侧边栏 */
     .sidebar {
-        width: 280px;
-        background: var(--sidebar-bg);
-        backdrop-filter: blur(30px);
-        border-right: 1px solid var(--glass-border);
-        padding: 40px 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        overflow-y: auto;
-        flex-shrink: 0;
+        width: 280px; background: var(--sidebar-bg); backdrop-filter: blur(30px);
+        border-right: 1px solid var(--glass-border); padding: 40px 20px;
+        display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex-shrink: 0;
+        transition: transform 0.3s ease; z-index: 1000;
     }
 
     .profile-zone { text-align: center; margin-bottom: 20px; }
     .avatar { width: 80px; height: 80px; border-radius: 20px; background: #333; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; }
     
-    .nav-item {
-        padding: 14px 18px;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: 0.3s;
-        color: var(--text-secondary);
-        white-space: nowrap;
-    }
+    .nav-item { padding: 14px 18px; border-radius: 12px; cursor: pointer; transition: 0.3s; color: var(--text-secondary); white-space: nowrap; }
     .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
     .nav-item.active { background: var(--accent); color: white; font-weight: 600; }
 
-    /* 主内容区 */
-    .main {
-        flex: 1;
-        overflow-y: auto;
-        padding: 40px;
-    }
+    /* 菜单按钮 (仅移动端显示) */
+    .menu-btn { display: none; position: fixed; top: 15px; left: 15px; z-index: 1001; font-size: 24px; cursor: pointer; }
 
+    /* 主内容区 */
+    .main { flex: 1; overflow-y: auto; padding: 40px; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
-    .card {
-        background: rgba(255,255,255,0.05);
-        padding: 20px;
-        border-radius: 16px;
-        border: 1px solid var(--glass-border);
-        cursor: pointer;
-        transition: 0.2s;
-    }
+    .card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.2s; }
     .card:hover { background: rgba(255,255,255,0.1); }
 
-    /* 移动端/窄屏适配 */
+    /* 移动端/窄屏适配：侧滑式菜单 */
     @media (max-width: 768px) {
-        body { flex-direction: column; }
-        .sidebar {
-            width: 100%;
-            height: auto;
-            flex-direction: row;
-            overflow-x: auto;
-            border-right: none;
-            border-bottom: 1px solid var(--glass-border);
-            padding: 15px;
-            gap: 10px;
-            flex-shrink: 0;
-        }
-        .profile-zone { display: none; } /* 移动端隐藏头像以节省空间 */
-        .main { padding: 20px; }
+        .menu-btn { display: block; }
+        .sidebar { position: fixed; left: -280px; height: 100%; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
+        .sidebar.active { transform: translateX(280px); }
+        .main { padding: 60px 20px 20px 20px; }
     }
 </style>
 </head>
 <body>
 
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
 <nav class="sidebar" id="sidebar"></nav>
 
 <main class="main">
@@ -102,8 +63,7 @@
 </main>
 
 <script>
-    // 数据结构保持不变 [cite: 23-33]
-    const DATA = {
+   const DATA = {
         cn: { name: '国内平台', items: [
             {icon: "📺", name: "Bilibili", desc: "中国视频创作平台", url: "https://space.bilibili.com"},
             {icon: "🎵", name: "抖音", desc: "短纪录片频道", url: "https://douyin.com"},
@@ -169,8 +129,18 @@
             {icon: "📊", name: "Media Kit", desc: "创作者数据看板", url: "#"}
         ]}
     };
+    
+    // 初始化生成逻辑
+    const sidebar = document.getElementById('sidebar');
+    function toggleMenu() { sidebar.classList.toggle('active'); }
 
+    // 点击菜单项后自动关闭（仅移动端）
+    function handleNavClick(key) {
+        render(key);
+        if(window.innerWidth <= 768) toggleMenu();
+    }
 
+    // 渲染逻辑
     function render(key) {
         const data = DATA[key];
         document.getElementById('title').innerText = data.name;
@@ -185,8 +155,7 @@
         `).join('');
     }
 
-    const sidebar = document.getElementById('sidebar');
-    // 添加头像区域 [cite: 38]
+    // 初始化界面
     sidebar.innerHTML = `
         <div class="profile-zone">
             <div class="avatar"></div>
@@ -194,13 +163,12 @@
         </div>
     `;
     
-    // 生成菜单 [cite: 39]
     Object.keys(DATA).forEach(key => {
         const item = document.createElement('div');
         item.className = 'nav-item';
         item.dataset.key = key;
         item.innerText = DATA[key].name;
-        item.onclick = () => render(key);
+        item.onclick = () => handleNavClick(key);
         sidebar.appendChild(item);
     });
 
