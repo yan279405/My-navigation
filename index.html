@@ -1,1 +1,227 @@
-file:///Users/yantudeshijie/Downloads/%E7%94%A8%E6%89%80%E9%80%89%E9%A1%B9%E7%9B%AE%E6%96%B0%E5%BB%BA%E7%9A%84%E6%96%87%E4%BB%B6%E5%A4%B9%204/index.html#news
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Creator Hub OS26</title>
+<style>
+    :root {
+        --bg-dark: #000000;
+        --sidebar-bg: rgba(28, 28, 30, 0.8);
+        --text-main: #ffffff;
+        --text-secondary: #8e8e93;
+        --accent: #0a84ff;
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+        margin: 0;
+        background: var(--bg-dark);
+        color: var(--text-main);
+        font-family: var(--font-stack);
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+    }
+
+    /* 侧边栏 */
+    .sidebar {
+        width: 280px;
+        background: var(--sidebar-bg);
+        backdrop-filter: blur(30px);
+        border-right: 1px solid var(--glass-border);
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        z-index: 10;
+    }
+
+    .profile-zone { text-align: center; margin-bottom: 20px; }
+    .avatar { width: 80px; height: 80px; border-radius: 20px; background: #333; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+    
+    .nav-item {
+        padding: 14px 18px;
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: 0.3s;
+        color: var(--text-secondary);
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
+    .nav-item.active { background: var(--accent); color: white; font-weight: 600; }
+
+    /* 底部栏 */
+    .tab-bar {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: rgba(0,0,0,0.8);
+        backdrop-filter: blur(20px);
+        padding-bottom: env(safe-area-inset-bottom);
+        border-top: 1px solid var(--glass-border);
+        z-index: 100;
+        justify-content: space-around;
+        padding: 10px;
+    }
+
+    /* 主内容区 */
+    .main {
+        flex: 1;
+        overflow-y: auto;
+        padding: 40px;
+        padding-bottom: 100px;
+    }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+    .card {
+        background: rgba(255,255,255,0.05);
+        padding: 20px;
+        border-radius: 16px;
+        border: 1px solid var(--glass-border);
+        cursor: pointer;
+        transition: transform 0.2s, background 0.2s;
+    }
+    .card:active { transform: scale(0.97); }
+    .card:hover { background: rgba(255,255,255,0.1); }
+
+    @media (max-width: 768px) {
+        .sidebar { display: none; }
+        .tab-bar { display: flex; }
+        .main { padding: 20px; padding-bottom: 120px; }
+        .grid { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+
+<nav class="sidebar" id="sidebar"></nav>
+<div class="tab-bar" id="tabbar"></div>
+
+<main class="main">
+    <h1 id="title" style="margin-bottom: 20px;">Creator Hub</h1>
+    <div class="grid" id="grid"></div>
+</main>
+
+<script>
+    const DATA = {
+        cn: { name: '国内平台', items: [
+            {icon: "📺", name: "Bilibili", desc: "中国视频创作平台", url: "https://space.bilibili.com"},
+            {icon: "🎵", name: "抖音", desc: "短纪录片频道", url: "https://douyin.com"},
+            {icon: "📕", name: "小红书", desc: "旅行与生活记录", url: "https://xiaohongshu.com"},
+            {icon: "⚡", name: "快手", desc: "短视频平台", url: "https://kuaishou.com"},
+            {icon: "💬", name: "微信视频号", desc: "微信生态创作", url: "#"},
+            {icon: "🟠", name: "微博", desc: "社交图文动态", url: "https://weibo.com"},
+            {icon: "🔵", name: "知乎", desc: "深度图文问答", url: "https://zhihu.com"},
+            {icon: "🟢", name: "豆瓣", desc: "书影音记录", url: "https://douban.com"},
+            {icon: "⚫", name: "即刻", desc: "高质量同好社区", url: "https://okjike.com"}
+        ]},
+        global: { name: '国际平台', items: [
+            {icon: "▶", name: "YouTube", desc: "全球视频平台", url: "https://youtube.com"},
+            {icon: "f", name: "Facebook", desc: "国际主页与社群", url: "https://facebook.com"},
+            {icon: "𝕏", name: "X", desc: "国际社交平台", url: "https://x.com"},
+            {icon: "📷", name: "Instagram", desc: "图片社交平台", url: "https://instagram.com"},
+            {icon: "@", name: "Threads", desc: "碎片化文字记录", url: "https://threads.net"},
+            {icon: "♫", name: "TikTok", desc: "全球短视频趋势", url: "https://tiktok.com"},
+            {icon: "✈", name: "Telegram", desc: "专属订阅频道", url: "https://telegram.org"},
+            {icon: "🎮", name: "Discord", desc: "核心粉丝社区", url: "https://discord.com"},
+            {icon: "👽", name: "Reddit", desc: "国际论坛互动", url: "https://reddit.com"},
+            {icon: "💼", name: "LinkedIn", desc: "职业与商业履历", url: "https://linkedin.com"}
+        ]},
+        media: { name: '流媒体', items: [
+            {icon: "N", name: "Netflix", desc: "流媒体影视", url: "https://netflix.com"},
+            {icon: "🍎", name: "Apple TV+", desc: "原创高品质剧集", url: "https://tv.apple.com"},
+            {icon: "D", name: "Disney+", desc: "迪士尼流媒体", url: "https://disneyplus.com"},
+            {icon: "P", name: "Prime Video", desc: "亚马逊流媒体", url: "https://primevideo.com"},
+            {icon: "H", name: "HBO Max", desc: "华纳顶级剧集", url: "https://max.com"},
+            {icon: "♪", name: "Spotify", desc: "播客与音乐库", url: "https://spotify.com"},
+            {icon: "🎵", name: "Apple Music", desc: "高清音乐歌单", url: "https://music.apple.com"}
+        ]},
+        news: { name: '资讯', items: [
+            {icon: "📰", name: "澎湃新闻", desc: "时事要闻", url: "https://www.thepaper.cn"},
+            {icon: "📰", name: "纽约时报", desc: "国际时事", url: "https://nytimes.com"},
+            {icon: "📺", name: "CNN", desc: "美国有线电视新闻", url: "https://www.cnn.com"},
+            {icon: "🦊", name: "Fox News", desc: "福克斯新闻", url: "https://www.foxnews.com"},
+            {icon: "🗞️", name: "华盛顿邮报", desc: "华盛顿邮报", url: "https://www.washingtonpost.com"},
+            {icon: "🇬🇧", name: "BBC News", desc: "BBC News 中文", url: "https://www.bbc.com/zhongwen/simp"},
+            {icon: "⚡", name: "Yahoo", desc: "雅虎新闻", url: "https://news.yahoo.com"},
+            {icon: "📰", name: "Google", desc: "Google 新闻", url: "https://news.google.com"},
+            {icon: "📖", name: "纽约时报", desc: "纽约时报中文网", url: "https://cn.nytimes.com"},
+            {icon: "🌏", name: "路透社", desc: "突发国际新闻", url: "https://cn.reuters.com"},
+            {icon: "💼", name: "华尔街日报", desc: "华尔街日报中文网", url: "https://cn.wsj.com"},
+            {icon: "💰", name: "FT中文网", desc: "全球财经新闻", url: "https://www.ftchinese.com"},
+            {icon: "🇫🇷", name: "法广", desc: "法广时事与新闻", url: "https://www.rfi.fr/cn"},
+            {icon: "🇩🇪", name: "德国之声", desc: "在线报导", url: "https://www.dw.com/zh"},
+            {icon: "🇨🇳", name: "ChinaNews", desc: "海外中国新闻", url: "https://www.chinanews.com.cn"},
+            {icon: "明", name: "明报", desc: "明报网站", url: "https://news.mingpao.com"},
+            {icon: "联", name: "联合新闻网", desc: "联合新闻网", url: "https://udn.com"},
+            {icon: "🇱🇹", name: "自由时报", desc: "自由时报电子报", url: "https://www.ltn.com.tw"},
+            {icon: "🇸🇬", name: "联合早报", desc: "国际版首页", url: "https://www.zaobao.com.sg"}
+        ]},
+        graphic: { name: '图文', items: [
+            {icon: "🛍️", name: "淘宝", desc: "在线购物", url: "https://taobao.com"},
+            {icon: "🛍️", name: "京东", desc: "在线购物", url: "https://jd.com"}
+        ]},
+        other: { name: '其他', items: [
+            {icon: "⚪", name: "待定", desc: "空数据测试", url: "#"}
+        ]},
+        business: { name: '商务', items: [
+            {icon: "💼", name: "商务合作", desc: "联系邮箱/合作", url: "mailto:example@email.com"},
+            {icon: "📊", name: "Media Kit", desc: "创作者数据看板", url: "#"}
+        ]}
+    };
+
+    function render(key) {
+        const data = DATA[key];
+        document.getElementById('title').innerText = data.name;
+        
+        document.querySelectorAll('.nav-item').forEach(el => {
+            el.classList.toggle('active', el.dataset.key === key);
+        });
+
+        const grid = document.getElementById('grid');
+        grid.innerHTML = data.items.map(item => `
+            <div class="card" onclick="window.open('${item.url}', '_blank')">
+                <div style="font-size: 24px; margin-bottom: 10px;">${item.icon}</div>
+                <div style="font-weight: 600;">${item.name}</div>
+                <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">${item.desc}</div>
+            </div>
+        `).join('');
+    }
+
+    const sidebar = document.getElementById('sidebar');
+    const tabbar = document.getElementById('tabbar');
+    
+    sidebar.innerHTML = `
+        <div class="profile-zone">
+            <div class="avatar"></div>
+            <div style="font-weight: 600;">颜途的视界</div>
+        </div>
+    `;
+
+    Object.keys(DATA).forEach(key => {
+        const item = document.createElement('div');
+        item.className = 'nav-item';
+        item.dataset.key = key;
+        item.innerHTML = `<span>${DATA[key].name}</span>`;
+        item.onclick = () => render(key);
+        sidebar.appendChild(item);
+
+        const tab = document.createElement('div');
+        tab.className = 'nav-item';
+        tab.dataset.key = key;
+        tab.innerHTML = `<span>${DATA[key].name}</span>`;
+        tab.onclick = () => render(key);
+        tabbar.appendChild(tab);
+    });
+
+    render('cn'); 
+</script>
+</body>
+</html>
