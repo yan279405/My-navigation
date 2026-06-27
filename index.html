@@ -74,6 +74,7 @@
     .nav-item.active { background: var(--accent); color: white; font-weight: 600; }
 
     /* --- 底部栏 --- */
+   /* --- 优化后的底部栏 --- */
     .tab-bar {
         display: none;
         position: fixed;
@@ -84,11 +85,20 @@
         padding-bottom: env(safe-area-inset-bottom);
         border-top: 1px solid var(--glass-border);
         z-index: 100;
-        overflow-x: auto;
-        white-space: nowrap;
-        padding: 10px;
+        
+        /* 关键修复代码 */
+        overflow-x: auto;         /* 允许横向滚动 */
+        white-space: nowrap;      /* 强制内容不换行 */
+        -webkit-overflow-scrolling: touch; /* 开启 iOS 平滑滚动 */
+        touch-action: pan-x;      /* 允许浏览器处理横向手势，防止被页面滚动拦截 */
     }
-    .tab-bar .nav-item { padding: 8px 16px; display: inline-flex; }
+
+    /* 确保底部栏里的每一个 tab 项不被压缩 */
+    .tab-bar .nav-item {
+        display: inline-flex;     /* 允许并排排列 */
+        flex-shrink: 0;           /* 防止项目被压缩导致容器不再需要滚动 */
+        padding: 8px 16px;
+    }
 
     /* --- 主内容区 --- */
     .main {
