@@ -328,4 +328,43 @@
                 </div>
                 <div class="app-name">${item.name}</div>
             </div>
-        `).join(''); 
+        `).join('');
+        
+        document.getElementById('main').scrollTop = 0;
+    }
+
+    // 渲染 Dock 导航分类
+// 1. 动态生成 Dock 项目（排除 home 数据，防止重复生成图标）
+Object.keys(DATA).forEach(key => {
+    if (key === 'home') return; // 跳过 home 键，因为它已经写死在 HTML 的最左侧了
+    
+    const item = document.createElement('div');
+    item.className = 'dock-item';
+    item.dataset.key = key;
+    item.innerHTML = `
+        <div class="dock-icon" style="background: ${DATA[key].dockBg || 'rgba(255,255,255,0.1)'}">
+            ${DATA[key].dockIcon || '📁'}
+        </div>
+        <div class="dock-tooltip">${DATA[key].name}</div>
+    `;
+    item.onclick = () => renderApps(key);
+    dock.appendChild(item);
+});
+
+// 2. 为最左侧的“主页”图标绑定点击事件 —— 实现“桌面内返回主页”
+const homeBtn = document.querySelector('.dock-item[data-key="home"]');
+if (homeBtn) {
+    homeBtn.onclick = () => {
+        // 直接在桌面内部调用渲染函数，加载你的 'home' 分类数据
+        renderApps('home'); 
+    };
+}
+
+// 3. 页面首次加载时，默认渲染主页视图
+renderApps('home');
+
+    // 默认点亮第一屏
+    renderApps('cn'); 
+</script>
+</body>
+</html>
