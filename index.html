@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Creator Hub OS26 - Multi-Platform Adaptive Edition</title>
+<title>Creator Hub OS26 - Perfect Fixed Edition</title>
 <style>
-    /* ==================== 1. 全局自适应核心变量 ==================== */
+    /* ==================== 1. 全局核心变量 ==================== */
     :root {
         --bg-system: #000000;
         --sidebar-bg: rgba(28, 28, 30, 0.6);
@@ -22,7 +22,6 @@
         --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
     }
 
-    /* 原生暗黑/明亮模式无缝自适应切换 */
     @media (prefers-color-scheme: light) {
         :root {
             --bg-system: #f2f2f7; 
@@ -48,13 +47,13 @@
         height: 100vh;
         width: 100vw;
         display: flex; 
-        flex-direction: row; /* Mac & iPad横屏默认双栏桌面级布局 */
+        flex-direction: row; /* Mac / iPad横屏 默认左侧边栏布局 */
         overflow: hidden;
         user-select: none;
         transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    /* ==================== 2. 侧边栏设计：智能处理 Mac 横屏、iPad 纵横切换 ==================== */
+    /* ==================== 2. 侧边栏基础样式（大屏版） ==================== */
     .sidebar {
         width: 280px;
         background: var(--sidebar-bg);
@@ -68,7 +67,6 @@
         overflow-y: auto;
         flex-shrink: 0;
         z-index: 10;
-        transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), padding 0.3s;
     }
     .sidebar::-webkit-scrollbar { display: none; }
 
@@ -76,7 +74,6 @@
         text-align: center; 
         margin-bottom: 28px; 
         padding: 0 10px;
-        transition: opacity 0.2s;
     }
     .avatar { 
         width: 76px; 
@@ -130,10 +127,6 @@
         font-weight: 600; 
         box-shadow: 0 4px 12px rgba(10, 132, 255, 0.15);
     }
-    /* 辅助控制：当切换到紧凑模式时隐藏菜单文字 */
-    .nav-item span:last-child {
-        transition: opacity 0.2s;
-    }
 
     /* ==================== 3. 主内容区域 ==================== */
     .main {
@@ -142,6 +135,7 @@
         padding: 40px 48px;
         background-color: transparent;
         scroll-behavior: smooth;
+        padding-bottom: 40px;
     }
 
     h1#title {
@@ -151,7 +145,6 @@
         margin: 0 0 24px 0;
     }
 
-    /* 真正的流式网格，随屏幕宽度智能调整 */
     .grid { 
         display: grid; 
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
@@ -173,7 +166,6 @@
         overflow: hidden;
     }
 
-    /* 原生线性微发光外框 */
     .card::before {
         content: '';
         position: absolute;
@@ -196,9 +188,7 @@
         transform: translateY(-4px);
         box-shadow: var(--card-hover-shadow);
     }
-    .card:active {
-        transform: scale(0.97) translateY(-2px);
-    }
+    .card:active { transform: scale(0.97) translateY(-2px); }
 
     .icon-wrapper {
         width: 48px;
@@ -213,13 +203,7 @@
         border: 1px solid rgba(255,255,255,0.1);
     }
 
-    .card-name {
-        font-size: 16px;
-        font-weight: 600;
-        letter-spacing: -0.1px;
-        color: var(--text-main);
-    }
-
+    .card-name { font-size: 16px; font-weight: 600; letter-spacing: -0.1px; color: var(--text-main); }
     .card-desc {
         font-size: 13px; 
         color: var(--text-secondary); 
@@ -231,56 +215,54 @@
         overflow: hidden;
     }
 
-    /* ==================== 5. 设备多形态纵横屏响应式重构核心 ==================== */
+    /* ==================== 5. 完美的设备自适应（核心修复点） ==================== */
     
-    /* 【形态 A】针对 iPad 纵屏或较窄的横屏设备优化：侧边栏智能收窄为图标形态 */
+    /* 【iPad 纵屏模式】 侧边栏缩回纯图标，内容依然在右侧 */
     @media (min-width: 769px) and (max-width: 1024px) {
-        .sidebar { 
-            width: 88px; 
-            padding: 40px 12px;
-            align-items: center;
-        }
-        .profile-zone { display: none; } /* 空间不足时隐藏头像层 */
-        .nav-item {
-            width: 52px;
-            height: 52px;
-            padding: 0;
-            justify-content: center;
-            border-radius: 14px;
-        }
+        .sidebar { width: 88px; padding: 40px 12px; align-items: center; }
+        .profile-zone { display: none; }
+        .nav-item { width: 52px; height: 52px; padding: 0; justify-content: center; border-radius: 14px; }
         .nav-item span:first-child { font-size: 20px; }
-        .nav-item span:last-child { display: none; } /* 完美隐藏文字，仅留精致图标 */
-        
+        .nav-item span:last-child { display: none; }
         .main { padding: 40px 32px; }
     }
 
-    /* 【形态 B】针对 iPhone 纵屏（移动设备常态）及超小屏切换：转化为经典的底部滑栏或顶部常驻栏 */
+    /* 【iPhone / 手机窄屏形态】 彻底改变布局方向：内容在上，Dock栏强制锁死在底部 */
     @media (max-width: 768px) {
-        body { flex-direction: column; } /* 纵向瀑布流重构 */
+        body { flex-direction: column-reverse; } /* 用 column-reverse 强制将 HTML 里排在前面的 sidebar 压到屏幕底部 */
         
         .sidebar {
             width: 100%;
-            height: auto;
-            flex-direction: row; /* 重构为横向移动端导航栏 */
+            height: 64px; /* 固定的原生底部 Dock 栏高度 */
+            flex-direction: row; 
             overflow-x: auto;
             border-right: none;
-            border-bottom: 1px solid var(--glass-border);
-            padding: 12px 16px;
-            gap: 8px;
+            border-top: 1px solid var(--glass-border); /* 变成顶边框划分线 */
+            padding: 8px 16px;
+            gap: 12px;
             background: var(--sidebar-bg);
+            justify-content: space-around; /* 均匀分布，更像原生App底栏 */
         }
         
         .profile-zone { display: none; }
         
         .nav-item {
-            padding: 8px 14px;
+            padding: 0 16px;
+            height: 100%;
             border-radius: 8px;
             font-size: 13px;
             gap: 6px;
+            flex: 1;
+            justify-content: center;
         }
-        .nav-item span:first-child { font-size: 14px; }
+        .nav-item span:first-child { font-size: 16px; }
         
-        .main { padding: 24px 20px; }
+        /* 手机端主视窗防遮挡优化 */
+        .main { 
+            flex: 1; 
+            padding: 24px 20px 40px 20px; 
+            overflow-y: auto; 
+        }
         h1#title { font-size: 24px; margin-bottom: 16px; }
         .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
         .card { padding: 16px; border-radius: 14px; }
@@ -289,11 +271,10 @@
         .card-desc { font-size: 12px; margin-top: 4px; }
     }
 
-    /* 【形态 C】针对 iPhone 出现极极端横屏状态时的版面防变形崩坏微调 */
+    /* 【iPhone 矮横屏极限状态防护】 保持右边内容、左边小Dock栏，绝不乱变形 */
     @media (max-height: 450px) and (max-width: 932px) {
         body { flex-direction: row; }
-        .sidebar { width: 80px; padding: 10px 5px; gap: 4px; }
-        .profile-zone { display: none; }
+        .sidebar { width: 80px; height: 100vh; padding: 10px 5px; gap: 4px; border-right: 1px solid var(--glass-border); border-top: none; justify-content: flex-start; }
         .nav-item { width: 44px; height: 44px; padding: 0; justify-content: center; }
         .nav-item span:last-child { display: none; }
         .main { padding: 16px 24px; }
@@ -312,7 +293,7 @@
 </main>
 
 <script>
-    // 带有微渐变背景底纹与 Short 标识的完整数据集
+    // 已彻底清空删除 graphic 与 business 分类
     const DATA = {
         cn: { name: '国内平台', short: '🇨🇳', items: [
             {icon: "📺", name: "Bilibili", desc: "中国视频创作平台", url: "https://space.bilibili.com", bg: "linear-gradient(135deg, #ff73a1, #ff457d)"},
@@ -365,20 +346,12 @@
             {icon: "联", name: "联合新闻网", desc: "台湾焦点要闻", url: "https://udn.com", bg: "linear-gradient(135deg, #3b7ecb, #1e4573)"},
             {icon: "🇱🇹", name: "自由时报", desc: "即时政治与民生", url: "https://www.ltn.com.tw", bg: "linear-gradient(135deg, #ffffff, #f0fff4)"},
             {icon: "🇸🇬", name: "联合早报", desc: "新加坡国际视角", url: "https://www.zaobao.com.sg", bg: "linear-gradient(135deg, #006ec4, #003966)"}
-        ]},
-        shopping: { name: '购物', short: '🛍️', items: [
-            {icon: "🛍️", name: "淘宝", desc: "淘你喜欢，便捷购物", url: "https://taobao.com", bg: "linear-gradient(135deg, #ff9e1b, #ff5000)"},
-            {icon: "🛍️", name: "京东", desc: "多快好省，品质好物", url: "https://jd.com", bg: "linear-gradient(135deg, #ff4d50, #cc1114)"}
-        ]},
-        business: { name: '商务拓展', short: '💼', items: [
-            {icon: "✉️", name: "商务合作", desc: "欢迎通过邮箱联系洽谈", url: "mailto:example@email.com", bg: "linear-gradient(135deg, #0a84ff, #0056b3)"},
-            {icon: "📊", name: "Media Kit", desc: "全渠道创作者数据看板", url: "#", bg: "linear-gradient(135deg, #34c759, #1c7c32)"}
         ]}
     };
 
     const sidebar = document.getElementById('sidebar');
     
-    // 初始化生成高级侧边栏顶部面板
+    // 初始化生成高级桌面端侧边栏头部
     sidebar.innerHTML = `
         <div class="profile-zone">
             <div class="avatar"></div>
@@ -393,12 +366,10 @@
         const data = DATA[key];
         document.getElementById('title').innerText = data.name;
         
-        // 激活状态样式切替
         document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.key === key));
         
         const grid = document.getElementById('grid');
         grid.innerHTML = data.items.map(item => {
-            // 对白底图标（如纽约时报等）在暗黑模式下的显示优化
             const isLightBg = item.bg && item.bg.includes('#ffffff');
             const iconColor = isLightBg ? '#000000' : '#ffffff';
             
@@ -413,11 +384,10 @@
             `;
         }).join('');
         
-        // 切换菜单后内容主区无缝回弹顶部
         document.querySelector('.main').scrollTop = 0;
     }
 
-    // 遍历生成自适应菜单项
+    // 渲染 Dock / 菜单项
     Object.keys(DATA).forEach(key => {
         const item = document.createElement('div');
         item.className = 'nav-item';
@@ -427,7 +397,6 @@
         navContainer.appendChild(item);
     });
 
-    // 默认首屏渲染国内平台
     render('cn'); 
 </script>
 </body>
