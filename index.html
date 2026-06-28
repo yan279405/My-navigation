@@ -308,6 +308,129 @@ footer {
         gap: 24px 12px;        /* 压缩 App 图标间距 */
     }
 }
+/* ==================== 6. 苹果全生态全时自适应矩阵 (iOS / iPadOS / macOS) ==================== */
+
+   /* ==================== 6. 苹果全生态全时自适应矩阵 (完美修正版) ==================== */
+
+    /* 📑 【1. iPadOS 平板纵屏模式】 特征：中等宽度，高挑纵向。针对 iPad 竖放状态 */
+    @media (min-width: 600px) and (max-width: 1024px) and (orientation: portrait) {
+        :root {
+            --icon-size: 68px;       /* 平板纵屏尊享 68px 大图标 */
+        }
+        .app-grid {
+            grid-template-columns: repeat(6, 1fr); /* 优雅的 6 列桌面 */
+            max-width: 720px;
+            gap: 38px 22px;
+        }
+        .dock-container {
+            gap: 24px;
+        }
+    }
+
+    /* 💻 【2. iPadOS 平板横屏模式 & 中小屏笔记本】 特征：宽大舒适，高度适中 */
+    @media (min-width: 600px) and (max-width: 1366px) and (orientation: landscape) {
+        :root {
+            --icon-size: 66px;       /* 横放时略微收敛图标，防压迫感 */
+        }
+        main {
+            padding: calc(35px + env(safe-area-inset-top)) 32px 15px 32px;
+        }
+        .app-grid {
+            grid-template-columns: repeat(8, 1fr); /* 经典的 iPad 8 列矩阵 */
+            max-width: 900px;
+            gap: 26px 20px;          
+        }
+        .dock-container {
+            gap: 26px;
+        }
+    }
+
+    /* 🖥️ 【3. macOS / PC 电脑端大屏横屏】 特征：无限宽广的黄金画布 */
+    @media (min-width: 1367px) {
+        :root {
+            --icon-size: 74px;       /* 桌面端大屏幕拉满 74px，彰显秩序美 */
+        }
+        main {
+            padding: 55px 40px 25px 40px;
+        }
+        .app-grid {
+            grid-template-columns: repeat(8, 1fr); /* 气势磅礴的 8 列标准 Mac 网格 */
+            max-width: 1060px;
+            gap: 42px 28px;          
+        }
+        .dock-container {
+            gap: 32px;
+        }
+        .app-name {
+            font-size: 12px;         /* 电脑大屏字体同步微调放大 */
+        }
+    }
+
+    /* 📱 【4. iOS/Android 手机横屏模式】 
+       ✨ 核心修正：降维打击级防线！移至靠后位置，利用 max-height: 500px 降维锁定所有手机横放状态 */
+    @media (orientation: landscape) and (max-height: 500px) {
+        :root {
+            --icon-size: 42px;       /* 强力压缩主屏幕图标，给矮屏幕腾出纵向空间 */
+        }
+        main {
+            padding: calc(10px + env(safe-area-inset-top)) 20px 5px 20px; /* 极致压缩上下留白 */
+        }
+        .app-grid {
+            grid-template-columns: repeat(7, 1fr); /* 横向平铺 7 列，大幅减少纵向滚动 */
+            gap: 12px 16px;          /* 极致压缩行间距（12px） */
+            max-width: 640px;
+        }
+        .icon-wrapper {
+            margin-bottom: 4px;      /* 压缩主屏幕图标与名字的间距 */
+        }
+        footer {
+            padding-top: 2px;
+            padding-bottom: calc(4px + env(safe-area-inset-bottom));
+            gap: 4px;                /* 压缩 Dock 与文字的间距 */
+        }
+        .dock-container {
+            gap: 12px;               /* 缩减 Dock 胶囊之间的纵向间距 */
+            height: 38px !important; /* 强制降低 Dock 整体高度 */
+        }
+
+        /* 💎 UX 级重构：手机横屏时，方块底座自动进化为【横向扁平高保真胶囊】，文字与 Emoji 并排 */
+        .dock-icon-wrapper {
+            width: auto !important;         /* 取消固定正方形宽度限制 */
+            height: 34px !important;        /* 降低高度 */
+            padding: 0 12px !important;     /* 左右留出舒适的呼吸Padding */
+            flex-direction: row !important; /* 🔥 致命核心：由上下堆叠改为横向并排 */
+            gap: 6px !important;            /* Emoji 与文字的间距 */
+            border-radius: 10px !important; /* 更加精致的轻量曲率圆角 */
+        }
+        .dock-emoji {
+            font-size: 15px !important;     /* 扁平胶囊内的 Emoji 黄金比例 */
+        }
+        .dock-name {
+            font-size: 11px !important;     /* 文字恢复清晰的 11px */
+            width: auto !important;         /* 允许容器根据文字宽度自动展开 */
+            opacity: 0.9 !important;
+            overflow: visible !important;
+            white-space: nowrap !important;
+            text-overflow: clip !important; /* 彻底移除缩略省略号，完美显示 4 个字 */
+        }
+
+        /* ⚡ 核心修复：签名和微信在手机横屏时自动变为【左右并排】，绝不占用高度 */
+        .user-signature {
+            flex-direction: row;     
+            gap: 16px;
+        }
+    }
+
+    /* 🚨 【5. 绝境级超矮屏幕高度保护】 当手机横屏还被浏览器顶出极高工具栏时启动 */
+    @media (max-height: 400px) and (orientation: landscape) {
+        .app-grid {
+            gap: 8px 16px !important; 
+        }
+        :root {
+            --icon-size: 38px;
+        }
+    }
+    
 </style>
 </head>
 <body>
