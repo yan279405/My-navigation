@@ -15,7 +15,7 @@
         --text-main: #ffffff;
         --text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         
-        /* 🎨 视觉修正：由于标准 CSS 无法画出超椭圆，微调至 24% 可以在视觉上完美还原官方 Squircle 弧度 */
+        /* 🎨 官方 Squircle 连续曲率视觉修正值 */
         --icon-radius: 24%; 
         --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
 
@@ -82,7 +82,7 @@
     .app-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr); 
-        gap: 32px 16px; /* 略微拉开行高，让呼吸感更足 */
+        gap: 32px 16px; 
         max-width: 480px;
         margin: 0 auto;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -100,7 +100,7 @@
     }
 
     .app-icon:active {
-        transform: scale(0.9); /* 按压反馈更为柔和 */
+        transform: scale(0.9); 
     }
 
     .icon-wrapper {
@@ -108,7 +108,7 @@
         height: var(--icon-size);
         border-radius: var(--icon-radius);
         
-        /* 🧼 移除沉重油腻的黑阴影，改用超轻薄、高透气的微散射阴影 */
+        /* 🧼 官方同款：轻薄、高透气的微散射柔和阴影 + 1px 内发光勾边 */
         box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
         
         display: flex;
@@ -121,7 +121,7 @@
     }
 
     .icon-wrapper svg {
-        /* 🔗 彻底治好紧绷感！将内部图形尺寸锁定在 48% 的黄金留白比例 */
+        /* 48% 黄金留白比例 */
         width: calc(var(--icon-size) * 0.48);
         height: calc(var(--icon-size) * 0.48);
         fill: currentColor;
@@ -129,9 +129,9 @@
 
     .app-name {
         color: var(--text-main);
-        font-size: 11px; /* 字体略微缩小，更显精致 */
-        font-weight: 400; /* 去除粗体，改用高雅的常规体 */
-        letter-spacing: 0.4px; /* 稍微拉开字距，极其透气 */
+        font-size: 11px; 
+        font-weight: 400; 
+        letter-spacing: 0.4px; 
         text-align: center;
         width: 100%;
         white-space: nowrap;
@@ -141,7 +141,7 @@
         opacity: 0.92;
     }
 
-    /* ==================== 5. iOS 全透明无边界空气感 Dock 栏 ==================== */
+    /* ==================== 5. iOS 全透明 Dock 栏 + 胶囊级分类图标 ==================== */
     footer {
         position: relative;
         z-index: 2;
@@ -153,6 +153,7 @@
     }
 
     .dock-container {
+        /* 外围大容器完全保持透明空气感 */
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
@@ -164,41 +165,47 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 26px; /* 增大间距，让漂浮感更强 */
+        gap: 22px; 
         box-sizing: border-box;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .dock-item {
+        /* 🔗 严格锁死：长宽尺寸与上方 App 保持 1:1 绝对一致 */
         width: var(--icon-size);
         height: var(--icon-size);
         
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
+        /* 💯 完美克隆：赋予和上方 App 一模一样的连续曲率圆角 */
+        border-radius: var(--icon-radius) !important;
+        
+        /* 💎 调入高级毛玻璃底座，并注入与上方完全相同的散射阴影与 1px 微光勾边 */
+        background: rgba(255, 255, 255, 0.08) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
         
         display: flex;
         align-items: center;
         justify-content: center;
         
-        /* 让 Emoji 的视觉分量与 48% 的 SVG 图标达到完美的 1:1 视觉平衡 */
-        font-size: calc(var(--icon-size) * 0.54); 
+        /* 🧘 比例收敛：使 Emoji 的视觉分量与 48% 的 SVG 保持完美的空间呼吸平衡 */
+        font-size: calc(var(--icon-size) * 0.46); 
         cursor: pointer;
         position: relative;
         box-sizing: border-box;
         
-        /* 未激活时保持高级的半透明呼吸感 */
-        opacity: 0.45;
+        /* 呼吸感：未激活时保持高雅的半透明 */
+        opacity: 0.65;
         transform: scale(0.96);
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    /* 激活态：完美点亮 */
+    /* 激活态：点亮、底座加深、并恢复 100% 不透明度 */
     .dock-item.active {
         opacity: 1;
-        transform: scale(1.05);
+        transform: scale(1.02);
+        background: rgba(255, 255, 255, 0.18) !important;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16), inset 0 0 0 1px rgba(255, 255, 255, 0.15) !important;
     }
 
     .dock-item:active {
@@ -237,7 +244,7 @@
             gap: 36px 20px;
         }
         .dock-container {
-            gap: 34px;
+            gap: 30px;
         }
     }
 
@@ -252,7 +259,7 @@
             gap: 44px 24px;
         }
         .dock-container {
-            gap: 42px; 
+            gap: 36px; 
         }
         .app-name {
             font-size: 12px;
