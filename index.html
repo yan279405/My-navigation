@@ -288,104 +288,182 @@
   <script>
     // 统一高亮风格 Apple 精美渐变图标核心数据库
     const DATA = {
-      global: {
-        name: '国际平台',
-        short: '🌐',
-        items: [
-          { name: "TikTok 推荐流", desc: "海外短视频推荐流", url: "https://www.tiktok.com/foryou?lang=zh-Hans", bg: "linear-gradient(135deg, #010101, #ee1d52)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "YouTube", desc: "全球最大视频分享平台", url: "https://www.youtube.com/feed/library", bg: "linear-gradient(135deg, #ff0000, #b30000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "Facebook", desc: "全球社交媒体主页", url: "https://www.facebook.com/", bg: "linear-gradient(135deg, #1877f2, #3b5998)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "Instagram", desc: "国际潮流图片分享社交网", url: "https://www.instagram.com/", bg: "linear-gradient(135deg, #f09433, #e1306c)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "Threads", desc: "颜途的光的海外社区分享", url: "https://www.threads.net/", bg: "linear-gradient(135deg, #111111, #333333)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "Google 搜索", desc: "全球精准网页搜索服务", url: "https://www.google.com/", bg: "linear-gradient(135deg, #4285f4, #34a853)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "Google Gemini", desc: "谷歌官方前沿 AI 生产力模型", url: "https://gemini.google.com/", bg: "linear-gradient(135deg, #1a73e8, #9333ea)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "Gmail 邮箱", desc: "谷歌跨平台电子邮箱服务", url: "https://mail.google.com/", bg: "linear-gradient(135deg, #ea4335, #c5221f)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "谷歌云端硬盘", desc: "谷歌官方大容量网络储存中心", url: "https://drive.google.com/", bg: "linear-gradient(135deg, #34a853, #fbbc05)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "X / Twitter", desc: "格罗克全球新鲜事资讯社交网", url: "https://x.com/", bg: "linear-gradient(135deg, #0f1419, #2d3748)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "Blogger 博客", desc: "谷歌旗下个人空间与文章发布", url: "https://www.blogger.com/", bg: "linear-gradient(135deg, #f57c00, #ff9800)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "pixiv 插画社区", desc: "海外精美手绘插画艺术平台", url: "https://www.pixiv.net/", bg: "linear-gradient(135deg, #0096fa, #0b5cb4)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "Dailymotion", desc: "国际优质多媒体影音分享网站", url: "https://www.dailymotion.com/", bg: "linear-gradient(135deg, #0066dc, #ff4b4b)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "GitHub 开源社区", desc: "代码托管与程序员开源宝库", url: "https://github.com/", bg: "linear-gradient(135deg, #24292e, #4f4f4f)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "Proton VPN", desc: "高安全级国际网络加密加速", url: "https://protonvpn.com/", bg: "linear-gradient(135deg, #6d4aff, #4c2ec2)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "DMIT 主机托管", desc: "高性能高带宽 VPS 独立控制台", url: "https://www.dmit.io/", bg: "linear-gradient(135deg, #2b5797, #1e3a8a)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "丽萨主机", desc: "双 ISP 国际纯净外网 IP 服务器", url: "https://lisahost.com/", bg: "linear-gradient(135deg, #3b82f6, #1d4ed8)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "搬瓦工 VPS", desc: "经典全千兆极速网络控制面板", url: "https://bwh81.net/", bg: "linear-gradient(135deg, #d97706, #b45309)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "天天科技教学", desc: "墙外科学上网与实用技术分享指南", url: "https://kejitt.top/", bg: "linear-gradient(135deg, #10b981, #047857)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
-        ]
-      },
-      creator: {
-        name: '创作平台',
-        short: '🎬',
-        items: [
-          { name: "抖音创作服务平台", desc: "抖音创作者大盘管理后台", url: "https://creator.douyin.com/creator-micro/home", bg: "linear-gradient(135deg, #161823, #252942)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "快手创作者服务", desc: "快手网页版作品发布中心", url: "https://cp.kuaishou.com/profile", bg: "linear-gradient(135deg, #ff4c00, #ff8500)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "微信视频号助手", desc: "微信短视频与直播管理后台", url: "https://channels.weixin.qq.com/platform", bg: "linear-gradient(135deg, #07c160, #10a050)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "小红书创作平台", desc: "小红书图文与种草网页后台", url: "https://creator.xiaohongshu.com/creator/home?roleType=creator", bg: "linear-gradient(135deg, #ff2442, #cc1b33)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "西瓜创作平台", desc: "西瓜视频中长视频创作者后台", url: "https://studio.ixigua.com/", bg: "linear-gradient(135deg, #ff3b5c, #cc0029)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "今日头条号", desc: "全媒体文章与微头条管理系统", url: "https://mp.toutiao.com/profile_v4/index?is_new_connect=0&is_new_user=0", bg: "linear-gradient(135deg, #e6162d, #f9a632)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "哔哩哔哩弹幕网", desc: "B站创作中心与主页入口", url: "https://www.bilibili.com/", bg: "linear-gradient(135deg, #fb7299, #ff9db5)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "腾讯内容开放平台", desc: "企鹅号一键分发与多媒体运营", url: "https://om.qq.com/", bg: "linear-gradient(135deg, #1e6fff, #0050cc)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "大鱼号官网", desc: "阿里文娱UC大鱼自媒体控制台", url: "https://mp.dayu.com/dashboard/index", bg: "linear-gradient(135deg, #ff9900, #ff5500)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "百家号", desc: "百度内容生态创作者中心", url: "https://baijiahao.baidu.com/", bg: "linear-gradient(135deg, #2196f3, #00bcd4)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "好看视频", desc: "百度短视频独立发布矩阵", url: "https://haokan.baidu.com/", bg: "linear-gradient(135deg, #e91e63, #9c27b0)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "爱奇艺号", desc: "山村颜哥的爱奇艺创作者入口", url: "https://mp.iqiyi.com/", bg: "linear-gradient(135deg, #00cc4c, #009933)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "优酷号创作平台", desc: "优酷大鱼开放生态上传入口", url: "https://mp.youku.com/", bg: "linear-gradient(135deg, #00a2ff, #0066cc)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "支付宝创作平台", desc: "支付宝生活号支小蜜服务空间", url: "https://creative.alipay.com/", bg: "linear-gradient(135deg, #108ee9, #00a0e9)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "搜狐号平台", desc: "搜狐新闻矩阵自媒体服务中心", url: "https://mp.sohu.com/", bg: "linear-gradient(135deg, #ee2c2c, #ff4040)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "美拍创作中心", desc: "美图旗下高颜值短视频平台", url: "https://www.meipai.com/", bg: "linear-gradient(135deg, #ff3366, #ff6699)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "网易号媒体平台", desc: "网易新闻优质作者运营中心", url: "https://mp.163.com/", bg: "linear-gradient(135deg, #e60012, #cd000c)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "美篇电脑版", desc: "中老年优质图文创作分享社区", url: "https://meipian.cn/creator", bg: "linear-gradient(135deg, #3399ff, #0066cc)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "图虫视频", desc: "废柴记录摄影师精美短视频专区", url: "https://tuchong.com/video/", bg: "linear-gradient(135deg, #ff5a5f, #e04347)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
-        ]
-      },
-      tools: {
-        name: '辅助工具',
-        short: '🔧',
-        items: [
-          { name: "巨量算数", desc: "抖音内容风向与前沿趋势分析", url: "https://trendinsight.oceanengine.com/", bg: "linear-gradient(135deg, #2f54eb, #1890ff)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "DOU+ 网页版", desc: "抖音专业视频加热投放控制面板", url: "https://doujia.douyin.com/home?dou_plus_source=origin_entrance&dou_plus_sub_source=official_site", bg: "linear-gradient(135deg, #161823, #434343)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "橱窗达人首页", desc: "抖音电商达人核心带货后台", url: "https://buyin.jinritemai.com/dashboard", bg: "linear-gradient(135deg, #ff007f, #aa0055)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "麦壳 AI 助手", desc: "全网百大视频去水印极速下载入口", url: "https://vgo.pub/", bg: "linear-gradient(135deg, #1fa2ff, #12d8fa)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "QQ 邮箱网页版", desc: "国内常用腾讯微云管理电子邮箱", url: "https://wx.mail.qq.com/", bg: "linear-gradient(135deg, #1e6fff, #4285f4)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "微信公众平台", desc: "微信长文与企业号管理服务", url: "https://mp.weixin.qq.com/", bg: "linear-gradient(135deg, #07c160, #333333)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "iFixit 维修库", desc: "数码达人全球硬件拆解与维修指南", url: "https://www.ifixit.com/", bg: "linear-gradient(135deg, #0071ce, #0051a8)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "百度作家平台", desc: "百度小说与签约网文作者创作大盘", url: "https://zuojia.baidu.com/", bg: "linear-gradient(135deg, #3388ff, #0055cc)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "找台词网", desc: "影视混剪神器，精准检索影视剧台词", url: "https://www.zhaotaici.cn/", bg: "linear-gradient(135deg, #4caf50, #2e7d32)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "短剧版权中心", desc: "网络爆款微短剧正版授权查询验证", url: "https://www.duanju.link/", bg: "linear-gradient(135deg, #9c27b0, #6a1b9a)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "直播蜂去水印", desc: "短视频平台原画高清解析提取工具", url: "https://www.zhibofeng.com/", bg: "linear-gradient(135deg, #ff9800, #f57c00)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
-        ]
-      },
-      resources: {
-        name: '影音资源',
-        short: '📦',
-        items: [
-          { name: "超能搜云盘", desc: "专注高质量视频与压缩包全网极速搜索", url: "http://www.chaonengso.com/", bg: "linear-gradient(135deg, #11998e, #38ef7d)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "盘么么搜索引擎", desc: "老牌干净全面的百度网盘优质资源库", url: "http://www.panmeme.com/", bg: "linear-gradient(135deg, #ff9966, #ff5e62)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "天翼云盘", desc: "中国电信官方不限速超大个人备份中心", url: "https://cloud.189.cn/web/main/file/folder/-11", bg: "linear-gradient(135deg, #1890ff, #0050b3)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "24h 搜书平台", desc: "AI 驱动的 24 小时全网网盘搜书神器", url: "https://24hbook.com/", bg: "linear-gradient(135deg, #4facfe, #00f2fe)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "迅雷小站", desc: "个人分享高清极速影音种子专用库", url: "https://zhan.xunlei.com/", bg: "linear-gradient(135deg, #0066cc, #0044aa)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "文武科技柜 IPTV", desc: "全平台免费高清电视直播源汇聚指南", url: "https://www.wangdu.site/software/339.html", bg: "linear-gradient(135deg, #78ffd6, #a8ff78)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "Famelack 直播", desc: "观看免费直播世界电视全球本地频道", url: "https://famelack.com/all-channels", bg: "linear-gradient(135deg, #833ab4, #fd1d1d)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "国外网站大全", desc: "世界68各国网址大全，世界的，你我的！", url: "https://www.world68.com/", bg: "linear-gradient(135deg, #3f51b5, #2196f3)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
-        ]
-      },
-      media: {
-        name: '新闻导航',
-        short: '📰',
-        items: [
-          { name: "联合早报国际版", desc: "新加坡旗舰华文大报，透视亚太全球风向", url: "https://www.zaobao.com.sg/global", bg: "linear-gradient(135deg, #0084ca, #003666)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "明报网站", desc: "香港主流高声誉综合性日报深度新闻", url: "https://www.mingpao.com/", bg: "linear-gradient(135deg, #009944, #005522)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "联合新闻网", desc: "台湾主流即时综合资讯触动未来新识力", url: "https://udn.com/news/index", bg: "linear-gradient(135deg, #ff6600, #cc5200)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "自由时报", desc: "台湾高覆盖率电子报即时热点快讯", url: "https://www.ltn.com.tw/", bg: "linear-gradient(135deg, #008899, #005566)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "翻墙者导航", desc: "科学上网指南与高价值国外网址集锦", url: "https://www.fanqiangzhe.com/", bg: "linear-gradient(135deg, #455a64, #263238)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "百度一下", desc: "国内常用中文搜索引擎老牌主页", url: "https://www.baidu.com/", bg: "linear-gradient(135deg, #231fe8, #1f72e8)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "苹果中国", desc: "Apple 官方中国硬件与软件生态大盘", url: "https://www.apple.com/cn/", bg: "linear-gradient(135deg, #000000, #333333)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "iCloud 云服务", desc: "苹果多端数据实时云同步官方工作流", url: "https://www.icloud.com/", bg: "linear-gradient(135deg, #00c6ff, #0072ff)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "MacBook Pro 香港", desc: "Apple 香港生产力硬件购买与配置对比", url: "https://www.apple.com/hk/macbook-pro/", bg: "linear-gradient(135deg, #4a4a4a, #1a1a1a)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
-          { name: "Apple 官网", desc: "Apple 全球英文主流创新设计主页", url: "https://www.apple.com/", bg: "linear-gradient(135deg, #555555, #111111)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
-        ]
-      }
-    };
+  creator: {
+    name: '视频创作与内容平台',
+    short: '🎬',
+    items: [
+      // --- 字节跳动 / 抖音系 ---
+      { name: "抖音创作服务平台", desc: "视频创作者后台", url: "https://creator.douyin.com/creator-micro/home", bg: "linear-gradient(135deg, #161823, #252942)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "DOU+网页版", desc: "抖音加热投放工具", url: "https://doujia.douyin.com/home?dou_plus_source=origin_entrance&dou_plus_sub_source=official_site", bg: "linear-gradient(135deg, #161823, #252942)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "抖音电商 - 橱窗达人首页", desc: "电商达人带货后台", url: "https://buyin.jinritemai.com/dashboard?universal_page_params_id=b2f1feb8-2698-4e58-9d1c-73b03c6cae1c", bg: "linear-gradient(135deg, #161823, #252942)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "抖音电商 - 达人首页(重复项)", desc: "电商达人后台2", url: "https://buyin.jinritemai.com/dashboard?pre_universal_page_params_id=&universal_page_params_id=3a2d60c7-9348-4522-9007-e2992d8807b9", bg: "linear-gradient(135deg, #161823, #252942)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "抖音电商 - 抖音达人独立后台", desc: "抖音商品橱窗后台", url: "https://buyin.douyinec.com/daren", bg: "linear-gradient(135deg, #161823, #252942)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "巨量算数", desc: "内容风向与营销趋势分析", url: "https://trendinsight.oceanengine.com/", bg: "linear-gradient(135deg, #2f54eb, #1890ff)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "西瓜创作平台", desc: "西瓜视频创作人后台", url: "https://studio.ixigua.com/", bg: "linear-gradient(135deg, #ff3b5c, #cc0029)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "头条号", desc: "今日头条媒体平台后台", url: "https://mp.toutiao.com/profile_v4/index?is_new_connect=0&is_new_user=0", bg: "linear-gradient(135deg, #ed4040, #b31919)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 快手系 ---
+      { name: "快手创作者服务平台", desc: "快手创作者后台", url: "https://cp.kuaishou.com/profile", bg: "linear-gradient(135deg, #ff4c00, #ff8500)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 腾讯 / 微信系 ---
+      { name: "视频号助手", desc: "微信视频号创作者后台", url: "https://channels.weixin.qq.com/platform", bg: "linear-gradient(135deg, #07c160, #10a050)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "微信公众平台", desc: "微信公众号运营后台", url: "https://mp.weixin.qq.com/", bg: "linear-gradient(135deg, #07c160, #10a050)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "腾讯内容开放平台", desc: "企鹅号运营后台", url: "https://om.qq.com/", bg: "linear-gradient(135deg, #1e6fff, #0050cc)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 小红书 ---
+      { name: "小红书创作服务平台", desc: "小红书网页版后台", url: "https://creator.xiaohongshu.com/creator/home?roleType=creator", bg: "linear-gradient(135deg, #ff2442, #cc1b33)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 哔哩哔哩 & A站 ---
+      { name: "哔哩哔哩 (Bilibili)", desc: "B站主页", url: "https://www.bilibili.com/", bg: "linear-gradient(135deg, #fb7299, #ff9db5)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "AcFun弹幕视频网", desc: "A站创作者中心方向", url: "https://www.acfun.cn/login/?returnUrl=http://member.acfun.cn/", bg: "linear-gradient(135deg, #fd4c5b, #b31724)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 百度系 ---
+      { name: "百家号", desc: "百度内容创作平台", url: "https://baijiahao.baidu.com/", bg: "linear-gradient(135deg, #2932e1, #0022b8)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "好看视频", desc: "百度短视频平台", url: "https://haokan.baidu.com/?fr=pc_pz", bg: "linear-gradient(135deg, #2932e1, #1890ff)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "百度作家平台", desc: "AI小说创作与投稿平台", url: "https://zuojia.baidu.com/workspace", bg: "linear-gradient(135deg, #2932e1, #5555ff)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 阿里系 ---
+      { name: "支付宝内容创作平台", desc: "生活号/生活视频后台", url: "https://c.alipay.com/page/life-account/index?appId=2030035576463046", bg: "linear-gradient(135deg, #108ee9, #0a6999)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "阿里创作平台", desc: "淘宝达人/逛逛创作后台", url: "https://we.taobao.com/creator/login-intro?redirectURL=http%3A%2F%2Fwe.taobao.com%2F", bg: "linear-gradient(135deg, #ff5000, #cc3300)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "大鱼号官网", desc: "阿里文娱UC大鱼号创作后台", url: "https://mp.dayu.com/dashboard/index", bg: "linear-gradient(135deg, #ff6a00, #cc4e00)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 搜狐系 ---
+      { name: "搜狐号", desc: "搜狐自媒体后台", url: "https://mp.sohu.com/mpfe/v3/main/first/page", bg: "linear-gradient(135deg, #ffee00, #ccaa00)", color: "#000000", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "搜狐视频", desc: "搜狐视频高清在线", url: "https://tv.sohu.com/", bg: "linear-gradient(135deg, #ffee00, #ffaa00)", color: "#000000", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "搜狐博客首页", desc: "搜狐博客老版服务", url: "http://blog.sohu.com/", bg: "linear-gradient(135deg, #ffee00, #888800)", color: "#000000", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 网易系 ---
+      { name: "网易号", desc: "网易自媒体创作平台", url: "http://mp.163.com/subscribe_v4/index.html#/", bg: "linear-gradient(135deg, #e60012, #aa000d)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "网易云阅读作者中心", desc: "网易小说创作者登录", url: "https://open.yuedu.163.com/", bg: "linear-gradient(135deg, #e60012, #660000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 新浪 / 微博系 ---
+      { name: "微博创作者平台", desc: "新浪微博创作者管理", url: "https://me.weibo.com/overview", bg: "linear-gradient(135deg, #e6162d, #f9a632)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "新浪博客", desc: "新浪博客服务", url: "http://blog.sina.com.cn/lm/2018/", bg: "linear-gradient(135deg, #e6162d, #aa0000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 优酷 / 爱奇艺 / 风行 ---
+      { name: "优酷号创作平台", desc: "优酷视频内容后台", url: "https://mp.youku.com/v2/mp/index?openCategory=8888", bg: "linear-gradient(135deg, #06a7e2, #006699)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "山村颜哥的爱奇艺号", desc: "爱奇艺号个人主页", url: "http://www.iqiyi.com/u/2200467041", bg: "linear-gradient(135deg, #00cc4c, #006622)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "风行号主页-蜂网", desc: "风行视频开放平台后台", url: "http://o.fun.tv/pgc/home/190026", bg: "linear-gradient(135deg, #ff6600, #b34400)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 其他自媒体与精选工具 ---
+      { name: "美篇电脑版", desc: "图文创作图库后台", url: "https://a.meipian.cn/mine", bg: "linear-gradient(135deg, #108ee9, #134c75)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "美拍", desc: "美图旗下短视频社区", url: "https://www.meipai.com/", bg: "linear-gradient(135deg, #ff1765, #b3003b)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "废柴记录 - 图虫", desc: "图虫视频创作者个人页", url: "https://tuchong.com/22414746/videos/", bg: "linear-gradient(135deg, #333333, #000000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "抖查查数据", desc: "短视频&直播电商数据分析", url: "https://www.douchacha.com/?dcc_from=qg34", bg: "linear-gradient(135deg, #873bf4, #531dab)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "京东内容开放平台-登录", desc: "京东逛逛达人后台", url: "https://dr.jd.com/page/login.html", bg: "linear-gradient(135deg, #e2231a, #990000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "we-media-front", desc: "自媒体辅助前端管理", url: "https://mp.lsttnews.com/index.html#/login", bg: "linear-gradient(135deg, #666, #333)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "简书", desc: "简书内容发布社区", url: "https://www.jianshu.com/", bg: "linear-gradient(135deg, #ea6f5a, #b33a25)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
+    ]
+  },
+  ai: {
+    name: 'AI 创意与大模型工具',
+    short: '🤖',
+    items: [
+      // --- DeepSeek / ChatGPT ---
+      { name: "DeepSeek", desc: "深度求索人工智能对话平台", url: "https://chat.deepseek.com/", bg: "linear-gradient(135deg, #4d80f3, #003bbb)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "ChatGPT", desc: "OpenAI 官方聊天对话平台", url: "https://chatgpt.com/c/697b3a10-31dc-8320-b748-9bdc707a2b3f", bg: "linear-gradient(135deg, #10a37f, #0d7057)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- Grok ---
+      { name: "Grok", desc: "xAI 全新大模型底座", url: "https://grok.com/", bg: "linear-gradient(135deg, #000000, #333333)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "格罗克/X", desc: "推特内置 Grok 快捷入口", url: "https://x.com/i/grok", bg: "linear-gradient(135deg, #000000, #111111)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- Google AI ---
+      { name: "Google Gemini", desc: "谷歌原生的双子座AI助手", url: "https://gemini.google.com/app", bg: "linear-gradient(135deg, #4285f4, #1a73e8)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "谷歌DeepMind", desc: "谷歌前沿AI研究实验室", url: "https://deepmind.google/", bg: "linear-gradient(135deg, #000000, #4285f4)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "免费体验Veo 3", desc: "谷歌Veo 3 AI视频生成工具", url: "https://videomaker.me/zh-CN", bg: "linear-gradient(135deg, #fc5c7d, #6a82fb)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 阿里与通义系 ---
+      { name: "通义千问", desc: "阿里大模型统一对话后台", url: "https://www.qianwen.com/?ch=webtongyi@other_hengweiwebty_aishengqi_cpa", bg: "linear-gradient(135deg, #613eea, #3c1e9e)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Qwen Image", desc: "通义万相/通义千问图像后台登录", url: "https://qwen-image.net/auth/login", bg: "linear-gradient(135deg, #613eea, #24116c)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 视频生成与处理 AI ---
+      { name: "可灵 AI", desc: "快手新一代 AI 创意视频生产平台", url: "https://app.klingai.com/cn/?ref=aishenqi.net", bg: "linear-gradient(135deg, #ff4e50, #f9d423)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "即梦AI", desc: "抖音一站式 AI 图像/视频创作平台", url: "https://jimeng.jianying.com/ai-tool/home", bg: "linear-gradient(135deg, #7f00ff, #e100ff)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "海螺视频", desc: "MiniMax旗下高质量 AI 视频大片平台", url: "https://hailuoai.com/", bg: "linear-gradient(135deg, #11998e, #38ef7d)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Runway中文站", desc: "Runway AI 视频生成中文服务入口", url: "https://www.runwayzh.com/video", bg: "linear-gradient(135deg, #3a7bd5, #3a6073)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Runway中文站(重复项)", desc: "Runway AI 中文站工具链", url: "https://www.runwayzh.com/video?adaid=83&tgad=&adsid=&bd_vid=1385910748888914276", bg: "linear-gradient(135deg, #3a7bd5, #3a6073)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Runway官方后台", desc: "Runway 原始注册/登录面板", url: "https://app.runwayml.com/signup", bg: "linear-gradient(135deg, #000, #222)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "麦壳AI(高清下载/擦除)", desc: "AI去文字与视频智能切片工具", url: "https://vgo.pub/", bg: "linear-gradient(135deg, #1fa2ff, #12d8fa)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "麦壳AI(重复项)", desc: "在线下载100+高清视频入口", url: "https://vgo.pub/?ref=openi.cn", bg: "linear-gradient(135deg, #1fa2ff, #a6ffcb)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- AI 提示词与导航 ---
+      { name: "AiShort - 提示词库", desc: "精选 Prompt 模板，提升大模型效率", url: "https://www.aishort.top/?tags=philosophy", bg: "linear-gradient(135deg, #4568dc, #b06ab3)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "AiShort - 社区提示词", desc: "发现与分享高质量 Prompt", url: "https://www.aishort.top/community-prompts", bg: "linear-gradient(135deg, #4568dc, #b06ab3)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "AI神器大全", desc: "AI工具集合导航站", url: "https://aishenqi.net/", bg: "linear-gradient(135deg, #f857a6, #ff5858)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 音频/抠图/垂直AI ---
+      { name: "indextts2官网", desc: "在线音色克隆整合包，免本地部署", url: "https://indextts.cn/", bg: "linear-gradient(135deg, #11998e, #38ef7d)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Vozo Dashboard", desc: "语音克隆与音频驱动视频工具", url: "https://app.vozo.ai/?folder=&active=voiceAll#", bg: "linear-gradient(135deg, #43c6ac, #191654)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Magic Studio", desc: "利用 AI 制作与编辑精美图像", url: "https://magicstudio.com/zh/", bg: "linear-gradient(135deg, #ff007f, #7f00ff)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "美图抠图", desc: "智能批量抠图工具面板", url: "https://cutout.designkit.com/?channel=kbsbi1&aid=138341366&cid=252899739&msclkid=a65c8bc5a9a21c762a79e35086e89292", bg: "linear-gradient(135deg, #ec008c, #fc6767)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "LinkMind", desc: "AI 智能助理平台", url: "https://www.linkmind.chat/#/home", bg: "linear-gradient(135deg, #bc4e9c, #f12711)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "AutoClip", desc: "AI 驱动的智能视频切片系统", url: "https://zhouxiaoka.github.io/autoclip_intro/", bg: "linear-gradient(135deg, #30cfd0, #330867)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "InfiniteTalk AI", desc: "稀疏帧/音频驱动视频对口型系统", url: "https://www.infinitetalk.net/", bg: "linear-gradient(135deg, #a8ff78, #78ffd6)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Ai好记", desc: "AI智能笔记与记忆工具", url: "https://m.aihaoji.com/zh/login", bg: "linear-gradient(135deg, #4facfe, #00f2fe)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "AnyToCopy", desc: "免费在线提取视频/抖音文本提取器", url: "https://www.anytocopy.com/", bg: "linear-gradient(135deg, #00c6ff, #0072ff)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Hugging Face", desc: "全球顶尖 AI 开源社区与模型托管平台", url: "https://huggingface.co/", bg: "linear-gradient(135deg, #ffb347, #ffcc33)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "米壳AI", desc: "MEDIO AI工具服务平台", url: "https://medio.cool/h5/login", bg: "linear-gradient(135deg, #eecda3, #ef629f)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "AI Chat Arena", desc: "双排盲测对比大语言模型表现", url: "https://arena.ai/zh/c/new?mode=side-by-side", bg: "linear-gradient(135deg, #243b55, #141e30)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Perplexity", desc: "AI 驱动的实时搜索式问答大模型", url: "https://www.perplexity.ai/?login-source=oneTapHome&login-new=false", bg: "linear-gradient(135deg, #004d40, #00796b)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "OpenMAIC", desc: "多智能体交互课堂实验平台", url: "https://open.maic.chat/home", bg: "linear-gradient(135deg, #5b86e5, #36d1dc)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "用户登录-AI图表", desc: "AI生成图表工具端", url: "https://m.aitubiao.com/pages/index/index", bg: "linear-gradient(135deg, #1d976c, #93f9b9)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
+    ]
+  },
+  network_vps: {
+    name: '网络连接、VPS运维与管理设备',
+    short: '🌐',
+    items: [
+      // --- Cloudflare 相关配置 ---
+      { name: "Cloudflare Zero Trust (账户1)", desc: "大号零信任面板", url: "https://dash.cloudflare.com/8885075500eac7c29e88deeb325973f9/home/zero-trust", bg: "linear-gradient(135deg, #f38020, #faad14)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Cloudflare Zero Trust (账户2)", desc: "小号零信任面板", url: "https://dash.cloudflare.com/793cb8974b3363c92bbfaf5b3ee496b0/home/zero-trust", bg: "linear-gradient(135deg, #f38020, #faad14)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Cloudflare Trace 信息", desc: "查看本机连接CF的基础追踪", url: "https://cloudflare.com/cdn-cgi/trace", bg: "linear-gradient(135deg, #f38020, #444)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Cloudflare WARP 翻墙配置", desc: "零度博客 Zero Trust 激活教程", url: "https://www.freedidi.com/23077.html", bg: "linear-gradient(135deg, #4a00e0, #8e2de2)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "2026 最强 Cloudflare 免费节点", desc: "零度博客永久可用免费节点搭建", url: "https://www.freedidi.com/23618.html", bg: "linear-gradient(135deg, #4a00e0, #8e2de2)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 节点优选与测速工具 ---
+      { name: "优选设置页面 - 管理后台", desc: "Cloudflare 节点优选主后台", url: "https://ytdsj.ccwu.cc/admin", bg: "linear-gradient(135deg, #111, #333)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "优选设置页面 - 前台测试", desc: "优选节点直连检测", url: "https://ytdsj.ccwu.cc/", bg: "linear-gradient(135deg, #111, #555)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "优选2 设置页面 - 管理后台", desc: "备用优选节点控制后台", url: "https://ytdsj.dpdns.org/admin", bg: "linear-gradient(135deg, #222, #444)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Internet Speed Test | Fast.com", desc: "Netflix 提供的极简单网下行速率测速", url: "https://fast.com/", bg: "linear-gradient(135deg, #e50914, #000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- VPS 供应商与资源购买 ---
+      { name: "DMIT 服務单", desc: "DMIT 主机售后与支持工单", url: "https://www.dmit.io/supporttickets.php", bg: "linear-gradient(135deg, #0f2027, #203a43)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "美区Apple账号与Shadowrocket销售", desc: "美区快捷资源交易站", url: "https://tvkkkk.com/#", bg: "linear-gradient(135deg, #000, #444)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 本地路由器网关控制 ---
+      { name: "TL-XDR5430易展版 路由器面板", desc: "本地局域网192网关控制交换机配置", url: "http://192.168.0.1/", bg: "linear-gradient(135deg, #4caf50, #212121)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 其它网络发布镜像站相关 ---
+      { name: "Nano 11 精简版精简系统发布", desc: "零度博客轻量电脑系统首选", url: "https://www.freedidi.com/22070.html#google_vignette", bg: "linear-gradient(135deg, #4a00e0, #8e2de2)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
+    ]
+  },
+  resources_entertainment: {
+    name: '实用软件、白嫖资源、影音与生活数码',
+    short: '📦',
+    items: [
+      // --- 系统镜像、系统工具与电脑软件 ---
+      { name: "大眼仔旭 官方分享站", desc: "专注高端音视频剪辑、办公思维导图无弹窗分享", url: "http://www.dayanzai.me/", bg: "linear-gradient(135deg, #009688, #004d40)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "MSDNext I Tell You", desc: "全网最权威微软原版纯净 MSDN 系统镜像大本营", url: "https://next.itellyou.cn/Original/Index?id=7ab5f0cb-7607-4bbe-9e88-50716dc43de6#", bg: "linear-gradient(135deg, #0078d7, #005a9e)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "DiskGenius 硬盘分区与数据恢复", desc: "硬盘底层分区/全盘坏道修复系统大师", url: "http://www.diskgenius.cn/", bg: "linear-gradient(135deg, #0288d1, #01579b)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "万彩动画大师 安装包完成导向", desc: "趣味MG手绘动画制作系统", url: "http://www.animiz.cn/thanks-for-installation.php?version=2.5.4&from=Windows", bg: "linear-gradient(135deg, #b71c1c, #01579b)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "小熊下载站", desc: "海量正版应用无捆绑下载导流", url: "https://www.bear20.com/", bg: "linear-gradient(135deg, #a1c4fd, #c2e9fb)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "华强电子网 元器件选型", desc: "IC芯片与电子元器件现货交易大平台", url: "https://www.hqew.com/", bg: "linear-gradient(135deg, #0d47a1, #1565c0)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 极客开源与电子书白嫖库 ---
+      { name: "Tbox导航 - Zlibrary 访问指南", desc: "收录全球最大电子书库永久更新网址", url: "https://www.tboxn.com/560.html", bg: "linear-gradient(135deg, #01579b, #ff9800)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "FMHY 极客资源主站 1", desc: "全网最强白嫖开源/平替数字资源导航", url: "https://fmhy.net/", bg: "linear-gradient(135deg, #424242, #212121)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "FMHY 极客资源主站 2(重复项)", desc: "查看专栏备份防丢点", url: "https://fmhy.net/", bg: "linear-gradient(135deg, #424242, #212121)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 云盘存储与搜索引擎 ---
+      { name: "盘meme 网盘搜索", desc: "干净全面的经典网盘老牌搜索", url: "http://www.panmeme.com/", bg: "linear-gradient(135deg, #ff9966, #ff5e62)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "天翼云盘 个人家庭备份中心", desc: "中国电信官方不限速超大存储空间", url: "https://cloud.189.cn/web/main/file/folder/-11", bg: "linear-gradient(135deg, #1890ff, #0050b3)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 影视娱乐、磁力检索与 IPTV 直播源 ---
+      { name: "Kodi IPTV 最新直播源 (m3u8)", desc: "Kodi中文网持续更新的电视台地址", url: "http://www.kodiplayer.cn/movie/2898.html", bg: "linear-gradient(135deg, #11998e, #38ef7d)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "程序员大本营 M3U8 电视直播", desc: "高清晰度数字电视频道测速合集", url: "https://pianshen.com/article/23402002507/", bg: "linear-gradient(135deg, #2c3e50, #000000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "BT1207 磁力搜索引擎", desc: "好用无广告的超强磁力链接检索雷达", url: "https://bt1207ov.top/", bg: "linear-gradient(135deg, #3a6073, #16222f)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "SeedHub 影视动漫分享圈", desc: "专注于高码率硬核原盘高清生肉/熟肉资源", url: "https://www.seedhub.cc/", bg: "linear-gradient(135deg, #f857a6, #ff5858)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "音范丝 4K 蓝光原盘顶级收藏", desc: "高品质电影资源与极客分享圈", url: "http://www.yinfans.me/", bg: "linear-gradient(135deg, #34e89e, #0f3443)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "快播/迅雷专用超清影音种子库", desc: "专属长视频及影音种子多路径分流", url: "https://zhan.xunlei.com/detail/VMhraD2sehDgUXy4Eg7mBjIV00?entry_source=xlmovie", bg: "linear-gradient(135deg, #0066cc, #00c6ff)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "[99杏][夜班新婚护士]", desc: "专属特定视频磁力链种子资源", url: "http://eclyq.vip/mxub/ccb7022193623258e7de9d13b2ca4b3298063401.html", bg: "linear-gradient(135deg, #ff007f, #000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 香港/台湾综合大报新闻矩阵 ---
+      { name: "明报网站", desc: "香港主流综合大报深度报道", url: "https://www.mingpao.com/", bg: "linear-gradient(135deg, #009944, #005522)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "联合新闻网", desc: "台湾主流大牌综合新闻矩阵", url: "https://udn.com/news/index", bg: "linear-gradient(135deg, #ff6600, #cc3300)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 汽车数码与智能配件品牌展区 ---
+      { name: "OPPO 智能手机和配件 (香港)", desc: "OPPO 智能数码及出海旗舰配件专区", url: "https://www.oppo.com/hk/", bg: "linear-gradient(135deg, #008148, #004d2b)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "上汽大通 MAXUS G50", desc: "G50 PLUS 汽车MPV车型价格配置参数", url: "https://www.saicmaxus.com/car/g50plus.shtml", bg: "linear-gradient(135deg, #1e3c72, #2a5298)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
+    ]
+  },
+  public_edu: {
+    name: '国家标准、公共政务与教育自学',
+    short: '🏛️',
+    items: [
+      // --- 标准与公共地图系统 ---
+      { name: "全国标准信息公共服务平台", desc: "国家标准化管理委员会权威检索", url: "https://std.samr.gov.cn/", bg: "linear-gradient(135deg, #1e3c72, #2a5298)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "国家标准全文公开系统", desc: "免费查阅国家强制/推荐性标准正文PDF", url: "https://openstd.samr.gov.cn/bzgk/gb/index", bg: "linear-gradient(135deg, #1e3c72, #0050b3)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      // --- 教育培训与在线自学老字号 ---
+      { name: "国家开放大学终身教育平台", desc: "全面免费对外开放的公开课/职能技能大讲堂", url: "https://le.ouchn.cn/home#/home", bg: "linear-gradient(135deg, #1890ff, #52c41a)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "我要自学网", desc: "殿堂级电脑技能/设计办公视频自学教程老字号", url: "http://www.51zxw.net/default.aspx", bg: "linear-gradient(135deg, #ff9800, #e65100)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "大学资源网", desc: "全面收集各大高校公开课、考研、K12全套自学教程", url: "http://www.dxzyw.com/", bg: "linear-gradient(135deg, #3a7bd5, #3a6073)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
+    ]
+  }
+};
 
     // 智能渲染特定分类下的应用网格
     function renderApps(categoryKey) {
