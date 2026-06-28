@@ -83,13 +83,14 @@
       border-radius: 10px;
     }
 
-    /* 响应式应用网格：通过自动弹性拉伸填充（auto-fit） */
+    /* 默认基础布局：iPhone 竖屏 */
     .app-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(4px, 1fr));
-      gap: 32px 16px;
-      max-width: 480px;
-      margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 32px 16px; 
+        max-width: 480px;
+        margin: 0 auto;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     /* 单个应用图标的点击与缩放动效 */
