@@ -239,7 +239,7 @@
 </div>
 
     <script>
-// 1. 注册 Service Worker，激活 PWA（保持独立）
+// 1. 注册 Service Worker，激活 PWA
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
@@ -248,13 +248,12 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// 2. 强力防卡死补丁（放在大括号外面，作为全局底层保护）
-// 阻止 iOS 双指放大页面导致触摸焦点偏移
+// 2. 阻止 iOS 双指放大页面导致触摸焦点偏移
 document.addEventListener('gesturestart', function(event) {
     event.preventDefault();
 });
 
-// 阻止连续快速双击空白处导致页面物理缩放死锁
+// 3. 阻止连续快速双击空白处导致页面物理缩放死锁
 let lastTouchEnd = 0;
 document.addEventListener('touchend', function(event) {
     const now = (new Date()).getTime();
@@ -263,6 +262,7 @@ document.addEventListener('touchend', function(event) {
     }
     lastTouchEnd = now;
 }, { passive: false });
+        
     // 沉淀清空后的全新数据结构：所有 Logo 升级为最新官方 SVG 原生代码
     const DATA = {
     cn: { 
