@@ -13,15 +13,17 @@
     /* ==================== 1. Apple 原生生态核心变量 ==================== */
     :root {
         --text-main: #ffffff;
-        --text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-        --icon-radius: 22.5%; /* 💯 百分百还原 Apple 标准连续曲率圆角比例 */
+        --text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        
+        /* 🎨 视觉修正：由于标准 CSS 无法画出超椭圆，微调至 24% 可以在视觉上完美还原官方 Squircle 弧度 */
+        --icon-radius: 24%; 
         --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
 
-        /* 🎯 全局图标尺寸同步指针（无论如何旋转，两端严格同步缩放） */
+        /* 🎯 全局图标尺寸同步指针 */
         --icon-size: 62px;
     }
 
-    /* 动态壁纸：深色模式 (Mac/iPad/iPhone 原生质感) */
+    /* 动态壁纸：深色模式 */
     body {
         margin: 0;
         padding: 0;
@@ -33,7 +35,6 @@
         display: flex;
         flex-direction: column;
 
-        /* 核心：完美解决移动端触摸失灵与延迟 */
         touch-action: manipulation;              
         overscroll-behavior: none;              
         -webkit-user-select: none;              
@@ -46,7 +47,7 @@
         transition: background 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    /* ==================== 2. 全屏毛玻璃视口 ==================== */
+    /* 全屏毛玻璃视口 */
     .blur-overlay {
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
@@ -56,7 +57,7 @@
         z-index: 1;
     }
 
-    /* ==================== 3. 主容器与 App 矩阵网格 ==================== */
+    /* 主容器与 App 矩阵网格 */
     main {
         position: relative;
         z-index: 2;
@@ -81,13 +82,13 @@
     .app-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr); 
-        gap: 28px 16px;
+        gap: 32px 16px; /* 略微拉开行高，让呼吸感更足 */
         max-width: 480px;
         margin: 0 auto;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    /* ==================== 4. Apple 连续曲率高保真桌面图标 ==================== */
+    /* ==================== 4. Apple 高保真桌面图标 ==================== */
     .app-icon {
         display: flex;
         flex-direction: column;
@@ -99,40 +100,45 @@
     }
 
     .app-icon:active {
-        transform: scale(0.88); 
+        transform: scale(0.9); /* 按压反馈更为柔和 */
     }
 
     .icon-wrapper {
         width: var(--icon-size);
         height: var(--icon-size);
-        border-radius: calc(var(--icon-size) * var(--icon-radius) / 100%);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        border-radius: var(--icon-radius);
+        
+        /* 🧼 移除沉重油腻的黑阴影，改用超轻薄、高透气的微散射阴影 */
+        box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 8px;
+        margin-bottom: 7px;
         position: relative;
         overflow: hidden;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .icon-wrapper svg {
-        width: calc(var(--icon-size) * 0.56);
-        height: calc(var(--icon-size) * 0.56);
+        /* 🔗 彻底治好紧绷感！将内部图形尺寸锁定在 48% 的黄金留白比例 */
+        width: calc(var(--icon-size) * 0.48);
+        height: calc(var(--icon-size) * 0.48);
         fill: currentColor;
     }
 
     .app-name {
         color: var(--text-main);
-        font-size: 11.5px;
-        font-weight: 500;
-        letter-spacing: 0.2px;
+        font-size: 11px; /* 字体略微缩小，更显精致 */
+        font-weight: 400; /* 去除粗体，改用高雅的常规体 */
+        letter-spacing: 0.4px; /* 稍微拉开字距，极其透气 */
         text-align: center;
         width: 100%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         text-shadow: var(--text-shadow);
+        opacity: 0.92;
     }
 
     /* ==================== 5. iOS 全透明无边界空气感 Dock 栏 ==================== */
@@ -147,7 +153,6 @@
     }
 
     .dock-container {
-        /* 💎 彻底移除了背景、边框、阴影和毛玻璃，达成纯净的全透明 */
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
@@ -159,17 +164,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 24px; /* 图标之间的空气感留白间距 */
+        gap: 26px; /* 增大间距，让漂浮感更强 */
         box-sizing: border-box;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .dock-item {
-        /* 🔗 强行绑定：尺寸永远和桌面 App 保持 1:1 绝对一样大 */
         width: var(--icon-size);
         height: var(--icon-size);
         
-        /* 💎 移除各个图标项的磨砂外框，让其纯净悬浮 */
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
@@ -179,40 +182,41 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: calc(var(--icon-size) * 0.65); /* 放大 Emoji 填充感，使其视觉分量与 App 图标一致 */
+        
+        /* 让 Emoji 的视觉分量与 48% 的 SVG 图标达到完美的 1:1 视觉平衡 */
+        font-size: calc(var(--icon-size) * 0.54); 
         cursor: pointer;
         position: relative;
         box-sizing: border-box;
         
-        /* 🧘 呼吸感：未激活时高雅半透明，降低存在感 */
+        /* 未激活时保持高级的半透明呼吸感 */
         opacity: 0.45;
-        transform: scale(0.94);
+        transform: scale(0.96);
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    /* 激活态：点亮并放大 */
+    /* 激活态：完美点亮 */
     .dock-item.active {
         opacity: 1;
-        transform: scale(1.08);
-        filter: drop-shadow(0 4px 10px rgba(255, 255, 255, 0.2));
+        transform: scale(1.05);
     }
 
     .dock-item:active {
-        transform: scale(0.88);
+        transform: scale(0.9);
     }
 
-    /* 极其精致的底部小圆点指示器 */
+    /* 精致的底部小圆点指示器 */
     .dock-item::after {
         content: '';
         position: absolute;
-        bottom: -6px; 
+        bottom: -5px; 
         left: 50%;
         transform: translateX(-50%) scale(0);
-        width: 5px;
-        height: 5px;
+        width: 4px;
+        height: 4px;
         border-radius: 50%;
         background-color: rgba(255, 255, 255, 0.95);
-        box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+        box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
         transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
@@ -220,9 +224,9 @@
         transform: translateX(-50%) scale(1);
     }
 
-    /* ==================== 6. 跨设备精密全局响应式（仅调拨尺寸指针） ==================== */
+    /* ==================== 6. 跨设备精密全局响应式 ==================== */
     
-    /* 📱 iPhone 横屏 / 🪜 iPad 竖屏设备 (两端无缝无偏差扩展至 68px) */
+    /* 📱 iPhone 横屏 / 🪜 iPad 竖屏设备 */
     @media (min-width: 550px) and (max-width: 1024px) {
         :root {
             --icon-size: 68px; 
@@ -230,14 +234,14 @@
         .app-grid {
             grid-template-columns: repeat(6, 1fr); 
             max-width: 720px;
-            gap: 32px 20px;
+            gap: 36px 20px;
         }
         .dock-container {
-            gap: 32px;
+            gap: 34px;
         }
     }
 
-    /* 💻 iPad 横屏 / 🖥️ Mac 桌面端 (两端无缝无偏差扩展至 74px) */
+    /* 💻 iPad 横屏 / 🖥️ Mac 桌面端 */
     @media (min-width: 1025px) {
         :root {
             --icon-size: 74px; 
@@ -245,13 +249,13 @@
         .app-grid {
             grid-template-columns: repeat(8, 1fr); 
             max-width: 1000px;
-            gap: 40px 24px;
+            gap: 44px 24px;
         }
         .dock-container {
-            gap: 40px; /* 宽屏桌面端拉开间距，尽显优雅留白 */
+            gap: 42px; 
         }
         .app-name {
-            font-size: 12.5px;
+            font-size: 12px;
         }
     }
 </style>
