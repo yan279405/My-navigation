@@ -48,8 +48,7 @@
     position: fixed;
     inset: 0;
     z-index: -2;
-    background:
-      radial-gradient(circle at 10% 10%, #1a1a2e 0%, #16213e 40%, #0f3460 80%, #e94560 120%);
+    background: radial-gradient(circle at 10% 10%, #1a1a2e 0%, #16213e 40%, #0f3460 80%, #e94560 120%);
   }
 
   body::after {
@@ -145,12 +144,22 @@
     letter-spacing: 0.2px;
     text-align: center;
     width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    max-width: 5em;
+    line-height: 1.2;
     text-shadow: var(--text-shadow);
     opacity: 0.92;
-    line-height: 1.2;
+
+    white-space: normal;
+    overflow: hidden;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    min-height: calc(1.2em * 2);
+    margin: 0 auto;
   }
 
   footer {
