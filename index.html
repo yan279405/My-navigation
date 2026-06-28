@@ -359,84 +359,103 @@
 
 <script>
 const DATA = {
+  global: {
+    name: '国际社交与聚合平台',
+    short: '🌐',
+    items: [
+      { name: "YouTube", desc: "全球视频平台主页", url: "https://youtube.com", bg: "linear-gradient(135deg, #ff0000, #cc0000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M941.3 286.1c-11.1-41.5-43.8-74.2-85.3-85.3C780.9 184 512 184 512 184s-268.9 0-344 16.8c-41.5 11.1-74.2 43.8-85.3 85.3C66 361.2 66 512 66 512s0 150.8 16.7 225.9c11.1 41.5 43.8 74.2 85.3 85.3 75.1 16.8 344 16.8 344 16.8s268.9 0 344-16.8c41.5-11.1 74.2-43.8 85.3-85.3 16.7-75.1 16.7-225.9 16.7-225.9s0-150.8-16.7-225.9zM413 644V380l232 132-232 132z"/></svg>` },
+      { name: "TikTok", desc: "全球短视频趋势与推荐", url: "https://tiktok.com", bg: "linear-gradient(135deg, #121212, #010101)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M784 340.2c-55.6 0-106.8-19.8-147-52.6v316c0 152.4-123.6 276-276 276S85 756 85 603.6s123.6-276 276-276c18 0 35.4 1.8 52.4 5V481c-16.6-7-34.6-11-53.4-11-73.4 0-133 59.6-133 133.6s59.6 133.6 133 133.6 133-59.6 133-133.6V121h151.2c6.4 71.6 43.6 134 101.4 172.2 49 32.4 107.8 51.4 171.4 51.4v115.6z"/></svg>` },
+      { name: "X", desc: "国际即时社交平台", url: "https://x.com", bg: "linear-gradient(135deg, #222222, #000000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M574.4 466.4L924.9 64H842L610.9 330.1 367.9 64H91l367.4 529.3L91 960h82.9l248-285.4L671.1 960H948L574.4 466.4zM464 624.9L426.8 572 120.9 138.8H248.2L497.1 491.7L534.3 544.6 842.1 881H714.8L464 624.9z"/></svg>` },
+      { name: "Instagram", desc: "视觉图像社交社区", url: "https://instagram.com", bg: "linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M512 260.9c-138.7 0-251.1 112.4-251.1 251.1S373.3 763.1 512 763.1 763.1 650.7 763.1 512 650.7 260.9 512 260.9zm0 416.3c-91.2 0-165.2-74-165.2-165.2s74-165.2 165.2-165.2 165.2 74 165.2 165.2-74 165.2-165.2 165.2zm261.6-435c0 32.8-26.6 59.4-59.4 59.4s-59.4-26.6-59.4-59.4 26.6-59.4 59.4-59.4 59.4 26.6 59.4 59.4zM896 320v448c0 70.6-57.4 128-128 128H256c-70.6 0-128-57.4-128-128V320c0-70.6 57.4-128 128-128h512c70.6 0 128 57.4 128 128zm-88 0c0-22.1-17.9-40-40-40H256c-22.1 0-40 17.9-40 40v448c0 22.1 17.9 40 40 40h512c22.1 0 40-17.9 40-40V320z"/></svg>` },
+      { name: "Threads", desc: "碎片化文字与灵感记录", url: "https://threads.net", bg: "linear-gradient(135deg, #1e1e1e, #050505)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M738.9 450.4c-.6-121-82.6-189.6-188-189.6-118.8 0-199.1 84.8-199.1 228.6 0 141.5 76.5 229.4 199.6 229.4 59.1 0 112.9-20.9 146.5-57.1 9.1-9.9 7.6-25.2-3.2-33.1s-24.9-5.9-33.1 4.3c-24.1 30-61.9 45.4-110.2 45.4-86.8 0-137.9-58.9-137.9-188.9h325.4zm-324.9-42h132.3c3.5 45.4-23.8 88-66.4 88s-65.9-42.6-65.9-88zM512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z"/></svg>` },
+      { name: "Telegram", desc: "专属资讯订阅频道", url: "https://telegram.org", bg: "linear-gradient(135deg, #2ea6da, #1d94cd)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm219.1 328.2l-73.4 345.8c-5.5 24.5-20.1 30.6-40.7 19.1l-111.9-82.5-53.9 51.9c-6 6-11 11-22.5 11l8-113 205.8-185.9c9-8-2-12.3-13.9-4.3L275.3 617.9l-109.6-34.3c-23.8-7.4-24.3-23.8 5-35.3l427.6-164.9c19.8-7.3 37.1 4.5 32.8 28.8z"/></svg>` },
+      { name: "Discord", desc: "核心主干粉丝社群", url: "https://discord.com", bg: "linear-gradient(135deg, #5865f2, #4752c4)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M784.8 243.6c-54-25.2-112.8-44.4-175.2-56.4-.1.3-.3.8-.4 1.2-7 15.1-13.9 31.7-19.3 48.5-67.1-10.1-133.9-10.1-200 0-5.4-16.7-12.4-33.4-19.5-48.5-.1-.4-.3-.9-.4-1.2-62.4 12-121.2 31.2-175.2 56.4C83.7 407.9 52.8 567.2 68 724c36 26.6 70.8 48 104.4 63.6 25.2-11.6 48-24.8 68.4-39.7-12.1-4.5-24-9.8-35.3-15.8 2.9-2.1 5.7-4.3 8.4-6.6 208.1 96.1 434.9 96.1 640.7 0 2.7 2.3 5.5 4.5 8.4 6.6-11.3 6-23.2 11.3-35.3 15.8 20.4 14.9 43.2 28.1 68.4 39.7 33.6-15.6 68.4-37.1 104.4-63.6 18.2-182.2-30.8-340.1-127.3-480.4zM360.2 589.6c-38.4 0-70.1-35.3-70.1-78.5s30.8-78.5 70.1-78.5 70.1 35.3 70.1 78.5-30.8 78.5-70.1 78.5zm303.6 0c-38.4 0-70.1-35.3-70.1-78.5s30.8-78.5 70.1-78.5 70.1 35.3 70.1 78.5-30.8 78.5-70.1 78.5z"/></svg>` },
+      { name: "Reddit", desc: "海外大众社区与论坛论坛", url: "https://reddit.com", bg: "linear-gradient(135deg, #ff4500, #ff2a00)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M925.3 479c0-42.6-34.6-77.2-77.2-77.2-18.4 0-35.2 6.5-48.6 17.3-69-49.1-163.4-80.4-267.7-83.9l56.8-179.3 156 33.1c1.5 28.9 25.4 51.9 54.8 51.9 30.5 0 55.2-24.7 55.2-55.2s-24.7-55.2-55.2-55.2c-23.4 0-43.5 14.5-51.5 35L724.8 178c-6.1-1.3-12.3 1.3-15.4 6.7l-64.8 204.6c-106 2.5-201.8 33.9-271.4 83.5-13.3-10.4-30-16.7-48.1-16.7-42.6 0-77.2 34.6-77.2 77.2 0 29.8 17 55.5 41.7 68.3-.9 7.4-1.3 15-1.3 22.5 0 120.3 140.7 218.1 313.7 218.1S816 743.6 816 623.3c0-7.6-.4-15.1-1.3-22.5 25.8-12.6 43.1-38.7 43.1-68.8zm-540.6 55.2c0-26.6 21.6-48.1 48.1-48.1s48.1 21.6 48.1 48.1-21.6 48.1-48.1 48.1-48.1-21.6-48.1-48.1zm299.7 122.9c-28.7 28.7-81.8 31.3-100.9 31.3s-72.2-2.6-100.9-31.3c-6-6-6-15.8 0-21.8s15.8-6 21.8 0c20.3 20.3 59.8 24.1 79.1 24.1 19.3 0 58.8-3.8 79.1-24.1 6-6 15.8-6 21.8 0s6 15.8 0 21.8zm-57.8-74.8c-26.6 0-48.1-21.6-48.1-48.1s21.6-48.1 48.1-48.1 48.1 21.6 48.1 48.1-21.6 48.1-48.1 48.1z"/></svg>` },
+      { name: "Facebook", desc: "全球公共主页与社群", url: "https://facebook.com", bg: "linear-gradient(135deg, #1877f2, #0f62cc)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M925.3 64H98.7C79.5 64 64 79.5 64 98.7V925.3c0 19.2 15.5 34.7 34.7 34.7h444.9V611.4H425.2V474.9h118.4V374c0-117.4 71.7-181.3 176.4-181.3 50.1 0 93.2 3.7 105.8 5.4v122.6h-72.5c-56.9 0-68 27.1-68 66.8v87.5h135.7l-17.7 136.5H685.2V960h240.2c19.2 0 34.7-15.5 34.7-34.7V98.7C960 79.5 944.5 64 925.3 64z"/></svg>` },
+      { name: "LinkedIn", desc: "职业商业履历与人脉", url: "https://linkedin.com", bg: "linear-gradient(135deg, #0077b5, #005987)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M896 64H128C92.7 64 64 92.7 64 128v768c0 35.3 28.7 64 64 64h768c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64zm-520 744H240V392h136v416zm-68-474c-43.6 0-79-35.4-79-79s35.4-79 79-79 79 35.4 79 79-35.4 79-79 79zm520 474H692V596c0-50.5-18-85-63.2-85-34.6 0-55.1 23.3-64.1 45.8-3.3 8-4.1 19.2-4.1 30.5v216.7H424V392h130.6v58.3c17.3-26.7 48.3-64.8 117.4-64.8 85.7 0 150 56 150 176.4v242.1z"/></svg>` }
+    ]
+  },
+  cn: {
+    name: '国内主流大众社交',
+    short: '🇨🇳',
+    items: [
+      { name: "Bilibili", desc: "哔哩哔哩弹幕视频网", url: "https://www.bilibili.com/", bg: "linear-gradient(135deg, #ff6699, #ff3366)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M741.4 121.2l-51.1 52.8 48.9 47.4 51.1-52.8-48.9-47.4zm-458.8 0l48.9 47.4 51.1-52.8-48.9-47.4-51.1 52.8zM896 320v448c0 53-43 96-96 96H224c-53 0-96-43-96-96V320c0-53 43-96 96-96h576c53 0 96 43 96 96zm-704 64v320c0 17.7 14.3 32 32 32h576c17.7 0 32-14.3 32-32V384c0-17.7-14.3-32-32-32H224c-17.7 0-32 14.3-32 32zm160 96c26.5 0 48 21.5 48 48s-21.5 48-48 48-48-21.5-48-48 21.5-48 48-48zm352 0c26.5 0 48 21.5 48 48s-21.5 48-48 48-48-21.5-48-48 21.5-48 48-48z"/></svg>` },
+      { name: "抖音", desc: "抖音短视频网页版", url: "https://www.douyin.com", bg: "linear-gradient(135deg, #1c1f2a, #030303)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M802.4 445.6c-76.3 0-141.6-43-174.5-105.7v331.4c0 148-120.5 268.4-268.5 268.4S91 819.3 91 671.3s120.5-268.5 268.5-268.5c16.3 0 32.1 1.5 47.4 4.3v137.9c-15-7.7-31.8-12.1-49.7-12.1-60.6 0-109.8 49.2-109.8 109.8a109.7 109.7 0 0 0 109.8 109.8c60.6 0 109.8-49.2 109.8-109.8V115h138.9c6 65.6 40 122.9 91.9 157.6 44.8 30 98.7 47.4 156.9 47.4v125.6z"/></svg>` },
+      { name: "小红书", desc: "标记我的生活与灵感", url: "https://www.xiaohongshu.com", bg: "linear-gradient(135deg, #ff2442, #cc001b)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm156.2 607.7c-17.8 28.5-51 49.3-85.3 49.3H441.1c-60.5 0-109.7-49.2-109.7-109.7V441.1c0-60.5 49.2-109.7 109.7-109.7h141.8c34.3 0 67.5 20.8 85.3 49.3 22.8 36.6 22.8 84.1 0 120.7l-46.7 74.9c-17.8 28.5-51 49.3-85.3 49.3H478.4V563h58c15.1 0 27.4-12.3 27.4-27.4s-12.3-27.4-27.4-27.4h-58v-63h72c15.1 0 27.4-12.3 27.4-27.4s-12.3-27.4-27.4-27.4h-72v-34.3c0-15.1-12.3-27.4-27.4-27.4s-27.4 12.3-27.4 27.4V386h-34.3c-15.1 0-27.4 12.3-27.4 27.4s12.3 27.4 27.4 27.4h34.3v63h-34.3c-15.1 0-27.4 12.3-27.4 27.4s12.3 27.4 27.4 27.4h34.3v63c0 30.2 24.6 54.9 54.9 54.9h141.8c12.5 0 24.8-7.6 31.4-18.1l46.7-74.9c16.3-26.2 16.3-60.2 0-86.4z"/></svg>` },
+      { name: "快手", desc: "记录世界，记录真实自己", url: "https://www.kuaishou.com", bg: "linear-gradient(135deg, #ff7633, #ff4500)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z"/></svg>` }
+    ]
+  },
   creator: {
-    name: "视频创作",
-    short: "创作",
+    name: '视频创作与内容平台',
+    short: '🎬',
     items: [
-      { name: "抖音创作服务平台", desc: "", url: "https://creator.douyin.com/creator-micro/home", bg: "linear-gradient(135deg, #161823, #252942)", color: "#fff", emoji: "●" },
-      { name: "DOU+网页版", desc: "", url: "https://doujia.douyin.com/home?douplusSource=originEntrance&douplusSubSource=officialSite", bg: "linear-gradient(135deg, #161823, #252942)", color: "#fff", emoji: "●" },
-      { name: "抖音电商-橱窗达人首页", desc: "", url: "https://buyin.jinritemai.com/dashboard?universalPageParamsId=b2f1feb8-2698-4e58-9d1c-73b03c6cae1c", bg: "linear-gradient(135deg, #161823, #252942)", color: "#fff", emoji: "●" },
-      { name: "抖音电商-达人首页(重复项)", desc: "", url: "https://buyin.jinritemai.com/dashboard?preUniversalPageParamsId=universalPageParamsId3a2d60c7-9348-4522-9007-e2992d8807b9", bg: "linear-gradient(135deg, #161823, #252942)", color: "#fff", emoji: "●" },
-      { name: "抖音电商-抖音达人独立后台", desc: "", url: "https://buyin.douyin.com/ec/daren", bg: "linear-gradient(135deg, #161823, #252942)", color: "#fff", emoji: "●" },
+      // === 头部自媒体核心创作入口 ===
+      { name: "抖音创作服务平台", desc: "视频创作者后台", url: "https://creator.douyin.com/creator-micro/home", bg: "linear-gradient(135deg, #161823, #252942)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "快手创作者服务平台", desc: "快手创作者后台", url: "https://cp.kuaishou.com/profile", bg: "linear-gradient(135deg, #ff4c00, #ff8500)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "西瓜创作平台", desc: "西瓜视频创作人后台", url: "https://studio.ixigua.com/", bg: "linear-gradient(135deg, #ff3b5c, #cc0029)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "小红书创作服务平台", desc: "小红书网页版后台", url: "https://creator.xiaohongshu.com/creator/home?roleType=creator", bg: "linear-gradient(135deg, #ff2442, #cc1b33)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
 
-      { name: "巨量算数", desc: "", url: "https://trendinsight.oceanengine.com", bg: "linear-gradient(135deg, #2f54eb, #1890ff)", color: "#fff", emoji: "●" },
-      { name: "快手创作者服务平台", desc: "", url: "https://cp.kuaishou.com/profile", bg: "linear-gradient(135deg, #ff4c00, #ff8500)", color: "#fff", emoji: "●" },
-      { name: "视频号助手", desc: "", url: "https://channels.weixin.qq.com/platform", bg: "linear-gradient(135deg, #07c160, #10a050)", color: "#fff", emoji: "●" },
-      { name: "微信公众号平台", desc: "", url: "https://mp.weixin.qq.com", bg: "linear-gradient(135deg, #07c160, #10a050)", color: "#fff", emoji: "●" },
-      { name: "腾讯内容开放平台", desc: "", url: "https://om.qq.com", bg: "linear-gradient(135deg, #1e6fff, #0050cc)", color: "#fff", emoji: "●" },
+      // === 微信与腾讯派系 ===
+      { name: "视频号助手", desc: "微信视频号创作者后台", url: "https://channels.weixin.qq.com/platform", bg: "linear-gradient(135deg, #07c160, #10a050)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "微信公众平台", desc: "微信公众号运营后台", url: "https://mp.weixin.qq.com/", bg: "linear-gradient(135deg, #07c160, #10a050)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "腾讯内容开放平台", desc: "企鹅号运营后台", url: "https://om.qq.com/", bg: "linear-gradient(135deg, #1e6fff, #0050cc)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
 
-      { name: "小红书创作服务平台", desc: "", url: "https://creator.xiaohongshu.com/creator-home?roleType=creator", bg: "linear-gradient(135deg, #ff2442, #cc1b33)", color: "#fff", emoji: "●" },
-      { name: "哔哩哔哩 (Bilibili)", desc: "", url: "https://www.bilibili.com", bg: "linear-gradient(135deg, #fb7299, #ff9db5)", color: "#fff", emoji: "●" },
-      { name: "百家号", desc: "", url: "https://baijiahao.baidu.com", bg: "linear-gradient(135deg, #2932e1, #0022b8)", color: "#fff", emoji: "●" },
-      { name: "好看视频", desc: "", url: "https://haokan.baidu.com/?fr=pcpz", bg: "linear-gradient(135deg, #2932e1, #1890ff)", color: "#fff", emoji: "●" },
-      { name: "百度作家平台", desc: "AI", url: "https://zuojia.baidu.com/workspace", bg: "linear-gradient(135deg, #2932e1, #5555ff)", color: "#fff", emoji: "●" },
+      // === 电商带货与营销工具 ===
+      { name: "抖音电商达人后台", desc: "抖音商品橱窗及带货独立后台", url: "https://buyin.douyinec.com/daren", bg: "linear-gradient(135deg, #161823, #252942)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "DOU+网页版", desc: "抖音加热投放工具", url: "https://doujia.douyin.com/home?dou_plus_source=origin_entrance&dou_plus_sub_source=official_site", bg: "linear-gradient(135deg, #161823, #252942)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "巨量算数", desc: "内容风向与营销趋势分析", url: "https://trendinsight.oceanengine.com/", bg: "linear-gradient(135deg, #2f54eb, #1890ff)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "京东内容开放平台", desc: "京东逛逛达人后台", url: "https://dr.jd.com/page/login.html", bg: "linear-gradient(135deg, #e2231a, #990000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
 
-      { name: "支付宝内容创作平台", desc: "", url: "https://c.alipay.com/page/life-account/index?appId=2030035576463046", bg: "linear-gradient(135deg, #108ee9, #0a6999)", color: "#fff", emoji: "●" },
-      { name: "阿里创作平台", desc: "", url: "https://we.taobao.com/creator/login-intro?redirectURL=http%3A%2F%2Fwe.taobao.com%2F", bg: "linear-gradient(135deg, #ff5000, #cc3300)", color: "#fff", emoji: "●" },
-      { name: "搜狐号", desc: "", url: "https://mp.sohu.com/mpfe/v3/main/firstpage", bg: "linear-gradient(135deg, #ffee00, #ccaa00)", color: "#000", emoji: "●" },
-      { name: "搜狐视频", desc: "", url: "https://tv.sohu.com", bg: "linear-gradient(135deg, #ffee00, #ffaa00)", color: "#000", emoji: "●" },
-      { name: "搜狐博客首页", desc: "", url: "https://blog.sohu.com", bg: "linear-gradient(135deg, #ffee00, #888800)", color: "#000", emoji: "●" },
+      // === 阿里、百度与门户门户阵营 ===
+      { name: "阿里创作平台", desc: "淘宝达人/逛逛创作后台", url: "https://we.taobao.com/creator/login-intro", bg: "linear-gradient(135deg, #ff5000, #cc3300)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "支付宝内容创作平台", desc: "生活号/生活视频后台", url: "https://c.alipay.com/page/life-account/index", bg: "linear-gradient(135deg, #108ee9, #0a6999)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "百家号", desc: "百度内容创作平台", url: "https://baijiahao.baidu.com/", bg: "linear-gradient(135deg, #2932e1, #0022b8)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "头条号", desc: "今日头条媒体平台后台", url: "https://mp.toutiao.com/profile_v4/index", bg: "linear-gradient(135deg, #ed4040, #b31919)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "微博创作者平台", desc: "新浪微博创作者管理", url: "https://me.weibo.com/overview", bg: "linear-gradient(135deg, #e6162d, #f9a632)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "大鱼号官网", desc: "阿里文娱UC大鱼号创作后台", url: "https://mp.dayu.com/dashboard/index", bg: "linear-gradient(135deg, #ff6a00, #cc4e00)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "网易号", desc: "网易自媒体创作平台", url: "http://mp.163.com/", bg: "linear-gradient(135deg, #e60012, #aa000d)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "搜狐号", desc: "搜狐自媒体后台", url: "https://mp.sohu.com/", bg: "linear-gradient(135deg, #ffee00, #ccaa00)", color: "#000000", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
 
-      { name: "网易号", desc: "", url: "http://mp.163.com/subscribe/v4/index.html", bg: "linear-gradient(135deg, #e60012, #aa000d)", color: "#fff", emoji: "●" },
-      { name: "网易云阅读作者中心", desc: "", url: "https://open.yuedu.163.com", bg: "linear-gradient(135deg, #e60012, #660000)", color: "#fff", emoji: "●" },
-      { name: "微博创作者平台", desc: "", url: "https://me.weibo.com/overview", bg: "linear-gradient(135deg, #e6162d, #f9a632)", color: "#fff", emoji: "●" },
-      { name: "新浪博客", desc: "", url: "http://blog.sina.com.cn/lm/2018", bg: "linear-gradient(135deg, #e6162d, #aa0000)", color: "#fff", emoji: "●" },
-      { name: "优酷号创作平台", desc: "", url: "https://mp.youku.com/v2/mp/index?openCategory=8888", bg: "linear-gradient(135deg, #06a7e2, #006699)", color: "#fff", emoji: "●" },
-
-      { name: "山村颜哥的爱奇艺号", desc: "", url: "https://www.iqiyi.com/u_2200467041", bg: "linear-gradient(135deg, #00cc4c, #006622)", color: "#fff", emoji: "●" },
-      { name: "西瓜创作平台", desc: "", url: "https://studio.ixigua.com", bg: "linear-gradient(135deg, #ff3b5c, #cc0029)", color: "#fff", emoji: "●" },
-      { name: "头条号", desc: "", url: "https://mp.toutiao.com/profile_v4/index?isnewconnect=0&isnewuser=0", bg: "linear-gradient(135deg, #ed4040, #b31919)", color: "#fff", emoji: "●" },
-      { name: "大鱼号官网", desc: "UC", url: "https://mp.dayu.com/dashboard/index", bg: "linear-gradient(135deg, #ff6a00, #cc4e00)", color: "#fff", emoji: "●" },
-      { name: "美篇", desc: "", url: "https://a.meipian.cn/mine", bg: "linear-gradient(135deg, #108ee9, #134c75)", color: "#fff", emoji: "●" },
-
-      { name: "美拍", desc: "", url: "https://www.meipai.com", bg: "linear-gradient(135deg, #ff1765, #b3003b)", color: "#fff", emoji: "●" },
-      { name: "废柴记录 - 图虫", desc: "", url: "https://tuchong.com/22414746/videos", bg: "linear-gradient(135deg, #333333, #000000)", color: "#fff", emoji: "●" },
-      { name: "抖音查数据", desc: "", url: "https://www.douchacha.com/?dccFrom=qg34", bg: "linear-gradient(135deg, #873bf4, #531dab)", color: "#fff", emoji: "●" },
-      { name: "京东内容开放平台-登录", desc: "", url: "https://dr.jd.com/page/login.html", bg: "linear-gradient(135deg, #e2231a, #990000)", color: "#fff", emoji: "●" },
-      { name: "we-media-front", desc: "", url: "https://mp.lsttnews.com/index.html/login", bg: "linear-gradient(135deg, #666666, #333333)", color: "#fff", emoji: "●" },
-
-      { name: "风行号主页-蜂网", desc: "", url: "https://o.fun.tv/pgchome/190026", bg: "linear-gradient(135deg, #ff6600, #b34400)", color: "#fff", emoji: "●" },
-      { name: "简书", desc: "", url: "https://www.jianshu.com", bg: "linear-gradient(135deg, #ea6f5a, #b33a25)", color: "#fff", emoji: "●" },
-      { name: "AcFun弹幕视频网", desc: "", url: "https://www.acfun.cn/login?returnUrl=http://member.acfun.cn", bg: "linear-gradient(135deg, #fd4c5b, #b31724)", color: "#fff", emoji: "●" }
+      // === 长视频、图文及泛娱乐 ===
+      { name: "优酷号创作平台", desc: "优酷视频内容后台", url: "https://mp.youku.com/", bg: "linear-gradient(135deg, #06a7e2, #006699)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "爱奇艺号", desc: "爱奇艺号控制管理中心", url: "http://www.iqiyi.com/", bg: "linear-gradient(135deg, #00cc4c, #006622)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "AcFun弹幕视频网", desc: "A站创作者中心方向", url: "https://www.acfun.cn/", bg: "linear-gradient(135deg, #fd4c5b, #b31724)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "美篇电脑版", desc: "图文创作图库后台", url: "https://a.meipian.cn/mine", bg: "linear-gradient(135deg, #108ee9, #134c75)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "图虫视频", desc: "图虫视频创作者页", url: "https://tuchong.com/", bg: "linear-gradient(135deg, #333333, #000000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "简书", desc: "简书内容发布社区", url: "https://www.jianshu.com/", bg: "linear-gradient(135deg, #ea6f5a, #b33a25)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
     ]
   },
-
   ai: {
-    name: "AI 工具",
-    short: "AI",
+    name: 'AI 创意与大模型工具',
+    short: '🤖',
     items: [
-      { name: "DeepSeek", desc: "", url: "https://chat.deepseek.com", bg: "linear-gradient(135deg, #4d80f3, #003bbb)", color: "#fff", emoji: "●" },
-      { name: "ChatGPT", desc: "OpenAI", url: "https://chatgpt.com/c697b3a10-31dc-8320-b748-9bdc707a2b3f", bg: "linear-gradient(135deg, #10a37f, #0d7057)", color: "#fff", emoji: "●" },
-      { name: "Grok", desc: "xAI", url: "https://grok.com", bg: "linear-gradient(135deg, #000000, #333333)", color: "#fff", emoji: "●" },
-      { name: "X", desc: "Grok", url: "https://x.com/i/grok", bg: "linear-gradient(135deg, #000000, #111111)", color: "#fff", emoji: "●" },
-      { name: "Google Gemini", desc: "AI", url: "https://gemini.google.com/app", bg: "linear-gradient(135deg, #4285f4, #1a73e8)", color: "#fff", emoji: "●" },
-      { name: "DeepMind", desc: "AI", url: "https://deepmind.google", bg: "linear-gradient(135deg, #000000, #4285f4)", color: "#fff", emoji: "●" },
-      { name: "Veo 3", desc: "Veo 3 AI", url: "https://videomaker.google.com?hl=zh-CN", bg: "linear-gradient(135deg, #fc5c7d, #6a82fb)", color: "#fff", emoji: "●" },
-      { name: "Qwen", desc: "", url: "https://www.qianwen.com?chweb=tongyi&other=hengwei_web_ty&aishengqi_cp=a", bg: "linear-gradient(135deg, #613eea, #3c1e9e)", color: "#fff", emoji: "●" },
-      { name: "Qwen Image", desc: "", url: "https://qwen-image.net/auth/login", bg: "linear-gradient(135deg, #613eea, #24116c)", color: "#fff", emoji: "●" },
-      { name: "Kling AI", desc: "AI", url: "https://app.klingai.com/cn?ref=aishenqi.net", bg: "linear-gradient(135deg, #ff4e50, #f9d423)", color: "#fff", emoji: "●" },
-      { name: "即梦 AI", desc: "AI", url: "https://jimeng.jianying.com/ai-tool/home", bg: "linear-gradient(135deg, #7f00ff, #e100ff)", color: "#fff", emoji: "●" },
-      { name: "MiniMax", desc: "AI", url: "https://hailuoai.com", bg: "linear-gradient(135deg, #11998e, #38ef7d)", color: "#fff", emoji: "●" }
-    ]
-  },
+      // === 顶级通用大模型群 ===
+      { name: "DeepSeek", desc: "深度求索人工智能对话平台", url: "https://chat.deepseek.com/", bg: "linear-gradient(135deg, #4d80f3, #003bbb)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "ChatGPT", desc: "OpenAI 官方聊天对话平台", url: "https://chatgpt.com/", bg: "linear-gradient(135deg, #10a37f, #0d7057)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Google Gemini", desc: "谷歌原生的双子座AI助手", url: "https://gemini.google.com/", bg: "linear-gradient(135deg, #4285f4, #1a73e8)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Grok", desc: "xAI 全新大模型底座", url: "https://grok.com/", bg: "linear-gradient(135deg, #000000, #333333)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "通义千问", desc: "阿里大模型统一对话后台", url: "https://www.qianwen.com/", bg: "linear-gradient(135deg, #613eea, #3c1e9e)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Perplexity", desc: "AI 驱动的实时搜索式问答大模型", url: "https://www.perplexity.ai/", bg: "linear-gradient(135deg, #004d40, #00796b)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
 
-  network: {
-    name: "网络 VPS",
-    short: "网络",
-    items: [
-      { name: "Cloudflare Zero Trust 1", desc: "", url: "https://dash.cloudflare.com/8885075500eac7c29e88deeb325973f9/home/zero-trust", bg: "linear-gradient(135deg, #f38020, #faad14)", color: "#fff", emoji: "●" },
-      { name: "Cloudflare Zero Trust 2", desc: "", url: "https://dash.cloudflare.com/793cb8974b3363c92bbfaf5b3ee496b0/home/zero-trust", bg: "linear-gradient(135deg, #f38020, #faad14)", color: "#fff", emoji: "●" },
-      { name: "Cloudflare Trace", desc: "CF", url: "https://cloudflare.com/cdn-cgi/trace", bg: "linear-gradient(135deg, #f38020, #444444)", color: "#fff", emoji: "●" }
+      // === 前沿视频与图像生成 ===
+      { name: "可灵 AI", desc: "快手新一代 AI 创意视频生产平台", url: "https://app.klingai.com/", bg: "linear-gradient(135deg, #ff4e50, #f9d423)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "即梦AI", desc: "抖音一站式 AI 图像/视频创作平台", url: "https://jimeng.jianying.com/", bg: "linear-gradient(135deg, #7f00ff, #e100ff)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "海螺视频", desc: "MiniMax旗下高质量 AI 视频大片平台", url: "https://hailuoai.com/", bg: "linear-gradient(135deg, #11998e, #38ef7d)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Runway", desc: "Runway 智能视频与内容生成后台", url: "https://app.runwayml.com/", bg: "linear-gradient(135deg, #000, #222)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "麦壳AI", desc: "AI去文字与视频智能切片下载工具", url: "https://vgo.pub/", bg: "linear-gradient(135deg, #1fa2ff, #12d8fa)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+
+      // === 音频、抠图与多媒体工具 ===
+      { name: "indextts2", desc: "在线音色克隆整合包，免本地部署", url: "https://indextts.cn/", bg: "linear-gradient(135deg, #11998e, #38ef7d)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Vozo AI", desc: "语音克隆与音频驱动视频工具", url: "https://app.vozo.ai/", bg: "linear-gradient(135deg, #43c6ac, #191654)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Magic Studio", desc: "利用 AI 制作与编辑精美图像", url: "https://magicstudio.com/zh/", bg: "linear-gradient(135deg, #ff007f, #7f00ff)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "美图抠图", desc: "智能批量抠图工具面板", url: "https://cutout.designkit.com/", bg: "linear-gradient(135deg, #ec008c, #fc6767)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "AnyToCopy", desc: "免费在线提取视频/抖音文本提取器", url: "https://www.anytocopy.com/", bg: "linear-gradient(135deg, #00c6ff, #0072ff)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+
+      // === 提示词、评测与社区群 ===
+      { name: "AiShort 提示词", desc: "精选 Prompt 模板与发现高质量提示词", url: "https://www.aishort.top/", bg: "linear-gradient(135deg, #4568dc, #b06ab3)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "AI Chat Arena", desc: "双排盲测对比大语言模型表现", url: "https://arena.ai/", bg: "linear-gradient(135deg, #243b55, #141e30)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "Hugging Face", desc: "全球顶尖 AI 开源社区与模型托管平台", url: "https://huggingface.co/", bg: "linear-gradient(135deg, #ffb347, #ffcc33)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+      { name: "AI神器大全", desc: "AI工具集合导航站", url: "https://aishenqi.net/", bg: "linear-gradient(135deg, #f857a6, #ff5858)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
     ]
   }
 };
