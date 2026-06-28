@@ -387,43 +387,62 @@
        7. 核心数据接口 (DATA Model - 语法闭合错误已完全修复)
        ========================================================================== */
     const DATA = {
-      global: {
-        name: '国际平台',
-        short: '🌏',
+      creator: {
+        name: '创作平台',
+        short: '🎬',
         items: [
-          {name: "YouTube", desc: "全球视频平台", url: "https://youtube.com", bg: "linear-gradient(135deg, #ff0000, #cc0000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M941.3 286.1c-11.1-41.5-43.8-74.2-85.3-85.3C780.9 184 512 184 512 184s-268.9 0-344 16.8c-41.5 11.1-74.2 43.8-85.3 85.3C66 361.2 66 512 66 512s0 150.8 16.7 225.9c11.1 41.5 43.8 74.2 85.3 85.3 75.1 16.8 344 16.8 344 16.8s268.9 0 344-16.8c41.5-11.1 74.2-43.8 85.3-85.3 16.7-75.1 16.7-225.9 16.7-225.9s0-150.8-16.7-225.9zM413 644V380l232 132-232 132z"/></svg>`},
-          {name: "Facebook", desc: "国际主页与社群", url: "https://facebook.com", bg: "linear-gradient(135deg, #1877f2, #0f62cc)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M925.3 64H98.7C79.5 64 64 79.5 64 98.7V925.3c0 19.2 15.5 34.7 34.7 34.7h444.9V611.4H425.2V474.9h118.4V374c0-117.4 71.7-181.3 176.4-181.3 50.1 0 93.2 3.7 105.8 5.4v122.6h-72.5c-56.9 0-68 27.1-68 66.8v87.5h135.7l-17.7 136.5H685.2V960h240.2c19.2 0 34.7-15.5 34.7-34.7V98.7C960 79.5 944.5 64 925.3 64z"/></svg>`}
+          // 腾讯微信生态系
+          { name: "微信公众平台", desc: "微信公众号与小程序管理后台", url: "https://mp.weixin.qq.com/", bg: "linear-gradient(135deg, #07c160, #06b054)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "微信视频号助手", desc: "视频号创作者管理后台", url: "https://channels.weixin.qq.com/platform/login", bg: "linear-gradient(135deg, #07c160, #06b054)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          // 字节跳动抖音生态系
+          { name: "抖音创作服务平台", desc: "视频创作者后台", url: "https://creator.douyin.com/creator-micro/home", bg: "linear-gradient(135deg, #161823, #252942)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "DOU+网页版", desc: "抖音加热投放工具", url: "https://doujia.douyin.com/home?dou_plus_source=origin_entrance&dou_plus_sub_source=official_site", bg: "linear-gradient(135deg, #161823, #252942)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "抖音电商-达人首页", desc: "电商达人带货后台", url: "https://buyin.jinritemai.com/dashboard?universal_page_params_id=b2f1feb8-2698-4e58-9d1c-73b03c6cae1c", bg: "linear-gradient(135deg, #161823, #252942)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          // 独立内容社区大厂
+          { name: "快手作者服务平台", desc: "快手视频创作者后台", url: "https://cp.kuaishou.com/profile", bg: "linear-gradient(135deg, #ff4e00, #ff8a00)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "小红书创作服务", desc: "小红书图文/视频创作者后台", url: "https://creator.xiaohongshu.com/login", bg: "linear-gradient(135deg, #ff2442, #ff4d66)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "哔哩哔哩创作中心", desc: "B站UP主管理与数据后台", url: "https://member.bilibili.com/platform/home", bg: "linear-gradient(135deg, #00a1d6, #33b4df)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          // 国际出海核心
+          { name: "YouTube Studio", desc: "谷歌YouTube创作者管理后台", url: "https://studio.youtube.com/", bg: "linear-gradient(135deg, #ff0000, #ff3333)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
         ]
       },
-      cn: {
-        name: '国内平台', 
-        short: '🇨🇳', 
+      ai: {
+        name: '智能AI',
+        short: '🤖',
         items: [
-          {name: "Bilibili", desc: "中国视频创作平台", url: "https://space.bilibili.com", bg: "linear-gradient(135deg, #ff6699, #ff3366)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M741.4 121.2l-51.1 52.8 48.9 47.4 51.1-52.8-48.9-47.4zm-458.8 0l48.9 47.4 51.1-52.8-48.9-47.4-51.1 52.8zM896 320v448c0 53-43 96-96 96H224c-53 0-96-43-96-96V320c0-53 43-96 96-96h576c53 0 96 43 96 96zm-704 64v320c0 17.7 14.3 32 32 32h576c17.7 0 32-14.3 32-32V384c0-17.7-14.3-32-32-32H224c-17.7 0-32 14.3-32 32zm160 96c26.5 0 48 21.5 48 48s-21.5 48-48 48-48-21.5-48-48 21.5-48 48-48zm352 0c26.5 0 48 21.5 48 48s-21.5 48-48 48-48-21.5-48-48 21.5-48 48-48z"/></svg>`},
-          {name: "抖音", desc: "短纪录片频道", url: "https://douyin.com", bg: "linear-gradient(135deg, #1c1f2a, #030303)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M802.4 445.6c-76.3 0-141.6-43-174.5-105.7v331.4c0 148-120.5 268.4-268.5 268.4S91 819.3 91 671.3s120.5-268.5 268.5-268.5c16.3 0 32.1 1.5 47.4 4.3v137.9c-15-7.7-31.8-12.1-49.7-12.1-60.6 0-109.8 49.2-109.8 109.8a109.7 109.7 0 0 0 109.8 109.8c60.6 0 109.8-49.2 109.8-109.8V115h138.9c6 65.6 40 122.9 91.9 157.6 44.8 30 98.7 47.4 156.9 47.4v125.6z"/></svg>`},
-          {name: "小红书", desc: "旅行与生活记录", url: "https://xiaohongshu.com", bg: "linear-gradient(135deg, #ff2442, #cc001b)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm156.2 607.7c-17.8 28.5-51 49.3-85.3 49.3H441.1c-60.5 0-109.7-49.2-109.7-109.7V441.1c0-60.5 49.2-109.7 109.7-109.7h141.8c34.3 0 67.5 20.8 85.3 49.3 22.8 36.6 22.8 84.1 0 120.7l-46.7 74.9c-17.8 28.5-51 49.3-85.3 49.3H478.4V563h58c15.1 0 27.4-12.3 27.4-27.4s-12.3-27.4-27.4-27.4h-58v-63h72c15.1 0 27.4-12.3 27.4-27.4s-12.3-27.4-27.4-27.4h-72v-34.3c0-15.1-12.3-27.4-27.4-27.4s-27.4 12.3-27.4 27.4V386h-34.3c-15.1 0-27.4 12.3-27.4 27.4s12.3 27.4 27.4 27.4h34.3v63h-34.3c-15.1 0-27.4 12.3-27.4 27.4s12.3 27.4 27.4 27.4h34.3v63c0 30.2 24.6 54.9 54.9 54.9h141.8c12.5 0 24.8-7.6 31.4-18.1l46.7-74.9c16.3-26.2 16.3-60.2 0-86.4z"/></svg>`}
+          // 国际核心前沿AI
+          { name: "ChatGPT", desc: "OpenAI 官方聊天与智能助手", url: "https://chatgpt.com/", bg: "linear-gradient(135deg, #10a37f, #1a7f64)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "Claude", desc: "Anthropic 高级语义大模型助手", url: "https://claude.ai/chats", bg: "linear-gradient(135deg, #d97756, #b85c3b)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "v0 by Vercel", desc: "AI 驱动的前端 UI/UX 原型生成工具", url: "https://v0.dev/", bg: "linear-gradient(135deg, #000000, #333333)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          // 国内主流顶尖AI
+          { name: "DeepSeek", desc: "国产顶尖高性价比推理大模型", url: "https://chat.deepseek.com/", bg: "linear-gradient(135deg, #4d6df3, #254beb)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "Kimi.ai", desc: "擅长超长文本处理的智能全能助手", url: "https://kimi.moonshot.cn/", bg: "linear-gradient(135deg, #4d897c, #2f5f55)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "豆包 (Doubao)", desc: "字节跳动推出的人工智能对话助手", url: "https://www.doubao.com/chat/", bg: "linear-gradient(135deg, #3862f2, #1b45d9)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "通义千问", desc: "阿里巴巴自主研发的超大规模语言模型", url: "https://tongyi.aliyun.com/qianwen/", bg: "linear-gradient(135deg, #ff5500, #cc4400)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "文心一言", desc: "百度出品的产业级知识增强大语言模型", url: "https://yiyan.baidu.com/", bg: "linear-gradient(135deg, #002fa7, #001f70)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
         ]
       },
-      media: { 
-        name: '流媒体', 
-        short: '🎬', 
+      hardware: {
+        name: '数码硬件',
+        short: '💻',
         items: [
-          {name: "Netflix", desc: "流媒体影视", url: "https://netflix.com", bg: "linear-gradient(135deg, #141414, #000000)", color: "#e50914", svg: `<svg viewBox="0 0 1024 1024"><path d="M256 128v768h146V454l220 442h146V128H622v438L402 128H256z"/></svg>`},
-          {name: "Apple TV+", desc: "原创高品质剧集", url: "https://tv.apple.com", bg: "linear-gradient(135deg, #2c2c2e, #111111)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M578.1 272.1c42.8-51.9 71.4-124 63.5-196.1-61.9 2.5-136.9 41.2-181.3 93.2-39.6 45.4-74.2 118.8-64.7 189.6 69.1 5.4 139.7-34.8 182.5-86.7zm202.9 313.3c-3.7-93.2 76.2-137.9 79.5-139.9-43.3-63.5-110.6-72.2-134.5-73.2-57.4-5.9-112.4 34.2-141.5 34.2-29.3 0-73.4-33.7-121.6-32.8-63.5.9-122.1 37.1-154.9 94.1-66.3 115.1-16.9 285.4 47 378 31.4 45.4 68.5 95.8 117.6 94.1 47-1.8 64.9-30.3 121.6-30.3 56.4 0 72.8 30.3 121.6 29.3 50-.9 83.3-45.9 114.5-91.2 36.1-52.8 51.1-104.1 52.1-106.8-2.2-1-98.9-37.9-105.9-129.5z"/></svg>`},
-          {name: "Disney+", desc: "迪士尼流媒体", url: "https://disneyplus.com", bg: "linear-gradient(135deg, #0c1947, #020514)", color: "#00e6ff", svg: `<svg viewBox="0 0 1024 1024"><path d="M685.2 384c-31.4 0-61.4 12.8-83.8 35.8-24.1 24.1-37.4 56.7-37.4 91.2s13.3 67.1 37.4 91.2c22.4 23 52.4 35.8 83.8 35.8 65.3 0 118.4-55.3 118.4-127s-53.1-127-118.4-127zm-346.4 0H160v254h178.8c42.8 0 78.5-35.8 78.5-79.5V463.5c0-43.7-35.7-79.5-78.5-79.5zM512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z"/></svg>`}
-        ]
-      },
-      news: { 
-        name: '日常资讯', 
-        short: '📰', 
-        items: [
-          {name: "澎湃新闻", desc: "时事要闻", url: "https://www.thepaper.cn", bg: "linear-gradient(135deg, #3a3a3c, #1c1c1e)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm192 576H320V384h384v256z"/></svg>`},
-          {name: "纽约时报", desc: "国际时事", url: "https://nytimes.com", bg: "linear-gradient(135deg, #e5e5ea, #d1d1d6)", color: "#000000", svg: `<svg viewBox="0 0 1024 1024"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm46.5 565.4c-12 14.5-28 22.5-44.5 22.5h-54.3c-26.5 0-46.5-18.5-46.5-44.5V441c0-26.5 18.5-44.5 44.5-44.5h54.3c16.5 0 32.5 8 44.5 22.5V629.4z"/></svg>`},
-          {name: "CNN", desc: "美国有线电视新闻", url: "https://www.cnn.com", bg: "linear-gradient(135deg, #cc0000, #990000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm254.6 512.2c0 88.4-56.6 127.8-135.4 127.8H454.4V320h176.8c78.8 0 135.4 39.4 135.4 127.8v128.4z"/></svg>`},
-          {name: "Fox News", desc: "福克斯新闻", url: "https://www.foxnews.com", bg: "linear-gradient(135deg, #183a60, #0d1f34)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm192 256v256H448V448h192V384H448v-64h256z"/></svg>`},
-          {name: "华盛顿邮报", desc: "华盛顿邮报", url: "https://www.washingtonpost.com", bg: "linear-gradient(135deg, #222222, #111111)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M128 128h768v128H128V128zm0 320h768v128H128V448zm0 320h768v128H128V768z"/></svg>`},
-          {name: "BBC News", desc: "BBC News 中文", url: "https://www.bbc.com/zhongwen/simp", bg: "linear-gradient(135deg, #bb1919, #7a1010)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M128 320h224v224H128zm288 0h224v224H416zm288 0h224v224H704z"/></svg>`},
-          {name: "Yahoo", desc: "雅虎新闻", url: "https://news.yahoo.com", bg: "linear-gradient(135deg, #6001d2, #46009b)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm151.2 256l-102.4 220.8V672h-54.4V540.8L404 320h57.6l73.6 169.6L608.8 320h54.4zm100.8 320c-15.2 0-27.5-12.3-27.5-27.5s12.3-27.5 27.5-27.5 27.5 12.3 27.5 27.5-12.3 27.5-27.5 27.5z"/></svg>`}
+          // 手机生态组
+          { name: "Apple 官网", desc: "iPhone、Mac、iPad 苹果生态线", url: "https://www.apple.com.cn/", bg: "linear-gradient(135deg, #000000, #222222)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "Apple 零售店", desc: "全国 Apple Store 直营店预约", url: "https://www.apple.com.cn/retail/", bg: "linear-gradient(135deg, #3a3a3c, #1c1c1e)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "华为 HUAWEI", desc: "华为手机、鸿蒙全场景智能硬件", url: "https://www.huawei.com/cn/", bg: "linear-gradient(135deg, #ca141d, #9a0f16)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "小米 Xiaomi", desc: "小米手机、人车家全生态智能硬件", url: "https://www.mi.com/", bg: "linear-gradient(135deg, #ff6700, #cc5200)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "vivo 官方网站", desc: "vivo/iQOO智能手机与车载生态", url: "https://www.vivo.com.cn/", bg: "linear-gradient(135deg, #415fff, #1a39cc)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "OPPO 智能硬件", desc: "OPPO 出海旗舰数码及配件专区", url: "https://www.oppo.com/hk/", bg: "linear-gradient(135deg, #008148, #004d2b)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          // 摄影创作设备组
+          { name: "DJI 大疆创新", desc: "无人机、手持影音、运动相机旗舰", url: "https://www.dji.com/cn", bg: "linear-gradient(135deg, #0084ff, #005bc4)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "Insta360 影石", desc: "全景相机、全景运动运动影音装备", url: "https://store.insta360.com/zh-hans/", bg: "linear-gradient(135deg, #121212, #333333)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "索尼 SONY", desc: "Alpha相机、PlayStation游戏音频", url: "https://www.sonystyle.com.cn/", bg: "linear-gradient(135deg, #000000, #1a1a1a)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "佳能 Canon", desc: "EOS微单相机及影像输出设备", url: "https://www.canon.com.cn/", bg: "linear-gradient(135deg, #cc0000, #990000)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "尼康 Nikon", desc: "尼康Z系列微单相机、尼克尔镜头", url: "https://www.nikon.com.cn/", bg: "linear-gradient(135deg, #ffe100, #ccb400)", color: "#333333", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "富士胶片", desc: "X系列、GFX中画幅与拍立得专区", url: "https://www.fujifilm.com.cn/cn/zh-hans", bg: "linear-gradient(135deg, #006644, #00442e)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          // 网络工具与智能出行组
+          { name: "TP-Link 路由面板", desc: "本地局域网192网关控制台配置", url: "http://192.168.0.1/", bg: "linear-gradient(135deg, #4caf50, #212121)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` },
+          { name: "上汽大通 G50", desc: "G50 PLUS 汽车MPV车型价格参数", url: "https://www.saicmaxus.com/car/g50plus.shtml", bg: "linear-gradient(135deg, #0d47a1, #1565c0)", color: "#ffffff", svg: `<svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="400" fill="currentColor"/></svg>` }
         ]
       }
     };
