@@ -107,10 +107,7 @@
         width: var(--icon-size);
         height: var(--icon-size);
         border-radius: var(--icon-radius);
-        
-        /* 🧼 官方同款：轻薄、高透气的微散射柔和阴影 + 1px 内发光勾边 */
         box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
-        
         display: flex;
         align-items: center;
         justify-content: center;
@@ -121,7 +118,6 @@
     }
 
     .icon-wrapper svg {
-        /* 48% 黄金留白比例 */
         width: calc(var(--icon-size) * 0.48);
         height: calc(var(--icon-size) * 0.48);
         fill: currentColor;
@@ -141,71 +137,112 @@
         opacity: 0.92;
     }
 
-    /* ==================== 5. iOS 全透明 Dock 栏 + 胶囊级分类图标 ==================== */
+    /* ==================== 5. iOS 全透明 Dock 栏 + 内嵌胶囊一体化 ==================== */
     footer {
         position: relative;
         z-index: 2;
         width: 100%;
-        padding-bottom: calc(14px + env(safe-area-inset-bottom));
+        padding-bottom: calc(20px + env(safe-area-inset-bottom));
         padding-top: 10px;
         display: flex;
         justify-content: center;
     }
 
     .dock-container {
-        /* 外围大容器完全保持透明空气感 */
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
         
-        height: var(--icon-size);
-        padding: 0 20px;
+        height: var(--icon-size); 
+        padding: 0 16px;
         display: flex;
-        align-items: center;
+        align-items: center; 
         justify-content: center;
-        gap: 22px; 
+        gap: 20px; 
         box-sizing: border-box;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
+    /* Dock 项外围触发器 */
     .dock-item {
-        /* 🔗 严格锁死：长宽尺寸与上方 App 保持 1:1 绝对一致 */
-        width: var(--icon-size);
-        height: var(--icon-size);
-        
-        /* 💯 完美克隆：赋予和上方 App 一模一样的连续曲率圆角 */
-        border-radius: var(--icon-radius) !important;
-        
-        /* 💎 调入高级毛玻璃底座，并注入与上方完全相同的散射阴影与 1px 微光勾边 */
-        background: rgba(255, 255, 255, 0.08) !important;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
-        
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        
-        /* 🧘 比例收敛：使 Emoji 的视觉分量与 48% 的 SVG 保持完美的空间呼吸平衡 */
-        font-size: calc(var(--icon-size) * 0.46); 
         cursor: pointer;
         position: relative;
         box-sizing: border-box;
         
-        /* 呼吸感：未激活时保持高雅的半透明 */
+        /* 未激活时保持高雅的半透明 */
         opacity: 0.65;
         transform: scale(0.96);
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    /* 激活态：点亮、底座加深、并恢复 100% 不透明度 */
+    /* 💎 核心修改：内嵌纵向排版的高级毛玻璃底座 */
+    .dock-icon-wrapper {
+        width: var(--icon-size);
+        height: var(--icon-size);
+        border-radius: var(--icon-radius) !important;
+        
+        background: rgba(255, 255, 255, 0.08) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+        
+        /* 🧬 变为垂直 Flex 排版，让 Emoji 和文字在方块内部上下堆叠 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px; /* 极其紧凑的内部呼吸间距 */
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    /* 方块内部的 Emoji：微调尺寸腾出纵向空间 */
+    .dock-emoji {
+        font-size: calc(var(--icon-size) * 0.36); 
+        line-height: 1;
+        transition: transform 0.3s ease;
+    }
+
+    /* 🏷️ 方块内部的 嵌入式文字标签 */
+    .dock-name {
+        color: var(--text-main);
+        /* 比例指针：字体随整个图标尺寸等比例缩放，防止在大屏或 iPad 上失真 */
+        font-size: calc(var(--icon-size) * 0.15); 
+        font-weight: 400;
+        letter-spacing: 0.2px;
+        text-align: center;
+        width: 88%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        opacity: 0.75;
+        line-height: 1;
+    }
+
+    /* 激活态：整体恢复 100% 不透明度 */
     .dock-item.active {
         opacity: 1;
         transform: scale(1.02);
+    }
+
+    /* 激活态：方块底座加深，微光边缘点亮 */
+    .dock-item.active .dock-icon-wrapper {
         background: rgba(255, 255, 255, 0.18) !important;
         box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16), inset 0 0 0 1px rgba(255, 255, 255, 0.15) !important;
+    }
+
+    /* 激活态：内部细节微调 */
+    .dock-item.active .dock-name {
+        opacity: 1;
+        font-weight: 500;
+    }
+    .dock-item.active .dock-emoji {
+        transform: scale(1.05); /* 激活时 Emoji 轻微放大 */
     }
 
     .dock-item:active {
@@ -216,7 +253,7 @@
     .dock-item::after {
         content: '';
         position: absolute;
-        bottom: -5px; 
+        bottom: -8px; /* 直接挂在方块底边下方 */
         left: 50%;
         transform: translateX(-50%) scale(0);
         width: 4px;
@@ -232,8 +269,6 @@
     }
 
     /* ==================== 6. 跨设备精密全局响应式 ==================== */
-    
-    /* 📱 iPhone 横屏 / 🪜 iPad 竖屏设备 */
     @media (min-width: 550px) and (max-width: 1024px) {
         :root {
             --icon-size: 68px; 
@@ -244,11 +279,10 @@
             gap: 36px 20px;
         }
         .dock-container {
-            gap: 30px;
+            gap: 26px;
         }
     }
 
-    /* 💻 iPad 横屏 / 🖥️ Mac 桌面端 */
     @media (min-width: 1025px) {
         :root {
             --icon-size: 74px; 
@@ -259,7 +293,7 @@
             gap: 44px 24px;
         }
         .dock-container {
-            gap: 36px; 
+            gap: 32px; 
         }
         .app-name {
             font-size: 12px;
@@ -381,13 +415,21 @@ const DATA = {
         document.getElementById('main').scrollTop = 0;
     }
 
-    // 1. 动态生成优雅的 Dock 栏项目 (排除了原苹果标志，现在只直接生成分类标签)
+    // 1. 动态生成内嵌式 Dock 项目 (Emoji 与文字完全融入方块内部)
     Object.keys(DATA).forEach(key => {
         const item = document.createElement('div');
         item.className = 'dock-item';
         item.dataset.key = key;
         item.title = DATA[key].name;
-        item.innerHTML = DATA[key].short;
+        
+        // 🛠️ 核心修改：将文字（dock-name）放进 dock-icon-wrapper 内部，并把原 Emoji 用 span.dock-emoji 包裹起来
+        item.innerHTML = `
+            <div class="dock-icon-wrapper">
+                <span class="dock-emoji">${DATA[key].short}</span>
+                <span class="dock-name">${DATA[key].name}</span>
+            </div>
+        `;
+        
         item.onclick = () => renderApps(key);
         dock.appendChild(item);
     });
