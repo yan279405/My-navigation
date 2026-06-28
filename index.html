@@ -21,7 +21,7 @@
         --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
     }
 
-    /* 动态壁纸：深色模式 (Mac/iPad/iPhone 原生质感) */
+  /* 动态壁纸：深色模式 (Mac/iPad/iPhone 原生质感) */
     body {
         margin: 0;
         padding: 0;
@@ -29,17 +29,23 @@
         height: 100vh;
         width: 100vw;
         overflow: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+
+        /* 👇 核心：完美解决移动端触摸失灵与延迟 👇 */
+        touch-action: manipulation;              /* 禁用双击缩放，消除 300ms 点击延迟 */
+        overscroll-behavior: none;              /* 禁用橡皮筋回弹、下拉刷新导致的页面死锁 */
+        -webkit-user-select: none;              /* 禁止用户长按文字弹出框，防止 UI 卡死 */
         user-select: none;
-        -webkit-user-select: none;
-        -webkit-tap-highlight-color: transparent;
+        -webkit-tap-highlight-color: transparent; /* 移除移动端点击图标时出现的半透明黑色高亮方块 */
+
+        /* 👇 核心：你的精美渐变背景与动画 👇 */
         background: radial-gradient(circle at 10% 10%, #1a1a2e 0%, #16213e 40%, #0f3460 80%, #e94560 120%);
         background-size: cover;
         background-attachment: fixed;
         transition: background 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-        display: flex;
-        flex-direction: column;
     }
-
     /* 动态壁纸：浅色模式 */
     @media (prefers-color-scheme: light) {
         body {
@@ -232,8 +238,8 @@
     <nav class="dock" id="dock"></nav>
 </div>
 
-<script>
-// 注册 Service Worker，激活 PWA
+    <script>
+// 1. 注册 Service Worker，激活 PWA（保持独立）
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
@@ -241,6 +247,22 @@ if ('serviceWorker' in navigator) {
             .catch(err => console.log('PWA 安装失败', err));
     });
 }
+
+// 2. 强力防卡死补丁（放在大括号外面，作为全局底层保护）
+// 阻止 iOS 双指放大页面导致触摸焦点偏移
+document.addEventListener('gesturestart', function(event) {
+    event.preventDefault();
+});
+
+// 阻止连续快速双击空白处导致页面物理缩放死锁
+let lastTouchEnd = 0;
+document.addEventListener('touchend', function(event) {
+    const now = (new Date()).getTime();
+    if (now - lastTouchEnd <= 300) {
+        event.preventDefault(); // 拦截双击放大行为
+    }
+    lastTouchEnd = now;
+}, { passive: false });
     // 沉淀清空后的全新数据结构：所有 Logo 升级为最新官方 SVG 原生代码
     const DATA = {
     cn: { 
