@@ -171,7 +171,7 @@ footer {
     opacity: 0.3;
     font-weight: 300;
 }
-
+/* 💎 找到你原本的 .dock-container，用这段覆盖 */
     .dock-container {
         background: transparent !important;
         border: none !important;
@@ -187,9 +187,12 @@ footer {
         gap: 20px; 
         box-sizing: border-box;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+        /* 🔒 核心修复锁 1 */
+        touch-action: none;          /* 🚫 强行禁止全浏览器手势拦截！告诉手机：这里绝对不允许滚动，100% 优先响应点击 */
     }
 
-    /* Dock 项外围触发器 */
+    /* 💎 找到你原本的 .dock-item，用这段覆盖 */
     .dock-item {
         display: flex;
         flex-direction: column;
@@ -202,6 +205,12 @@ footer {
         opacity: 0.65;
         transform: scale(0.96);
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+        /* 🔒 核心修复锁 2 */
+        touch-action: none;          /* 🚫 再次双保险锁定，防止单项微小位移吞掉事件 */
+        -webkit-touch-callout: none; /* 🚫 彻底禁用 iOS 长按弹出放大镜/系统菜单，断绝长按死锁 */
+        -webkit-user-select: none;   /* 🚫 严禁任何 Dock 文字被不小心选中蓝块 */
+        user-select: none;
     }
 
     /* 💎 核心修改：内嵌纵向排版的高级毛玻璃底座 */
