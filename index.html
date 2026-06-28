@@ -10,6 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
 <title>Creator Hub OS26 - Apple Ecosystem Edition</title>
 <style>
+    <style>
     /* ==================== 1. Apple 原生生态核心变量 ==================== */
     :root {
         --text-main: #ffffff;
@@ -19,6 +20,9 @@
         --dock-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
         --icon-radius: 22.5%; /* Apple 标准连续曲率圆角比例 */
         --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
+
+        /* 🎯 核心：定义全局唯一的图标尺寸锚点（默认 iPhone 竖屏为 62px） */
+        --icon-size: 62px;
     }
 
     /* 动态壁纸：深色模式 (Mac/iPad/iPhone 原生质感) */
@@ -33,14 +37,13 @@
         display: flex;
         flex-direction: column;
 
-        /* 👇 核心：完美解决移动端触摸失灵与延迟 👇 */
-        touch-action: manipulation;              /* 禁用双击缩放，消除 300ms 点击延迟 */
-        overscroll-behavior: none;              /* 禁用橡皮筋回弹、下拉刷新导致的页面死锁 */
-        -webkit-user-select: none;              /* 禁止用户长按文字弹出框，防止 UI 卡死 */
+        /* 核心：完美解决移动端触摸失灵与延迟 */
+        touch-action: manipulation;              
+        overscroll-behavior: none;              
+        -webkit-user-select: none;              
         user-select: none;
-        -webkit-tap-highlight-color: transparent; /* 移除移动端点击图标时出现的半透明黑色高亮方块 */
+        -webkit-tap-highlight-color: transparent; 
 
-        /* 👇 核心：你的精美渐变背景与动画 👇 */
         background: radial-gradient(circle at 10% 10%, #1a1a2e 0%, #16213e 40%, #0f3460 80%, #e94560 120%);
         background-size: cover;
         background-attachment: fixed;
@@ -70,7 +73,6 @@
         -webkit-overflow-scrolling: touch;
     }
 
-    /* 优化滚动条样式 */
     main::-webkit-scrollbar {
         width: 5px;
     }
@@ -79,17 +81,17 @@
         border-radius: 10px;
     }
 
-    /* 默认基础布局：iPhone 竖屏 (严格遵守智能手机标准 4 列布局) */
+    /* 默认基础布局：iPhone 竖屏 */
     .app-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr); 
         gap: 28px 16px;
         max-width: 480px;
         margin: 0 auto;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* 旋转或缩放时平滑过渡 */
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    /* ==================== 4. Apple 连续曲率高保真图标 ==================== */
+    /* ==================== 4. Apple 连续曲率高保真桌面图标 ==================== */
     .app-icon {
         display: flex;
         flex-direction: column;
@@ -101,13 +103,14 @@
     }
 
     .app-icon:active {
-        transform: scale(0.88); /* 按压时呈木偶式物理内缩弹性反馈 */
+        transform: scale(0.88); 
     }
 
     .icon-wrapper {
-        width: 62px;
-        height: 62px;
-        border-radius: calc(62px * var(--icon-radius) / 100%);
+        /* 🔗 强绑定：完全继承全局图标尺寸变量 */
+        width: var(--icon-size);
+        height: var(--icon-size);
+        border-radius: calc(var(--icon-size) * var(--icon-radius) / 100%);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18), inset 0 0 1px rgba(255, 255, 255, 0.2);
         display: flex;
         align-items: center;
@@ -115,14 +118,14 @@
         margin-bottom: 7px;
         position: relative;
         overflow: hidden;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .icon-wrapper svg {
-        width: 36px;
-        height: 36px;
+        /* 根据图标整体尺寸按比例缩放内部 SVG */
+        width: calc(var(--icon-size) * 0.58);
+        height: calc(var(--icon-size) * 0.58);
         fill: currentColor;
-        transition: all 0.3s ease;
     }
 
     .app-name {
@@ -136,65 +139,9 @@
         overflow: hidden;
         text-overflow: ellipsis;
         text-shadow: var(--text-shadow);
-        transition: all 0.3s ease;
     }
 
-    /* ==================== 4.5 跨设备精密尺寸与横竖屏自适应媒体查询 ==================== */
-    
-    /* 📱 iPhone 横屏 / 🪜 iPad 竖屏设备 (自动扩展为中等阵列) */
-    @media (min-width: 550px) and (max-width: 1024px) {
-        .app-grid {
-            grid-template-columns: repeat(6, 1fr); /* 优雅自动扩展为 6 列 */
-            max-width: 720px;
-            gap: 32px 20px;
-        }
-        .icon-wrapper {
-            width: 68px;
-            height: 68px;
-        }
-        .icon-wrapper svg {
-            width: 38px;
-            height: 38px;
-        }
-        .app-name {
-            font-size: 12px;
-        }
-    }
-
-    /* 💻 iPad 横屏 / 🖥️ Mac 桌面端 (宽屏无缝铺开，完美还原 macOS Launchpad 质感) */
-    @media (min-width: 1025px) {
-        .app-grid {
-            grid-template-columns: repeat(8, 1fr); /* 大气扩展为 8 列 */
-            max-width: 1000px;
-            gap: 40px 24px;
-        }
-        .icon-wrapper {
-            width: 74px;
-            height: 74px;
-        }
-        .icon-wrapper svg {
-            width: 42px;
-            height: 42px;
-        }
-        .app-name {
-            font-size: 12.5px;
-            letter-spacing: 0.5px;
-        }
-        /* 在 Mac/iPad大屏上对底部 Dock 栏进行等比例舒适微调放大 */
-        .dock-container {
-            height: 54px;
-            padding: 7px 22px;
-            gap: 22px;
-            border-radius: 35px;
-        }
-        .dock-item {
-            width: 38px;
-            height: 38px;
-            font-size: 24px;
-        }
-    }
-
-    /* ==================== 5. iOS 沉浸式超轻薄 Dock 栏 ==================== */
+    /* ==================== 5. iOS/macOS 沉浸式流体自适应 Dock 栏 ==================== */
     footer {
         position: relative;
         z-index: 2;
@@ -203,7 +150,7 @@
         padding-top: 10px;
         display: flex;
         justify-content: center;
-        background: linear-gradient(to top, rgba(0,0,0,0.08), transparent);
+        background: linear-gradient(to top, rgba(0,0,0,0.05), transparent);
     }
 
     .dock-container {
@@ -212,49 +159,93 @@
         box-shadow: var(--dock-shadow);
         backdrop-filter: blur(30px) saturate(210%);
         -webkit-backdrop-filter: blur(30px) saturate(210%);
-        border-radius: 31px;
-        padding: 7px 16px;
+        
+        /* 🧠 智能自适应：高度和圆角由当前图标尺寸+内部外衬填充动态决定，绝不变形 */
+        height: calc(var(--icon-size) + 16px);
+        border-radius: calc((var(--icon-size) + 16px) / 2); 
+        
+        padding: 0 16px;
         display: flex;
         align-items: center;
         gap: 16px;
-        height: 48px;
         box-sizing: border-box;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .dock-item {
-        width: 34px;
-        height: 34px;
+        /* 🔗 强绑定：完全继承全局图标尺寸变量，达成 1:1 克隆效果 */
+        width: var(--icon-size);
+        height: var(--icon-size);
+        border-radius: calc(var(--icon-size) * var(--icon-radius) / 100%);
+        
+        /* 🎨 统一质感：给纯文本/Emoji图标赋予与桌面App完全相同的毛玻璃高质感容器 */
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12), inset 0 0 1px rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 20px;
+        /* ⚙️ 比例缩放：让 Emoji 字符大小完美平滑比例契合容器 */
+        font-size: calc(var(--icon-size) * 0.52); 
         cursor: pointer;
-        transition: transform 0.2s ease, filter 0.2s ease;
         position: relative;
+        box-sizing: border-box;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .dock-item:active {
-        transform: scale(0.85);
+        transform: scale(0.88);
     }
 
+    /* 激活指示器小圆点位置优化 */
     .dock-item::after {
         content: '';
         position: absolute;
-        bottom: -6px;
+        bottom: 3px; /* 锁死在图标边缘内侧上方，防止因为设备变大而跑出 Dock 栏 */
         left: 50%;
         transform: translateX(-50%) scale(0);
         width: 4px;
         height: 4px;
         border-radius: 50%;
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(255, 255, 255, 0.95);
         transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .dock-item.active::after {
         transform: translateX(-50%) scale(1);
     }
+
+    /* ==================== 6. 跨设备精密全局自适应（仅改变基准变量） ==================== */
     
+    /* 📱 iPhone 横屏 / 🪜 iPad 竖屏设备 (整体同调放大至 68px) */
+    @media (min-width: 550px) and (max-width: 1024px) {
+        :root {
+            --icon-size: 68px; 
+        }
+        .app-grid {
+            grid-template-columns: repeat(6, 1fr); /* 扩充至 6 列 */
+            max-width: 720px;
+            gap: 32px 20px;
+        }
+    }
+
+    /* 💻 iPad 横屏 / 🖥️ Mac 桌面端 (整体同调放大至 74px) */
+    @media (min-width: 1025px) {
+        :root {
+            --icon-size: 74px; 
+        }
+        .app-grid {
+            grid-template-columns: repeat(8, 1fr); /* 铺满至 8 列 */
+            max-width: 1000px;
+            gap: 40px 24px;
+        }
+        .dock-container {
+            gap: 20px; /* 增大 Mac 桌面端 Dock 栏的图标间距，更显大气 */
+            padding: 0 22px;
+        }
+    }
 </style>
 </head>
 <body>
