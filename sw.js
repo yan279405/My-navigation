@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hub-os-cache-v1';
+const CACHE_NAME = 'hub-os-cache-v26';
 const urlsToCache = [
   './',
   './index.html',
