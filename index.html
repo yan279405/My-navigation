@@ -23,29 +23,27 @@
         --icon-size: 62px;
     }
 
-    /* 动态壁纸：深色模式 */
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: var(--font-stack);
-        height: 100vh;
-        width: 100vw;
-        overflow: hidden;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-
-        touch-action: manipulation;              
-        overscroll-behavior: none;              
-        -webkit-user-select: none;              
-        user-select: none;
-        -webkit-tap-highlight-color: transparent; 
-
-        background: radial-gradient(circle at 10% 10%, #1a1a2e 0%, #16213e 40%, #0f3460 80%, #e94560 120%);
-        background-size: cover;
-        background-attachment: fixed;
-        transition: background 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
+    /* 1. 修复 body 的高度危机 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-stack);
+    height: 100dvh;              /* ✨ 修复：改成 100dvh，彻底解决 iOS Safari 底部工具栏遮挡 Dock 的顽疾 */
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    touch-action: manipulation;              
+    overscroll-behavior: none;              
+    -webkit-user-select: none;              
+    user-select: none;
+    -webkit-tap-highlight-color: transparent; 
+    background: radial-gradient(circle at 10% 10%, #1a1a2e 0%, #16213e 40%, #0f3460 80%, #e94560 120%);
+    background-size: cover;
+    background-attachment: fixed;
+    transition: background 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
 
     /* 全屏毛玻璃视口 */
     .blur-overlay {
@@ -137,16 +135,42 @@
         opacity: 0.92;
     }
 
-    /* ==================== 5. iOS 全透明 Dock 栏 + 内嵌胶囊一体化 ==================== */
-    footer {
-        position: relative;
-        z-index: 2;
-        width: 100%;
-        padding-bottom: calc(20px + env(safe-area-inset-bottom));
-        padding-top: 10px;
-        display: flex;
-        justify-content: center;
-    }
+   /* 2. 优雅重构 Footer 和常驻签名（扔掉所有危险的负 margin 和巨大位移） */
+footer {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom)); /* 全面屏底部安全垫 */
+    padding-top: 10px;
+    
+    display: flex;
+    flex-direction: column;     
+    align-items: center;
+    justify-content: center;
+    gap: 14px;                  /* ✨ 修复：利用 Flex 的 gap 自动控制文字与 Dock 的黄金呼吸间距，绝不重叠 */
+}
+
+/* 🏷️ 常驻昵称与联系方式（上下两行高保真排版） */
+.user-signature {
+    font-size: 11px;             
+    color: rgba(255, 255, 255, 0.45); 
+    letter-spacing: 0.6px;       
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); 
+    
+    display: flex;
+    flex-direction: column;     
+    align-items: center;        
+    gap: 5px;                   
+    
+    /* ✨ 修复：彻底删除原有的 margin-top: -25px 和 transform: translateY(-110px) */
+    user-select: text;
+    -webkit-user-select: text;
+}
+/* 竖线分割符的微调 */
+.signature-split {
+    opacity: 0.3;
+    font-weight: 300;
+}
 
     .dock-container {
         background: transparent !important;
@@ -208,21 +232,21 @@
         transition: transform 0.3s ease;
     }
 
-    /* 🏷️ 方块内部的 嵌入式文字标签 */
-    .dock-name {
-        color: var(--text-main);
-        /* 比例指针：字体随整个图标尺寸等比例缩放，防止在大屏或 iPad 上失真 */
-        font-size: calc(var(--icon-size) * 0.15); 
-        font-weight: 400;
-        letter-spacing: 0.2px;
-        text-align: center;
-        width: 88%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        opacity: 0.75;
-        line-height: 1;
-    }
+    /* 3. 规避小字号被系统强行放大的风险 */
+.dock-name {
+    color: var(--text-main);
+    /* ✨ 修复：设定最小 10px 保护线，防止在部分安卓或老款 iPhone 上排版因字体限制而错乱变大 */
+    font-size: clamp(10px, calc(var(--icon-size) * 0.15), 12px); 
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    text-align: center;
+    width: 88%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0.75;
+    line-height: 1;
+}
 
     /* 激活态：整体恢复 100% 不透明度 */
     .dock-item.active {
@@ -268,37 +292,22 @@
         transform: translateX(-50%) scale(1);
     }
 
-    /* ==================== 6. 跨设备精密全局响应式 ==================== */
-    @media (min-width: 550px) and (max-width: 1024px) {
-        :root {
-            --icon-size: 68px; 
-        }
-        .app-grid {
-            grid-template-columns: repeat(6, 1fr); 
-            max-width: 720px;
-            gap: 36px 20px;
-        }
-        .dock-container {
-            gap: 26px;
-        }
+    /* 4. ✨ 新增：超小屏幕（宽小于 360px）手机防挤爆防线 */
+@media (max-width: 360px) {
+    :root {
+        --icon-size: 55px;     /* 极窄屏幕下微调缩小方块尺寸 */
     }
-
-    @media (min-width: 1025px) {
-        :root {
-            --icon-size: 74px; 
-        }
-        .app-grid {
-            grid-template-columns: repeat(8, 1fr); 
-            max-width: 1000px;
-            gap: 44px 24px;
-        }
-        .dock-container {
-            gap: 32px; 
-        }
-        .app-name {
-            font-size: 12px;
-        }
+    .dock-container {
+        gap: 12px;             /* 缩减方块间距 */
+        padding: 0 10px;
     }
+    main {
+        padding: calc(30px + env(safe-area-inset-top)) 16px 15px 16px; /* 压缩上方 App 矩阵的间距 */
+    }
+    .app-grid {
+        gap: 24px 12px;        /* 压缩 App 图标间距 */
+    }
+}
 </style>
 </head>
 <body>
@@ -311,8 +320,12 @@
 </main>
 
 <footer>
-    <div class="dock-container" id="dock">
-        </div>
+    <div class="user-signature">
+        <span class="nickname">🪄 颜途的视界</span>
+        <span class="contact-info">📱 微信：YourWeChat</span>
+    </div>
+
+    <div class="dock-container" id="dock"></div>
 </footer>
 
 <script>
