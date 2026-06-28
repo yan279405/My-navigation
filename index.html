@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-  <title>Creator Hub OS26 - Multi-Device Adaptive Edition</title>
+  <title>Creator Hub OS26 - Pure Adaptive Fluid Edition</title>
   
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon.png">
@@ -13,19 +13,13 @@
   
   <style>
     /* ==========================================================================\
-       1. 全局变量与跨端基础重置
+       1. 苹果极简主义全局基础重置
        ========================================================================== */
     :root {
       --text-main: #ffffff;
-      --text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
-      --icon-radius: 22%; /* 苹果经典官方图标圆角 */
+      --text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+      --icon-radius: 22%; /* 标准 iOS 图标圆角 */
       --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
-      
-      /* 响应式默认参数 (桌面端) */
-      --grid-cols: 8;
-      --grid-rows: 5;
-      --icon-size: 72px;
-      --side-padding: 8%;
     }
 
     * { 
@@ -44,7 +38,7 @@
       font-family: var(--font-stack);
       user-select: none;
       -webkit-user-select: none;
-      background: radial-gradient(circle at center, #253352 0%, #0b0f19 100%);
+      background: radial-gradient(circle at center, #232f48 0%, #090d14 100%);
       background-size: cover;
       background-position: center;
       display: flex;
@@ -52,24 +46,25 @@
       position: relative;
     }
 
-    /* 顶部导航状态栏安全高度占位 */
+    /* 顶部导航安全预留区域 */
     .top-header {
-      height: 40px;
+      height: 45px;
       width: 100%;
       flex-shrink: 0;
     }
 
     /* ==========================================================================\
-       2. 核心：安全区域 + 局域全屏上下翻页系统
+       2. 核心：自适应安全桌面容器（支持横竖屏无缝翻页滚动）
        ========================================================================== */
     .launchpad-container {
       flex: 1;
       width: 100%;
-      padding: 10px var(--side-padding) 20px var(--side-padding); 
+      /* 核心改动：两边空出 8%~10% 的呼吸区域，随屏幕大小流式缩放，永远保持优雅边距 */
+      padding: 10px min(10vw, 100px) 30px min(10vw, 100px); 
       overflow-x: hidden;
-      overflow-y: auto; /* 允许在安全区域内上下滚动翻页 */
+      overflow-y: auto; /* 允许在安全视口内上下滑动、滚轮翻页 */
       
-      /* 平滑滚动与 iOS 弹性物理回弹 */
+      /* 极其丝滑的滚动和 iOS 原生回弹 */
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch; 
       
@@ -78,67 +73,44 @@
       align-items: start;
     }
 
-    /* 隐藏滚动条但保留滚动功能（追求原生Mac纯净感） */
+    /* 隐藏粗糙的浏览器默认滚动条，维持系统纯净感 */
     .launchpad-container::-webkit-scrollbar {
       display: none;
     }
 
-    /* 动态计算的自适应网格 */
+    /* ==========================================================================\
+       3. 核心算法：流式自动网格（Auto-Fit Grid）
+       ========================================================================== */
     .app-grid {
       display: grid;
-      grid-template-columns: repeat(var(--grid-cols), 1fr);
+      /* 核心算法：
+         - minmax(68px, 1fr) 让浏览器根据可用宽度自动计算能塞下多少列。
+         - 绝不写死 8 列或 4 列。在大 Mac 屏上它自动变成 8 列或更多；在iPhone竖屏上自动变成 4 列。
+         - 从而完美适应任何横屏、竖屏、平板，且图标绝不被捏扁挤变形。
+      */
+      grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+      
       width: 100%;
-      max-width: 1280px;
-      column-gap: 24px;
-      row-gap: 28px;
+      max-width: 1200px; /* 限制大显示器上的过度拉伸 */
+      
+      /* 严谨的响应式间距控制 */
+      column-gap: min(4vw, 32px);
+      row-gap: min(5vh, 32px);
+      
       justify-items: center;
       align-items: start;
-      padding-bottom: 40px; /* 底部留白，防止紧贴 Dock 栏 */
+      padding-bottom: 50px;
     }
 
     /* ==========================================================================\
-       3. 媒体查询：多端、横竖屏完美智能化适配
-       ========================================================================== */
-    
-    /* 📱 手机端/窄屏竖屏 适配：改用 4列 布局 */
-    @media (max-width: 600px) and (orientation: portrait) {
-      :root {
-        --grid-cols: 4;
-        --icon-size: 60px;
-        --side-padding: 5%;
-      }
-      .app-grid { column-gap: 12px; row-gap: 20px; }
-    }
-
-    /* 📱 手机端横屏 适配：保持 6或8列，缩小图标 */
-    @media (max-height: 500px) and (orientation: landscape) {
-      :root {
-        --grid-cols: 7;
-        --icon-size: 50px;
-        --side-padding: 6%;
-      }
-      .app-grid { row-gap: 14px; }
-      .top-header { height: 15px; }
-    }
-
-    /* 📑 平板（iPad）竖屏 适配：6列 画面更规整 */
-    @media (min-width: 601px) and (max-width: 1024px) and (orientation: portrait) {
-      :root {
-        --grid-cols: 6;
-        --icon-size: 68px;
-        --side-padding: 7%;
-      }
-    }
-
-    /* ==========================================================================\
-       4. 图标与文字样式（完美裁切与高兼容渲染）
+       4. 应用组件容器（彻底解决乱七八糟和文字错位）
        ========================================================================== */
     .app-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 100%;
-      max-width: 90px;
+      max-width: 85px; /* 锁死单个条目最大横向宽度 */
       cursor: pointer;
       transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease;
       outline: none;
@@ -146,26 +118,29 @@
 
     .app-item:active {
       transform: scale(0.9);
-      opacity: 0.75;
+      opacity: 0.8;
     }
 
+    /* 图标包裹层：严格控制宽高一致，加阴影 */
     .icon-wrapper {
-      width: var(--icon-size);
-      height: var(--icon-size);
+      width: 100%;
+      aspect-ratio: 1 / 1; /* 强制保持完美正方形，防止各种奇葩变形 */
+      max-width: 68px;    /* 限制图标最大物理尺寸 */
+      min-width: 50px;    /* 限制图标在极窄手机上的最小物理尺寸 */
       border-radius: var(--icon-radius);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       position: relative;
-      transition: box-shadow 0.2s ease;
     }
 
-    /* 清理和统一注入进去的 SVG 图标格式 */
+    /* 全局规范并注入 SVG 图标 */
     .icon-wrapper svg {
-      width: 55% !important;
-      height: 55% !important;
+      width: 52% !important;
+      height: 52% !important;
       display: block;
     }
 
@@ -175,10 +150,17 @@
       object-fit: cover;
     }
 
-    /* 严格限制单行截断 */
+    /* 统一的兜底首字母文字图标样式 */
+    .icon-fallback {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+
+    /* 严格限制单行长文本裁切（防撑开） */
     .app-name {
-      margin-top: 7px;
-      font-size: 12px;
+      margin-top: 8px;
+      font-size: 11px;
       font-weight: 500;
       color: var(--text-main);
       text-shadow: var(--text-shadow);
@@ -186,36 +168,36 @@
       width: 100%;
       padding: 0 2px;
       
+      /* 严格单行省略 */
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     /* ==========================================================================\
-       5. 底部高斯模糊毛玻璃 Dock 栏
+       5. 页面底座 Dock 栏（自适应毛玻璃）
        ========================================================================== */
     .dock-container {
       width: 100%;
       display: flex;
       justify-content: center;
       padding-bottom: 15px;
-      padding-top: 10px;
+      padding-top: 5px;
       flex-shrink: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.2), transparent);
     }
 
     .dock {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.14);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 24px;
-      padding: 8px 12px;
+      border-radius: 22px;
+      padding: 6px 12px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-      max-width: 95%;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      max-width: 92%;
       overflow-x: auto;
     }
     .dock::-webkit-scrollbar { display: none; }
@@ -225,19 +207,18 @@
       flex-direction: column;
       align-items: center;
       cursor: pointer;
-      padding: 4px 10px;
-      transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+      padding: 4px 12px;
+      transition: all 0.2s ease;
     }
 
     .dock-icon-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
     }
 
     .dock-emoji {
-      font-size: 22px;
+      font-size: 20px;
       line-height: 1.2;
     }
 
@@ -245,8 +226,8 @@
       font-size: 9px;
       color: #fff;
       margin-top: 1px;
-      font-weight: 600;
-      opacity: 0.85;
+      font-weight: 500;
+      opacity: 0.8;
     }
   </style>
 </head>
@@ -265,8 +246,8 @@
   </div>
 
   <script>
-    // 包含清理逻辑和高健壮性的完整数据源（自动清理之前的反斜杠转义错误）
-const DATA = {
+    // 包含高健壮性格式化、自动清洗错误反斜杠的完整干净数据源
+    const DATA = {
     mediaPlatforms: {
         name: '自媒体与视频创作平台（国内/国际）',
         short: '📹',
@@ -439,23 +420,20 @@ const DATA = {
     const dock = document.getElementById('dockBar');
     const scrollContainer = document.getElementById('scrollContainer');
 
-    // 清洗并安全地格式化 SVG 字符串，确保可以被浏览器正常识别渲染
+    // 管道清洗：消除历史脏数据带来的转义斜杠并渲染合法 SVG
     function cleanSVG(svgStr) {
       if (!svgStr) return '';
-      // 移除由于之前转义产生的不合规反斜杠
       let clean = svgStr.replace(/\\"/g, '"').replace(/\\'/g, "'");
-      // 补全缺失 fill 属性的无色状况
       if (!clean.includes('fill=')) {
         clean = clean.replace('<svg', '<svg fill="currentColor"');
       }
       return clean;
     }
 
-    // 渲染桌面应用组
+    // 渲染桌面
     function renderApps(categoryKey) {
       grid.innerHTML = '';
-      // 每次切换类目时，重置翻页滚动条回到最顶端
-      scrollContainer.scrollTop = 0; 
+      scrollContainer.scrollTop = 0; // 类目切换，视图回到顶端
       
       const category = DATA[categoryKey];
       if (!category || !category.items) return;
@@ -467,8 +445,8 @@ const DATA = {
         item.className = 'app-item';
         item.tabIndex = 0;
 
-        // 核心修复：调用 cleanSVG 处理图标，如果没填 SVG 则用首字母代打保底
-        const finalIconHTML = app.svg ? cleanSVG(app.svg) : `<span style="font-size: 28px; font-weight: bold;">${app.name.charAt(0)}</span>`;
+        // 图标内容保底机制（如果没有SVG，则取首字母代打，避免白边乱套）
+        const finalIconHTML = app.svg ? cleanSVG(app.svg) : `<span class="icon-fallback">${app.name.charAt(0)}</span>`;
 
         item.innerHTML = `
           <div class="icon-wrapper" style="background: ${app.bg || '#333'}; color: ${app.color || '#fff'};">
@@ -477,24 +455,23 @@ const DATA = {
           <div class="app-name">${app.name}</div>
         `;
 
-        const openUrl = () => window.open(app.url, '_blank', 'noopener,noreferrer');
-        item.addEventListener('click', openUrl);
+        item.addEventListener('click', () => window.open(app.url, '_blank', 'noopener,noreferrer'));
         fragment.appendChild(item);
       });
 
       grid.appendChild(fragment);
 
-      // 同步高亮底部 Dock 选中态
+      // 全局联动更新底部 Dock 的激活态高亮高斯模糊样式
       document.querySelectorAll('.dock-item').forEach(el => {
         const isActive = el.dataset.key === categoryKey;
         el.style.opacity = isActive ? '1' : '0.55';
         el.style.background = isActive ? 'rgba(255, 255, 255, 0.25)' : 'none';
-        el.style.borderRadius = '16px';
+        el.style.borderRadius = '14px';
         el.style.transform = isActive ? 'scale(1.05)' : 'scale(1)';
       });
     }
 
-    // 初始化动态创建底部 Dock 栏
+    // 初始化动态加载底部分类
     const dockFragment = document.createDocumentFragment();
     Object.keys(DATA).forEach(key => {
       const item = document.createElement('div');
@@ -511,7 +488,7 @@ const DATA = {
     });
     dock.appendChild(dockFragment);
 
-    // 系统启动默认执行
+    // 启动系统，渲染默认国际板块
     renderApps('global');
   </script>
 </body>
