@@ -19,7 +19,7 @@
       --text-main: #ffffff;
       --text-shadow: 0 1px 2px rgba(140, 117, 117, 0.566);
       --icon-radius: 24%;
-      --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
+      --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display"], "SF Pro Text", "PingFang SC", sans-serif;
       --icon-size: 62px;
     }
 
@@ -28,187 +28,126 @@
     }
     
     html, body { 
-      height: 100%; 
-    }
-
-    body {
+      height: 100%;
       margin: 0;
       padding: 0;
       font-family: var(--font-stack);
-      min-height: 100dvh;
-      width: 100%;
+      color: var(--text-main);
       overflow: hidden;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      touch-action: manipulation;
-      overscroll-behavior: none;
-      -webkit-user-select: none;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      background: #0f3460;
+      background: #121212; /* 兜底背景色 */
     }
 
-    /* 动态渐变背景层 */
-    body::before {
-      content: '';
+    /* 仿 iOS 虚化背景壁纸 */
+    .wallpaper {
       position: fixed;
-      inset: 0;
-      z-index: -2;
-      background: radial-gradient(circle at 10% 10%, #1a1a2e 0%, #16213e 40%, #0f3460 80%, #e94560 120%);
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(145deg, #1e3c72, #2a5298, #2b5876, #4e4376);
+      background-size: 400% 400%;
+      animation: gradientBG 20s ease infinite;
+      z-index: -1;
     }
 
-    /* 全局毛玻璃遮罩 */
-    .blur-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(10, 10, 20, 0.12);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      z-index: 1;
-      pointer-events: none;
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     /* ==========================================================================
-       2. 主体框架与应用网格 (Main Layout & App Grid)
+       2. 桌面网格布局 (App Desktop Grid)
        ========================================================================== */
-    main {
-      position: relative;
-      z-index: 2;
-      flex: 1;
-      width: 100%;
-      padding: calc(40px + env(safe-area-inset-top)) 24px 20px;
+    .desktop {
+      height: calc(100% - 110px);
+      padding: 40px 20px 20px 20px;
       overflow-y: auto;
-      overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
     }
 
-    main::-webkit-scrollbar { 
-      width: 4px; 
-    }
-    
-    main::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
-    }
-
+    /* 响应式网格：自适应轻量栅格 */
     .app-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
-      gap: 32px 16px;
-      max-width: 480px;
+      grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+      gap: 25px 15px;
+      justify-items: center;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
-    /* ==========================================================================
-       3. 应用组件样式 (App Icon Components)
-       ========================================================================== */
-    .app-icon {
+    .app-item {
       display: flex;
       flex-direction: column;
       align-items: center;
+      width: 75px;
       cursor: pointer;
-      outline: none;
-      transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
       -webkit-tap-highlight-color: transparent;
-      will-change: transform;
     }
 
-    .app-icon:active { 
-      transform: scale(0.9); 
+    .app-item:active {
+      transform: scale(0.88);
     }
 
-    .icon-wrapper {
+    /* 苹果标准圆角图标容器 */
+    .app-icon {
       width: var(--icon-size);
       height: var(--icon-size);
-      border-radius: var(--icon-radius);
-      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+      border-radius: calc(var(--icon-size) * var(--icon-radius));
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 7px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       position: relative;
       overflow: hidden;
-      transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
-      contain: paint;
+      background: linear-gradient(135deg, #667eea, #764ba2); /* 默认图标背景 */
     }
 
-    .icon-wrapper svg {
-      width: calc(var(--icon-size) * 0.48);
-      height: calc(var(--icon-size) * 0.48);
+    /* 图标内文字或 Emoji 样式 */
+    .app-icon span {
+      font-size: 28px;
+    }
+
+    /* 图标内注入的 SVG 样式 */
+    .app-icon svg {
+      width: 60%;
+      height: 60%;
       fill: currentColor;
-      display: block;
     }
 
     .app-name {
-      color: var(--text-main);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.4px;
+      margin-top: 8px;
+      font-size: 12px;
       text-align: center;
       width: 100%;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      font-weight: 500;
       text-shadow: var(--text-shadow);
-      opacity: 0.92;
     }
 
     /* ==========================================================================
-       4. 底部系统常驻栏 (Footer & Dock Container)
+       3. 底部特制 Dock 栏 (iOS Glassmorphism Dock)
        ========================================================================== */
-    footer {
-      width: 100%;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      padding-bottom: calc(12px + env(safe-area-inset-bottom));
-      padding-top: 10px;
-      z-index: 999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      background: transparent;
-    }
-
-    .user-signature {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.45);
-      letter-spacing: 0.6px;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      user-select: text;
-      -webkit-user-select: text;
-    }
-
-    .signature-split { 
-      opacity: 0.25; 
-      margin: 0 4px; 
-    }
-
     .dock-container {
-      background: rgba(255, 255, 255, 0.11);
-      backdrop-filter: blur(18px) saturate(160%);
-      -webkit-backdrop-filter: blur(25px) saturate(210%);
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 40px);
+      max-width: 500px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.12);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      backdrop-filter: blur(30px) saturate(180%);
       border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-      height: 64px;
-      padding: 0 16px;
-      border-radius: 22px;
+      border-radius: 30px;
       display: flex;
+      justify-content: space-around;
       align-items: center;
-      justify-content: center;
-      gap: 16px;
-      box-sizing: border-box;
-      transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-      touch-action: none;
-      -webkit-user-select: none;
-      user-select: none;
-      contain: layout paint style;
+      padding: 0 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      z-index: 100;
     }
 
     .dock-item {
@@ -216,381 +155,253 @@
       flex-direction: column;
       align-items: center;
       cursor: pointer;
-      position: relative;
-      box-sizing: border-box;
-      touch-action: none;
-      -webkit-touch-callout: none;
-      will-change: transform;
+      transition: all 0.25s ease;
+      padding: 8px;
+      border-radius: 16px;
     }
 
-    .dock-icon-wrapper {
-      width: 50px;
-      height: 50px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-      box-sizing: border-box;
-      padding: 4px;
+    .dock-item:active {
+      transform: scale(0.9);
+    }
+
+    .dock-item.active {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: inset 0 1px 3px rgba(255,255,255,0.2);
     }
 
     .dock-emoji {
-      font-size: 18px;
-      line-height: 1;
-      transition: transform 0.25s ease;
+      font-size: 24px;
+      transition: transform 0.2s ease;
+    }
+
+    .dock-item:hover .dock-emoji {
+      transform: translateY(-4px);
     }
 
     .dock-name {
-      color: #ffffff;
-      font-size: 9px;
-      font-weight: 500;
-      margin-top: 3px;
-      opacity: 0.75;
-      white-space: nowrap;
-      text-shadow: var(--text-shadow);
-      transition: color 0.25s ease, opacity 0.25s ease, font-weight 0.25s ease;
-    }
-
-    /* ==========================================================================
-       5. 交互状态控制 (Interaction & Active States)
-       ========================================================================== */
-    .dock-item.active .dock-icon-wrapper {
-      background: rgba(255, 255, 255, 0.95);
-      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.25);
-      border-color: rgba(255, 255, 255, 1);
-    }
-
-    .dock-item.active .dock-emoji { 
-      transform: scale(1.12); 
-    }
-
-    .dock-item.active .dock-name {
-      color: #121212;
+      font-size: 10px;
+      margin-top: 4px;
       font-weight: 600;
+      opacity: 0.8;
+      text-shadow: var(--text-shadow);
+    }
+    
+    .dock-item.active .dock-name {
       opacity: 1;
     }
 
-    .dock-item:active .dock-icon-wrapper { 
-      transform: scale(0.88); 
-    }
-
-    /* ==========================================================================
-       6. 响应式自适应布局 (Media Queries)
-       ========================================================================== */
-    /* 平板竖屏 */
-    @media (min-width: 600px) and (max-width: 1024px) and (orientation: portrait) {
-      :root { --icon-size: 64px; }
-      .app-grid {
-        grid-template-columns: repeat(6, 1fr);
-        max-width: 680px;
-        gap: 36px 18px;
-      }
-      .dock-container { height: 70px; padding: 0 20px; gap: 20px; }
-      .dock-icon-wrapper { width: 56px; height: 56px; border-radius: 14px; }
-      .dock-emoji { font-size: 22px; }
-      .dock-name { font-size: 10px; }
-    }
-
-    /* 平板/准电脑端横屏 */
-    @media (min-width: 600px) and (max-width: 1366px) and (orientation: landscape) {
-      :root { --icon-size: 62px; }
-      main { padding: calc(30px + env(safe-area-inset-top)) 30px 10px; }
-      .app-grid {
-        grid-template-columns: repeat(8, 1fr);
-        max-width: 860px;
-        gap: 24px 18px;
-      }
-      .dock-container { height: 70px; padding: 0 20px; gap: 20px; }
-      .dock-icon-wrapper { width: 56px; height: 56px; border-radius: 14px; }
-      .dock-emoji { font-size: 22px; }
-      .dock-name { font-size: 10px; }
-    }
-
-    /* 大型桌面显示器 */
-    @media (min-width: 1367px) {
-      :root { --icon-size: 68px; }
-      main { padding: 45px 40px 15px; }
-      .app-grid {
-        grid-template-columns: repeat(10, 1fr);
-        max-width: 1120px;
-        gap: 36px 22px;
-      }
-      .dock-container { height: 74px; padding: 0 24px; gap: 22px; }
-      .dock-icon-wrapper { width: 60px; height: 60px; border-radius: 15px; }
-      .dock-emoji { font-size: 24px; }
-      .dock-name { font-size: 10px; }
-    }
-
-    /* 手机横屏及矮屏幕设备防溢出优化 */
-    @media (orientation: landscape) and (max-height: 500px) {
-      :root { --icon-size: 40px; }
-      main { padding: calc(6px + env(safe-area-inset-top)) 20px 4px; }
-      .app-grid {
-        grid-template-columns: repeat(8, 1fr);
-        gap: 10px 14px;
-        max-width: 680px;
-      }
-      .icon-wrapper { margin-bottom: 3px; }
-      .app-name { font-size: 10px; }
-      footer {
-        padding-bottom: calc(5px + env(safe-area-inset-bottom));
-        gap: 4px;
-      }
-      .user-signature { flex-direction: row; gap: 20px; font-size: 10px; }
-      .dock-container {
-        height: 38px;
-        gap: 10px;
-        padding: 0 10px;
-        border-radius: 12px;
-      }
-      .dock-item { flex-direction: row; }
-      .dock-icon-wrapper {
-        flex-direction: row;
-        width: auto;
-        height: 30px;
-        padding: 0 10px;
-        gap: 5px;
-        border-radius: 8px;
-      }
-      .dock-emoji { font-size: 14px; }
-      .dock-name { margin-top: 0; font-size: 10px; opacity: 0.9; }
-    }
-
-    @media (max-height: 400px) and (orientation: landscape) {
-      :root { --icon-size: 36px; }
-      .app-grid { gap: 6px 14px; }
+    /* 隐藏滚动条 */
+    .desktop::-webkit-scrollbar {
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <div class="blur-overlay"></div>
+  <div class="wallpaper"></div>
 
-  <main id="main">
-    <div class="app-grid" id="grid"></div>
-  </main>
+  <div class="desktop">
+    <div class="app-grid" id="appGrid">
+      </div>
+  </div>
 
-  <footer>
-    <div class="user-signature">
-      <span class="nickname">🪄 颜途的视界</span>
-      <span class="contact-info">📱 微信：YourWeChat</span>
+  <div class="dock-container" id="dock">
     </div>
-    <div class="dock-container" id="dock"></div>
-  </footer>
 
   <script>
-    /* ==========================================================================
-       7. 核心数据接口 (DATA Model - 语法闭合错误已完全修复)
-       ========================================================================== */
+    // ==========================================================================
+    // 4. 数据核心定义 (4组完整合并分类数据，不作任何精简)
+    // ==========================================================================
     const DATA = {
-    mediaPlatforms: {
-        name: '自媒体与视频创作平台（国内/国际）',
+      mediaPlatforms: {
+        name: '创作平台',
         short: '📹',
         items: [
-            // 国内主流创作后台
-            { name: "抖音创作服务平台", desc: "自媒体发布与运营后台", url: "https://creator.douyin.com/creator-micro/home" },
-            { name: "快手创作者服务平台", desc: "自媒体发布与运营后台", url: "https://cp.kuaishou.com/profile" },
-            { name: "视频号助手", desc: "微信视频号创作者后台", url: "https://channels.weixin.qq.com/platform" },
-            { name: "小红书创作服务平台", desc: "小红书内容管理与数据分析", url: "https://creator.xiaohongshu.com/creator/home?roleType=creator" },
-            { name: "西瓜创作平台", desc: "中视频发布与管理后台", url: "https://studio.ixigua.com/" },
-            { name: "哔哩哔哩 (Bilibili 创作者中心)", desc: "B站内容管理与数据助手", url: "https://space.bilibili.com" },
-            { name: "哔哩哔哩官网", desc: "B站主页", url: "https://www.bilibili.com/" },
-            { name: "头条号", desc: "今日头条内容创作与分发平台", url: "https://mp.toutiao.com/profile_v4/index?is_new_connect=0&is_new_user=0" },
-            { name: "百家号", desc: "百度自媒体创作平台", url: "https://baijiahao.baidu.com/" },
-            { name: "腾讯内容开放平台", desc: "腾讯企鹅号自媒体后台", url: "https://om.qq.com/" },
-            { name: "大鱼号官网", desc: "阿里大鱼号自媒体平台", url: "https://mp.dayu.com/dashboard/index" },
-            { name: "美篇电脑版", desc: "图文图集创作后台", url: "https://a.meipian.cn/mine" },
-            { name: "图虫视频 - 废柴记录", desc: "图虫网视频作品主页", url: "https://tuchong.com/22414746/videos/" },
-            { name: "好看视频", desc: "百度旗下短视频平台", url: "https://haokan.baidu.com/?fr=pc_pz" },
-            { name: "山村颜哥的爱奇艺号", desc: "爱奇艺自媒体个人主页", url: "http://www.iqiyi.com/u/2200467041" },
-            { name: "优酷号创作平台", desc: "优酷视频创作者管理后台", url: "https://mp.youku.com/v2/mp/index?openCategory=8888" },
-            { name: "搜狐号", desc: "搜狐自媒体创作后台", url: "https://mp.sohu.com/mpfe/v3/main/first/page" },
-            { name: "美拍", desc: "短视频社区平台", url: "https://www.meipai.com/" },
-            { name: "网易号", desc: "网易自媒体内容开放平台", url: "http://mp.163.com/subscribe_v4/index.html#/" },
-            { name: "支付宝内容创作平台", desc: "支付宝生活号创作后台", url: "https://c.alipay.com/page/life-account/index?appId=2030035576463046" },
-            // 国际社媒与视频平台
-            { name: "YouTube", desc: "全球视频平台主页", url: "https://youtube.com" },
-            { name: "YouTube Feed", desc: "YouTube 视听图书馆", url: "https://www.youtube.com/feed/library" },
-            { name: "TikTok", desc: "全球短视频趋势与推荐", url: "https://tiktok.com" },
-            { name: "TikTok ForYou", desc: "TikTok 推荐流主页", url: "https://www.tiktok.com/foryou?lang=zh-Hans" },
-            { name: "Facebook", desc: "全球社交网络平台", url: "https://facebook.com" },
-            { name: "Facebook 主页", desc: "Facebook 用户主页", url: "https://www.facebook.com/" },
-            { name: "Instagram", desc: "全球图文社交平台", url: "https://instagram.com" },
-            { name: "Instagram 个人主页", desc: "岩途的光的 Instagram", url: "https://www.instagram.com/yantudeguang/" },
-            { name: "X", desc: "国际即时社交平台", url: "https://x.com" },
-            { name: "X Grok", desc: "X 平台 AI 助手", url: "https://x.com/i/grok" },
-            { name: "Threads", desc: "Meta 旗下文字社交平台", url: "https://threads.net" },
-            { name: "Threads 个人主页", desc: "岩途的光的 Threads", url: "https://www.threads.com/@yantudeguang" },
-            { name: "Dailymotion", desc: "法国知名视频分享网站", url: "https://www.dailymotion.com/hk#for-you" }
+          { name: "抖音创作服务平台", desc: "自媒体发布与运营后台", url: "https://creator.douyin.com/creator-micro/home" },
+          { name: "快手创作者服务平台", desc: "自媒体发布与运营后台", url: "https://cp.kuaishou.com/profile" },
+          { name: "视频号助手", desc: "微信视频号创作者后台", url: "https://channels.weixin.qq.com/platform" },
+          { name: "小红书创作服务平台", desc: "小红书内容管理与数据分析", url: "https://creator.xiaohongshu.com/creator/home?roleType=creator" },
+          { name: "西瓜创作平台", desc: "中视频发布与管理后台", url: "https://studio.ixigua.com/" },
+          { name: "哔哩哔哩 (Bilibili 创作者中心)", desc: "B站内容管理与数据助手", url: "https://space.bilibili.com" },
+          { name: "哔哩哔哩官网", desc: "B站主页", url: "https://www.bilibili.com/" },
+          { name: "头条号", desc: "今日头条内容创作与分发平台", url: "https://mp.toutiao.com/profile_v4/index?is_new_connect=0&is_new_user=0" },
+          { name: "百家号", desc: "百度自媒体创作平台", url: "https://baijiahao.baidu.com/" },
+          { name: "腾讯内容开放平台", desc: "腾讯企鹅号自媒体后台", url: "https://om.qq.com/" },
+          { name: "大鱼号官网", desc: "阿里大鱼号自媒体平台", url: "https://mp.dayu.com/dashboard/index" },
+          { name: "美篇电脑版", desc: "图文图集创作后台", url: "https://a.meipian.cn/mine" },
+          { name: "图虫视频 - 废柴记录", desc: "图虫网视频作品主页", url: "https://tuchong.com/22414746/videos/" },
+          { name: "好看视频", desc: "百度旗下短视频平台", url: "https://haokan.baidu.com/?fr=pc_pz" },
+          { name: "山村颜哥的爱奇艺号", desc: "爱奇艺自媒体个人主页", url: "http://www.iqiyi.com/u/2200467041" },
+          { name: "优酷号创作平台", desc: "优酷视频创作者管理后台", url: "https://mp.youku.com/v2/mp/index?openCategory=8888" },
+          { name: "搜狐号", desc: "搜狐自媒体创作后台", url: "https://mp.sohu.com/mpfe/v3/main/first/page" },
+          { name: "美拍", desc: "短视频社区平台", url: "https://www.meipai.com/" },
+          { name: "网易号", desc: "网易自媒体内容开放平台", url: "http://mp.163.com/subscribe_v4/index.html#/" },
+          { name: "支付宝内容创作平台", desc: "支付宝生活号创作后台", url: "https://c.alipay.com/page/life-account/index?appId=2030035576463046" },
+          { name: "YouTube", desc: "全球视频平台主页", url: "https://youtube.com" },
+          { name: "YouTube Feed", desc: "YouTube 视听图书馆", url: "https://www.youtube.com/feed/library" },
+          { name: "TikTok", desc: "全球短视频趋势与推荐", url: "https://tiktok.com" },
+          { name: "TikTok ForYou", desc: "TikTok 推荐流主页", url: "https://www.tiktok.com/foryou?lang=zh-Hans" },
+          { name: "Facebook", desc: "全球社交网络平台", url: "https://facebook.com" },
+          { name: "Facebook 主页", desc: "Facebook 用户主页", url: "https://www.facebook.com/" },
+          { name: "Instagram", desc: "全球图文社交平台", url: "https://instagram.com" },
+          { name: "Instagram 个人主页", desc: "岩途的光的 Instagram", url: "https://www.instagram.com/yantudeguang/" },
+          { name: "X", desc: "国际即时社交平台", url: "https://x.com" },
+          { name: "X Grok", desc: "X 平台 AI 助手", url: "https://x.com/i/grok" },
+          { name: "Threads", desc: "Meta 旗下文字社交平台", url: "https://threads.net" },
+          { name: "Threads 个人主页", desc: "岩途的光的 Threads", url: "https://www.threads.com/@yantudeguang" },
+          { name: "Dailymotion", desc: "法国知名视频分享网站", url: "https://www.dailymotion.com/hk#for-you" }
         ]
-    },
-    creativeTools: {
-        name: '音视频剪辑、剧本短剧与AI创作工具',
+      },
+      creativeTools: {
+        name: '创作工具',
         short: '🎬',
         items: [
-            // 短剧、剧本与小说创作
-            { name: "短剧创作服务平台", desc: "短剧剧本及创作协作后台", url: "https://www.diyduanju.com/page/empty-role-message-center?tab=banner" },
-            { name: "短剧版权中心", desc: "短剧版权登记与工作区", url: "https://www.shortdramas.com/page/playlet-workspace" },
-            { name: "红果短剧-剧本合作申请", desc: "飞书飞创开放合作表单", url: "https://bytedance.larkoffice.com/share/base/form/shrcnf3r7ct6TIBKGATqcjk5jzd" },
-            { name: "百度作家平台", desc: "小说网文创作者工作台", url: "https://zuojia.baidu.com/workspace" },
-            { name: "番茄小说网", desc: "网文阅读与创作入口", url: "https://fanqienovel.com/?enter_from=menu" },
-            // AI视频生成与辅助剪辑工具
-            { name: "新片场AI创作-灵感", desc: "影视创作 AI 辅助灵感库", url: "https://aigc.xinpianchang.com/" },
-            { name: "OpenCut", desc: "智能音视频在线剪辑工具", url: "https://opencut.net/" },
-            { name: "Fomofly", desc: "AI 长视频智能瞬变短影音工具", url: "https://www.fomofly.ai/" },
-            { name: "VEED", desc: "AI 视频创建、剪辑和字幕生成器", url: "https://www.veed.io/" },
-            { name: "Medeo", desc: "AI 智能视频一键生成应用", url: "https://www.medeo.app/" },
-            { name: "Pika 2.2", desc: "Pika AI 视频生成器与编辑频道", url: "https://www.weryai.com/video/pika-2-2?channel=pika1" },
-            { name: "Unscreen", desc: "智能视频与 GIF 在线抠图去背景", url: "https://www.unscreen.com/upload" },
-            // 视频素材、下载与运营优化工具
-            { name: "找台词", desc: "影视剧台词剧本搜索匹配工具", url: "http://www.zhaotaici.cn/" },
-            { name: "Epidemic Sound", desc: "全球免版税背景音效素材库", url: "https://www.epidemicsound.com/sound-effects/" },
-            { name: "麦壳AI", desc: "在线视频下载与画面擦除工具", url: "https://vgo.pub/?ref=openi.cn" },
-            { name: "直播蜂", desc: "短视频多平台无水印下载去水印工具", url: "https://zhibofeng.com/" },
-            { name: "DataTool", desc: "网页快速视频提取下载器", url: "https://www.datatool.vip/" },
-            { name: "AIX智能下载器", desc: "万能网页音视频与图片下载扩展", url: "https://aixdownloader.com/zh/" },
-            { name: "vidIQ", desc: "YouTube 官方认证频道增长优化工具", url: "https://vidiq.com/" },
-            { name: "TubeBuddy", desc: "YouTube SEO 与频道管理优化扩展", url: "https://www.tubebuddy.com/" },
-            // 数据分析与营销
-            { name: "巨量算数", desc: "抖音巨量引擎官方趋势洞察平台", url: "https://trendinsight.oceanengine.com/" },
-            { name: "DOU+网页版", desc: "抖音官方内容加热投放管理后台", url: "https://doujia.douyin.com/home" },
-            { name: "抖店/百应达人首页", desc: "巨量百应电商达人带货工作台", url: "https://buyin.jinritemai.com/dashboard" },
-            { name: "Google 趋势", desc: "谷歌全球搜索热度与趋势分析", url: "https://trends.google.com/trends/" },
-            { name: "CerLo 营销策略", desc: "营销自动化与策略洞察平台", url: "https://cerlo.com/marketing-strategy" },
-            { name: "品类介绍", desc: "优酷号开放品类策略详情页", url: "https://om.youku.com/home/detail?openCategory=9701" }
+          { name: "短剧创作服务平台", desc: "短剧剧本及创作协作后台", url: "https://www.diyduanju.com/page/empty-role-message-center?tab=banner" },
+          { name: "短剧版权中心", desc: "短剧版权登记与工作区", url: "https://www.shortdramas.com/page/playlet-workspace" },
+          { name: "红果短剧-剧本合作申请", desc: "飞书飞创开放合作表单", url: "https://bytedance.larkoffice.com/share/base/form/shrcnf3r7ct6TIBKGATqcjk5jzd" },
+          { name: "百度作家平台", desc: "小说网文创作者工作台", url: "https://zuojia.baidu.com/workspace" },
+          { name: "番茄小说网", desc: "网文阅读与创作入口", url: "https://fanqienovel.com/?enter_from=menu" },
+          { name: "新片场AI创作-灵感", desc: "影视创作 AI 辅助灵感库", url: "https://aigc.xinpianchang.com/" },
+          { name: "OpenCut", desc: "智能音视频在线剪辑工具", url: "https://opencut.net/" },
+          { name: "Fomofly", desc: "AI 长视频智能瞬变短影音工具", url: "https://www.fomofly.ai/" },
+          { name: "VEED", desc: "AI 视频创建、剪辑和字幕生成器", url: "https://www.veed.io/" },
+          { name: "Medeo", desc: "AI 智能视频一键生成应用", url: "https://www.medeo.app/" },
+          { name: "Pika 2.2", desc: "Pika AI 视频生成器与编辑频道", url: "https://www.weryai.com/video/pika-2-2?channel=pika1" },
+          { name: "Unscreen", desc: "智能视频与 GIF 在线抠图去背景", url: "https://www.unscreen.com/upload" },
+          { name: "找台词", desc: "影视剧台词剧本搜索匹配工具", url: "http://www.zhaotaici.cn/" },
+          { name: "Epidemic Sound", desc: "全球免版税背景音效素材库", url: "https://www.epidemicsound.com/sound-effects/" },
+          { name: "麦壳AI", desc: "在线视频下载与画面擦除工具", url: "https://vgo.pub/?ref=openi.cn" },
+          { name: "直播蜂", desc: "短视频多平台无水印下载去水印工具", url: "https://zhibofeng.com/" },
+          { name: "DataTool", desc: "网页快速视频提取下载器", url: "https://www.datatool.vip/" },
+          { name: "AIX智能下载器", desc: "万能网页音视频与图片下载扩展", url: "https://aixdownloader.com/zh/" },
+          { name: "vidIQ", desc: "YouTube 官方认证频道增长优化工具", url: "https://vidiq.com/" },
+          { name: "TubeBuddy", desc: "YouTube SEO 与频道管理优化扩展", url: "https://www.tubebuddy.com/" },
+          { name: "巨量算数", desc: "抖音巨量引擎官方趋势洞察平台", url: "https://trendinsight.oceanengine.com/" },
+          { name: "DOU+网页版", desc: "抖音官方内容加热投放管理后台", url: "https://doujia.douyin.com/home" },
+          { name: "抖店/百应达人首页", desc: "巨量百应电商达人带货工作台", url: "https://buyin.jinritemai.com/dashboard" },
+          { name: "Google 趋势", desc: "谷歌全球搜索热度与趋势分析", url: "https://trends.google.com/trends/" },
+          { name: "CerLo 营销策略", desc: "营销自动化与策略洞察平台", url: "https://cerlo.com/marketing-strategy" },
+          { name: "品类介绍", desc: "优酷号开放品类策略详情页", url: "https://om.youku.com/home/detail?openCategory=9701" }
         ]
-    },
-    networkAndDev: {
-        name: '网络代理、云服务器与技术开发',
+      },
+      networkAndDev: {
+        name: '网络开发',
         short: '💻',
         items: [
-            // 云服务器 (VPS) 与域名托管
-            { name: "丽萨主机 (Lisahost)", desc: "提供原生IP的云服务器购买", url: "https://lisahost.com/cart.php?gid=18" },
-            { name: "DMIT 服務單后台", desc: "DMIT 高性能云服务器工单支持", url: "https://www.dmit.io/supporttickets.php" },
-            { name: "搬瓦工 (BandwagonHost)", desc: "老牌高速优质路由 VPS 管理后台", url: "https://bandwagonhost.com/index.php" },
-            { name: "AkileCloud 云服务器", desc: "Akile 服务器购买与海外节点商铺", url: "https://akile.io/shop/server" },
-            { name: "AkileCloud 轻量云", desc: "Akile 轻量级云服务器购买入口", url: "https://akile.io/shop/light-server" },
-            { name: "DigitalVirt 最新活动", desc: "DigitalVirt 云主机特惠活动页", url: "https://digitalvirt.com/activity" },
-            { name: "DNSHE 用户中心", desc: "DNSHE 服务管理与客户中心后台", url: "https://my.dnshe.com/clientarea.php" },
-            { name: "Stackryze 免费域名", desc: "免费及特惠域名注册管理工作台", url: "https://domain.stackryze.com/my-domains" },
-            { name: "DigitalPlat 域仪表板", desc: "域名解析与资产管理控制台", url: "https://dash.domain.digitalplat.org/panel/main" },
-            // Cloudflare 与代理加速服务
-            { name: "Cloudflare Zero Trust 账户1", desc: "Cloudflare 零信任边缘网络管理控制台", url: "https://dash.cloudflare.com/8885075500eac7c29e88deeb325973f9/home/zero-trust" },
-            { name: "Cloudflare Zero Trust 账户2", desc: "Cloudflare 零信任边缘网络管理控制台", url: "https://dash.cloudflare.com/793cb8974b3363c92bbfaf5b3ee496b0/home/zero-trust" },
-            { name: "Cloudflare WARP 设置教程", desc: "零度博客：WARP 使用及优选IP配置", url: "https://www.freedidi.com/23077.html" },
-            { name: "Cloudflare 免费节点搭建", desc: "零度博客：利用 Cloudflare 优选节点上网络", url: "https://www.freedidi.com/23618.html" },
-            { name: "Proton VPN 账户后台", desc: "瑞士加密 Proton 账户与安全 VPN 控制台", url: "https://account.proton.me/u/0/vpn/dashboardV2" },
-            { name: "通连加速下载", desc: "网络连接工具与加速客户端下载页", url: "https://f.tonglian1.top/f.html" },
-            { name: "雷云 VPN 下载", desc: "雷云客户端及订阅配置下载页", url: "https://fa.lygw01.top/f.html" },
-            { name: "在线订阅转换工具", desc: "多种代理格式（Clash/V2Ray等）在线通用转换", url: "https://sub.cmliussss.com/" },
-            { name: "瞬云商店", desc: "网络加速与代理节点服务购买中心", url: "https://ccc.jichang.best/#/shop" },
-            { name: "迅连 (soonlink)", desc: "Soonlink 代理网络账户个人资料页", url: "https://soontg.kbr1g.com/profile" },
-            { name: "CokeCloud", desc: "CokeCloud 加速服务个人面板主页", url: "https://kelec.ih004.com/#/" },
-            { name: "云主机笔记", desc: "专业 VPS 选购与科学技术评测博客", url: "https://www.rakvps.com/" },
-            { name: "管理后台优选设置 1", desc: "专属网络后端管理与节点优选面板", url: "https://ytdsj.ccwu.cc/admin" },
-            { name: "管理后台优选设置 2", desc: "专属网络后端管理与节点优选面板", url: "https://ytdsj.dpdns.org/admin" },
-            // 代码开发、社群与技术平台
-            { name: "GitHub 官网", desc: "全球最大的开源代码托管平台", url: "https://github.com/" },
-            { name: "GitHub 储存库 - cfnew", desc: "byJoey/cfnew 优选开源项目", url: "https://github.com/byJoey/cfnew" },
-            { name: "GitHub 文件 - 少年你相信光吗", desc: "cfnew 项目中特定说明文件", url: "https://github.com/byJoey/cfnew/blob/main/" },
-            { name: "GitHub 脚本 - edgetunnel", desc: "cmliu 基于 CF Workers 的开源反代脚本", url: "https://github.com/cmliu/edgetunnel/blob/main/_worker.js" },
-            { name: "GitHub 脚本 - ios_rule_script", desc: "blackmatrix7 影子火箭/QuantumultX 通用规则分流脚本", url: "https://github.com/blackmatrix7/ios_rule_script/" },
-            { name: "GitHub Gist - 影子火箭私人配置", desc: "Shadowrocket 个人云端策略分流配置文件", url: "https://gist.github.com/yan279405/" },
-            { name: "Gitee 工作台", desc: "码云开源代码托管中文平台", url: "https://gitee.com/" },
-            { name: "Telegram 官网", desc: "电报即时通讯与开发者社区入口", url: "https://telegram.org" },
-            { name: "Discord 社区", desc: "全球极客与技术群组交流平台", url: "https://discord.com" },
-            { name: "MultiPost", desc: "开源跨平台多社交媒体一键发布工具", url: "https://multipost.app/" },
-            { name: "本地路由器管理", desc: "普联 TL-XDR5430 本地网关登录页", url: "http://192.168.0.1/" }
+          { name: "丽萨主机 (Lisahost)", desc: "提供原生IP的云服务器购买", url: "https://lisahost.com/cart.php?gid=18" },
+          { name: "DMIT 服務單后台", desc: "DMIT 高性能云服务器工单支持", url: "https://www.dmit.io/supporttickets.php" },
+          { name: "搬瓦工 (BandwagonHost)", desc: "老牌高速优质路由 VPS 管理后台", url: "https://bandwagonhost.com/index.php" },
+          { name: "AkileCloud 云服务器", desc: "Akile 服务器购买与海外节点商铺", url: "https://akile.io/shop/server" },
+          { name: "AkileCloud 轻量云", desc: "Akile 轻量级云服务器购买入口", url: "https://akile.io/shop/light-server" },
+          { name: "DigitalVirt 最新活动", desc: "DigitalVirt 云主机特惠活动页", url: "https://digitalvirt.com/activity" },
+          { name: "DNSHE 用户中心", desc: "DNSHE 服务管理与客户中心后台", url: "https://my.dnshe.com/clientarea.php" },
+          { name: "Stackryze 免费域名", desc: "免费及特惠域名注册管理工作台", url: "https://domain.stackryze.com/my-domains" },
+          { name: "DigitalPlat 域仪表板", desc: "域名解析与资产管理控制台", url: "https://dash.domain.digitalplat.org/panel/main" },
+          { name: "Cloudflare Zero Trust 账户1", desc: "Cloudflare 零信任边缘网络管理控制台", url: "https://dash.cloudflare.com/8885075500eac7c29e88deeb325973f9/home/zero-trust" },
+          { name: "Cloudflare Zero Trust 账户2", desc: "Cloudflare 零信任边缘网络管理控制台", url: "https://dash.cloudflare.com/793cb8974b3363c92bbfaf5b3ee496b0/home/zero-trust" },
+          { name: "Cloudflare WARP 设置教程", desc: "零度博客：WARP 使用及优选IP配置", url: "https://www.freedidi.com/23077.html" },
+          { name: "Cloudflare 免费节点搭建", desc: "零度博客：利用 Cloudflare 优选节点上网络", url: "https://www.freedidi.com/23618.html" },
+          { name: "Proton VPN 账户后台", desc: "瑞士加密 Proton 账户与安全 VPN 控制台", url: "https://account.proton.me/u/0/vpn/dashboardV2" },
+          { name: "通连加速下载", desc: "网络连接工具与加速客户端下载页", url: "https://f.tonglian1.top/f.html" },
+          { name: "雷云 VPN 下载", desc: "雷云客户端及订阅配置下载页", url: "https://fa.lygw01.top/f.html" },
+          { name: "在线订阅转换工具", desc: "多种代理格式（Clash/V2Ray等）在线通用转换", url: "https://sub.cmliussss.com/" },
+          { name: "瞬云商店", desc: "网络加速与代理节点服务购买中心", url: "https://ccc.jichang.best/#/shop" },
+          { name: "迅连 (soonlink)", desc: "Soonlink 代理网络账户个人资料页", url: "https://soontg.kbr1g.com/profile" },
+          { name: "CokeCloud", desc: "CokeCloud 加速服务个人面板主页", url: "https://kelec.ih004.com/#/" },
+          { name: "云主机笔记", desc: "专业 VPS 选购与科学技术评测博客", url: "https://www.rakvps.com/" },
+          { name: "管理后台优选设置 1", desc: "专属网络后端管理与节点优选面板", url: "https://ytdsj.ccwu.cc/admin" },
+          { name: "管理后台优选设置 2", desc: "专属网络后端管理与节点优选面板", url: "https://ytdsj.dpdns.org/admin" },
+          { name: "GitHub 官网", desc: "全球最大的开源代码托管平台", url: "https://github.com/" },
+          { name: "GitHub 储存库 - cfnew", desc: "byJoey/cfnew 优选开源项目", url: "https://github.com/byJoey/cfnew" },
+          { name: "GitHub 文件 - 少年你相信光吗", desc: "cfnew 项目中特定说明文件", url: "https://github.com/byJoey/cfnew/blob/main/" },
+          { name: "GitHub 脚本 - edgetunnel", desc: "cmliu 基于 CF Workers 的开源反代脚本", url: "https://github.com/cmliu/edgetunnel/blob/main/_worker.js" },
+          { name: "GitHub 脚本 - ios_rule_script", desc: "blackmatrix7 影子火箭/QuantumultX 通用规则分流脚本", url: "https://github.com/blackmatrix7/ios_rule_script/" },
+          { name: "GitHub Gist - 影子火箭私人配置", desc: "Shadowrocket 个人云端策略分流配置文件", url: "https://gist.github.com/yan279405/" },
+          { name: "Gitee 工作台", desc: "码云开源代码托管中文平台", url: "https://gitee.com/" },
+          { name: "Telegram 官网", desc: "电报即时通讯与开发者社区入口", url: "https://telegram.org" },
+          { name: "Discord 社区", desc: "全球极客与技术群组交流平台", url: "https://discord.com" },
+          { name: "MultiPost", desc: "开源跨平台多社交媒体一键发布工具", url: "https://multipost.app/" },
+          { name: "本地路由器管理", desc: "普联 TL-XDR5430 本地网关登录页", url: "http://192.168.0.1/" }
         ]
-    },
-    generalAndLife: {
-        name: '综合检索、AI助手与日常在线生活',
+      },
+      generalAndLife: {
+        name: '综合生活',
         short: '💡',
         items: [
-            // 人工智能 AI 助手
-            { name: "Google Gemini", desc: "谷歌官方多模态 AI 智能大模型助手", url: "https://gemini.google.com/app" },
-            { name: "谷歌 DeepMind 官网", desc: "谷歌顶级 AI 科学实验室与技术前沿", url: "https://deepmind.google/" },
-            { name: "Chatbox AI 客户端官网", desc: "多模型通用桌面端 AI 跨平台客户端", url: "https://chatboxai.app/zh" },
-            { name: "Jan.ai 桌面AI文档", desc: "开源本地离线运行大模型的客户端使用指南", url: "https://www.jan.ai/docs/desktop" },
-            // 搜索引擎、新闻导航与社区论坛
-            { name: "Google 搜索", desc: "全球通用谷歌搜索引擎主页", url: "https://www.google.com.hk/?client=safari" },
-            { name: "百度 搜索", desc: "国内中文主流搜索引擎", url: "https://www.baidu.com/" },
-            { name: "翻墙者网址导航", desc: "墙外网址综合导航与科学上网指南 (2026)", url: "https://www.fanqiangzhe.com/" },
-            { name: "国外网站大全", desc: "世界68：收录全球各国优质网址的中文综合导航", url: "https://www.world68.com/" },
-            { name: "天天科技教学", desc: "暗网网络资源、安全防御与网址科普", url: "https://www.kejitt.top/anwang.html" },
-            { name: "Blogger 博客后台", desc: "谷歌旗下免费个人独立博客管理系统", url: "https://www.blogger.com/" },
-            { name: "Reddit 国际论坛", desc: "全球极客热门社区与趋势讨论聚合地", url: "https://reddit.com" },
-            { name: "Pixiv 插画交流网站", desc: "全球知名画师、二次元插画社交聚合社区", url: "https://www.pixiv.net/" },
-            { name: "愛看機器人 (ikanbot)", desc: "影视在线资源、热门电影电视剧发现检索", url: "https://v.aikanbot.com/" },
-            // 通讯与电子邮箱
-            { name: "Gmail 收件箱", desc: "谷歌官方电子邮箱个人收件箱", url: "https://mail.google.com/mail/u/0/#inbox" },
-            { name: "QQ 邮箱", desc: "微信/QQ 网页端无感收发邮件后台", url: "https://wx.mail.qq.com/" },
-            { name: "网易 163 邮箱", desc: "网易官方经典中文电子邮箱登录页", url: "https://mail.163.com/" },
-            // 学习、百科与知识库
-            { name: "安娜的档案", desc: "全球最大的免费数字影子图书馆、开源电子书检索", url: "https://www.bgrdh.com/sites/23937.html" },
-            { name: "EngLearner 导航", desc: "为英语学习者量身定制的高效工具与网站导航", url: "https://www.englearner.site/cn/index.html" },
-            { name: "极速英语", desc: "新概念英语等零基础英语自学优质教材平台", url: "https://www.ncego.com/" },
-            { name: "Coursera 在线课程平台", desc: "名校名企联合打造的国际在线认证教育平台", url: "https://www.coursera.org/" },
-            { name: "Udemy 在线课程平台", desc: "全球优质实战技能与 IT 视频课程商城", url: "https://www.udemy.com/" },
-            { name: "PhET 科学在线互动仿真", desc: "科罗拉多大学物理、化学、生物交互式趣味模拟程序", url: "https://phet.colorado.edu/zh_CN/" },
-            { name: "iFixit 免费修理手册", desc: "数码硬件及各种家电的开源、免费高清拆解维修手册", url: "https://zh.ifixit.com/" },
-            { name: "ManualsLib 在线手册查找", desc: "全球最大的各类设备、说明书与 PDF 手册数据库", url: "https://www.manualslib.com/" },
-            { name: "TinyWow 外贸百科", desc: "整合外贸实用工具与跨境知识的百科导航", url: "https://waimao21.com/sites/4419.html" },
-            { name: "Freemediaheckyeah (FMHY)", desc: "Reddit 最全的全球白嫖、开源、实用综合资源导航仓库", url: "https://fmhy.net/" },
-            // 日常综合与硬件服务
-            { name: "Google 云端硬盘", desc: "谷歌云端数字个人资产备份空间（谷歌5G）", url: "https://drive.google.com/drive/" },
-            { name: "苹果中国官网", desc: "Apple 硬件在中国大陆的官方选购与支持平台", url: "https://www.apple.com/cn/" },
-            { name: "iCloud 官网", desc: "苹果生态下设备间云端数据无缝同步云服务", url: "https://www.icloud.com/" },
-            { name: "MacBook Pro (香港)", desc: "Apple 香港地区 MacBook Pro 专属产品详情选购页", url: "https://www.apple.com/hk/macbook-pro/" },
-            { name: "互传官网", desc: "vivo 官方推出的手机与电脑间零流量、快捷数据传输工具", url: "https://es.vivo.com/" },
-            { name: "麦软订单详情页", desc: "正版软件商城（如会声会影、Camtasia 等）购买凭证及授权后台", url: "https://i.mairuan.com/orders/" },
-            { name: "Nano 11 精简系统介绍", desc: "零度博客：专为低配置电脑打造的极致精简版 Windows 11", url: "https://www.freedidi.com/22070.html" },
-            { name: "Famelack 免费直播电视", desc: "在全球范围内无需注册直接在线观看世界各国电视新闻频道", url: "https://famelack.com/all-channels" },
-            { name: "LinkedIn 职业社交", desc: "全球最大的领英职场人脉与商业社交平台", url: "https://linkedin.com" }
+          { name: "Google Gemini", desc: "谷歌官方多模态 AI 智能大模型助手", url: "https://gemini.google.com/app" },
+          { name: "谷歌 DeepMind 官网", desc: "谷歌顶级 AI 科学实验室与技术前沿", url: "https://deepmind.google/" },
+          { name: "Chatbox AI 客户端官网", desc: "多模型通用桌面端 AI 跨平台客户端", url: "https://chatboxai.app/zh" },
+          { name: "Jan.ai 桌面AI文档", desc: "开源本地离线运行大模型的客户端使用指南", url: "https://www.jan.ai/docs/desktop" },
+          { name: "Google 搜索", desc: "全球通用谷歌搜索引擎主页", url: "https://www.google.com.hk/?client=safari" },
+          { name: "百度 搜索", desc: "国内中文主流搜索引擎", url: "https://www.baidu.com/" },
+          { name: "翻墙者网址导航", desc: "墙外网址综合导航与科学上网指南 (2026)", url: "https://www.fanqiangzhe.com/" },
+          { name: "国外网站大全", desc: "世界68：收录全球各国优质网址的中文综合导航", url: "https://www.world68.com/" },
+          { name: "天天科技教学", desc: "暗网网络资源、安全防御与网址科普", url: "https://www.kejitt.top/anwang.html" },
+          { name: "Blogger 博客后台", desc: "谷歌旗下免费个人独立博客管理系统", url: "https://www.blogger.com/" },
+          { name: "Reddit 国际论坛", desc: "全球极客热门社区与趋势讨论聚合地", url: "https://reddit.com" },
+          { name: "Pixiv 插画交流网站", desc: "全球知名画师、二次元插画社交聚合社区", url: "https://www.pixiv.net/" },
+          { name: "愛看機器人 (ikanbot)", desc: "影视在线资源、热门电影电视剧发现检索", url: "https://v.aikanbot.com/" },
+          { name: "Gmail 收件箱", desc: "谷歌官方电子邮箱个人收件箱", url: "https://mail.google.com/mail/u/0/#inbox" },
+          { name: "QQ 邮箱", desc: "微信/QQ 网页端无感收发邮件后台", url: "https://wx.mail.qq.com/" },
+          { name: "网易 163 邮箱", desc: "网易官方经典中文电子邮箱登录页", url: "https://mail.163.com/" },
+          { name: "安娜的档案", desc: "全球最大的免费数字影子图书馆、开源电子书检索", url: "https://www.bgrdh.com/sites/23937.html" },
+          { name: "EngLearner 导航", desc: "为英语学习者量身定制的高效工具与网站导航", url: "https://www.englearner.site/cn/index.html" },
+          { name: "极速英语", desc: "新概念英语等零基础英语自学优质教材平台", url: "https://www.ncego.com/" },
+          { name: "Coursera 在线课程平台", desc: "名校名企联合打造的国际在线认证教育平台", url: "https://www.coursera.org/" },
+          { name: "Udemy 在线课程平台", desc: "全球优质实战技能与 IT 视频课程商城", url: "https://www.udemy.com/" },
+          { name: "PhET 科学在线互动仿真", desc: "科罗拉多大学物理、化学、生物交互式趣味模拟程序", url: "https://phet.colorado.edu/zh_CN/" },
+          { name: "iFixit 免费修理手册", desc: "数码硬件及各种家电的开源、免费高清拆解维修手册", url: "https://zh.ifixit.com/" },
+          { name: "ManualsLib 在线手册查找", desc: "全球最大的各类设备、说明书与 PDF 手册数据库", url: "https://www.manualslib.com/" },
+          { name: "TinyWow 外贸百科", desc: "整合外贸实用工具与跨境知识的百科导航", url: "https://waimao21.com/sites/4419.html" },
+          { name: "Freemediaheckyeah (FMHY)", desc: "Reddit 最全的全球白嫖、开源、实用综合资源导航仓库", url: "https://fmhy.net/" },
+          { name: "Google 云端硬盘", desc: "谷歌云端数字个人资产备份空间（谷歌5G）", url: "https://drive.google.com/drive/" },
+          { name: "苹果中国官网", desc: "Apple 硬件在中国大陆的官方选购与支持平台", url: "https://www.apple.com/cn/" },
+          { name: "iCloud 官网", desc: "苹果生态下设备间云端数据无缝同步云服务", url: "https://www.icloud.com/" },
+          { name: "MacBook Pro (香港)", desc: "Apple 香港地区 MacBook Pro 专属产品详情选购页", url: "https://www.apple.com/hk/macbook-pro/" },
+          { name: "互传官网", desc: "vivo 官方推出的手机与电脑间零流量、快捷数据传输工具", url: "https://es.vivo.com/" },
+          { name: "麦软订单详情页", desc: "正版软件商城购买凭证及授权后台", url: "https://i.mairuan.com/orders/" },
+          { name: "Nano 11 精简系统介绍", desc: "零度博客：专为低配置电脑打造的极致精简版 Windows 11", url: "https://www.freedidi.com/22070.html" },
+          { name: "Famelack 免费直播电视", desc: "在全球范围内无需注册直接在线观看世界各国电视新闻频道", url: "https://famelack.com/all-channels" },
+          { name: "LinkedIn 职业社交", desc: "全球最大的领英职场人脉与商业社交平台", url: "https://linkedin.com" }
         ]
-    }
-};
+      }
+    };
 
-    /* ==========================================================================
-       8. 核心控制渲染引擎 (DOM Controllers & Render Engine)
-       ========================================================================== */
-    const mainElement = document.getElementById('main');
-    const grid = document.getElementById('grid');
+    // ==========================================================================
+    // 5. 核心渲染逻辑
+    // ==========================================================================
+    const grid = document.getElementById('appGrid');
     const dock = document.getElementById('dock');
 
-    // 渲染指定分类下的 App 应用列表
-    function renderApps(key) {
-      const section = DATA[key];
-      if (!section || !section.items) return;
-
-      // 清空旧节点
-      grid.replaceChildren();
-
-      // 切换底部常驻 Dock 项的激活样式
-      document.querySelectorAll('.dock-item').forEach(item => {
-        item.classList.toggle('active', item.dataset.key === key);
+    // 根据分类渲染图标网格
+    function renderApps(categoryKey) {
+      grid.innerHTML = '';
+      
+      // 更新底栏的高亮状态
+      document.querySelectorAll('.dock-item').forEach(el => {
+        el.classList.toggle('active', el.dataset.key === categoryKey);
       });
 
+      const items = DATA[categoryKey]?.items || [];
       const fragment = document.createDocumentFragment();
 
-      // 构建并填充图标项
-      for (const app of section.items) {
+      for (const app of items) {
         const item = document.createElement('div');
-        item.className = 'app-icon';
-        item.tabIndex = 0;
-        item.title = app.desc;
+        item.className = 'app-item';
+        item.setAttribute('tabindex', '0');
+        item.title = app.desc || '';
+        
+        // 提取域名首字母作为无图片或无 SVG 时的图标兜底
+        const firstLetter = app.name ? app.name.charAt(0).toUpperCase() : '🌐';
+        
         item.innerHTML = `
-          <div class="icon-wrapper" style="background:${app.bg};color:${app.color};">
-            ${app.svg}
+          <div class="app-icon">
+            <span>${firstLetter}</span>
           </div>
           <div class="app-name">${app.name}</div>
         `;
         
-        // 绑定事件
+        // 绑定点击与访问事件
         const openUrl = () => window.open(app.url, '_blank', 'noopener,noreferrer');
         item.addEventListener('click', openUrl);
         item.addEventListener('keydown', e => {
@@ -613,7 +424,7 @@
       item.dataset.key = key;
       item.title = DATA[key].name;
       item.innerHTML = `
-        <div class="dock-icon-wrapper">
+        <div class="dock-icon-wrapper" style="display:flex; flex-direction:column; align-items:center;">
           <span class="dock-emoji">${DATA[key].short}</span>
           <span class="dock-name">${DATA[key].name}</span>
         </div>
@@ -623,8 +434,8 @@
     }
     dock.appendChild(dockFragment);
 
-    // 启动初始化页面默认渲染国际平台
-    renderApps('global');
+    // 【修正关键代码】：不再调用 renderApps('global')，默认初始化渲染新组 mediaPlatforms
+    renderApps('mediaPlatforms');
 
     // PWA 服务离线运行注册
     if ('serviceWorker' in navigator) {
@@ -632,9 +443,6 @@
         navigator.serviceWorker.register('./sw.js').catch(() => {});
       });
     }
-
-    // 禁用移动端自带的多指缩放原生行为，保持原生 OS 级别体验
-    document.addEventListener('gesturestart', e => e.preventDefault(), { passive: false });
   </script>
 </body>
 </html>
