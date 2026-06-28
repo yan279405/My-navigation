@@ -570,11 +570,8 @@ const DATA = {
         dock.appendChild(item);
     });
 
-    // 2. 默认加载时保持主屏幕完全空白，不自动点亮任何平台
-    // renderApps('cn'); 👈 把这行注释掉或者直接删掉
-    // 🔒 安全锁：确保刷新时 App 网格内没有任何残留的静态占位内容
-    const appGrid = document.querySelector('.app-grid');
-    if (appGrid) appGrid.innerHTML = '';
+    // 2. 默认加载时保持主屏幕完全点亮
+        renderApps('cn'); 
     // 3. 注册 Service Worker，激活 PWA
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
