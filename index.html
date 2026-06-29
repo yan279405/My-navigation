@@ -257,6 +257,10 @@
       line-height: 1.2;
     }
 
+    .dock-item {
+      border-radius: 14px;
+    }
+
     .dock-name {
       font-size: 9px;
       color: #fff;
@@ -271,17 +275,15 @@
   <div class="top-header"></div>
 
   <div class="launchpad-container" id="scrollContainer">
-    <div class="app-grid" id="appGrid">
-      </div>
+    <div class="app-grid" id="appGrid"></div>
   </div>
 
   <div class="dock-container">
-    <div class="dock" id="dockBar">
-      </div>
+    <div class="dock" id="dockBar"></div>
   </div>
 
   <script>
-    // 经严密清洗后的标准无错数据源（自动净化了历史转义斜杠）
+    // 1. 修复并对齐后的标准无错数据源
     const DATA = {
         news: { 
             name: '日常资讯', 
@@ -489,34 +491,28 @@
     }
 };
 
+    // 2. 页面元素获取
     const grid = document.getElementById('appGrid');
     const dock = document.getElementById('dockBar');
-    const scrollContainer = document.getElementById('scrollContainer');
 
-    function cleanSVG(svgStr) {
-      if (!svgStr) return '';
-      let clean = svgStr.replace(/\\"/g, '"').replace(/\\'/g, "'");
-      if (!clean.includes('fill=')) {
-        clean = clean.replace('<svg', '<svg fill="currentColor"');
-      }
-      return clean;
-    }
-
-    function renderApps(categoryKey) {
+    // 3. 应用图标渲染引擎
+    function switchCategory(categoryKey) {
       grid.innerHTML = '';
-      scrollContainer.scrollTop = 0; // 重置翻页状态
-      
       const category = DATA[categoryKey];
-      if (!category || !category.items) return;
+      if (!category) return;
 
       const fragment = document.createDocumentFragment();
-      
+
       category.items.forEach(app => {
         const item = document.createElement('div');
         item.className = 'app-item';
-        item.tabIndex = 0;
-
-        const finalIconHTML = app.svg ? cleanSVG(app.svg) : `<span class="icon-fallback">${app.name.charAt(0)}</span>`;
+        
+        let finalIconHTML = '';
+        if (app.svg) {
+          finalIconHTML = app.svg;
+        } else {
+          finalIconHTML = `<span class="icon-fallback">${app.name.charAt(0)}</span>`;
+        }
 
         item.innerHTML = `
           <div class="icon-wrapper" style="background: ${app.bg || '#333'}; color: ${app.color || '#fff'};">
@@ -531,17 +527,16 @@
 
       grid.appendChild(fragment);
 
-      // Dock 激活项毛玻璃高亮联动
+      // Dock 激活项高亮联动
       document.querySelectorAll('.dock-item').forEach(el => {
         const isActive = el.dataset.key === categoryKey;
         el.style.opacity = isActive ? '1' : '0.55';
         el.style.background = isActive ? 'rgba(255, 255, 255, 0.25)' : 'none';
-        el.style.borderRadius = '14px';
         el.style.transform = isActive ? 'scale(1.04)' : 'scale(1)';
       });
     }
 
-    // 动态装配底部分类 Dock
+    // 4. 动态装配底部分类 Dock 栏
     const dockFragment = document.createDocumentFragment();
     Object.keys(DATA).forEach(key => {
       const item = document.createElement('div');
@@ -553,13 +548,15 @@
           <span class="dock-name">${DATA[key].name}</span>
         </div>
       `;
-      item.addEventListener('click', () => renderApps(key));
+      item.addEventListener('click', () => switchCategory(key));
       dockFragment.appendChild(item);
     });
     dock.appendChild(dockFragment);
 
-    // 默认开机载入
-    renderApps('global');
+    // 5. 默认初始化加载第一个分类
+    if (Object.keys(DATA).length > 0) {
+      switchCategory(Object.keys(DATA)[0]);
+    }
   </script>
 </body>
 </html>
