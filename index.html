@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-  <title>Creator Hub OS26 - Pure Horizontal Slide Edition</title>
+  <title>Creator Hub OS26 - Full Ecosystem Edition</title>
   
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon.png">
@@ -13,24 +13,37 @@
   
   <style>
     /* ==========================================================================\
-       1. 全局配置与多端锁死参数 (Mac 7×5, iPad 6×5, iPhone 4×6)
+       1. 全局配置与多端锁死矩阵参数 (Mac 10×5, iPad 8×6, iPhone 4×6)
        ========================================================================== */
     :root {
       --text-main: #ffffff;
       --text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-      --icon-radius: 22%; /* 苹果官方 Squircle 黄金圆角 */
+      --icon-radius: 22%; /* 苹果 Squircle 黄金圆角 */
       --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
       
-      /* 🖥️【Mac / 电脑大屏】锁定 7 列 × 5 行 */
-      --grid-cols: 7;
+      /* 🖥️【Mac / 电脑大屏】严格锁定 10 列 × 5 行 */
+      --grid-cols: 10;
       --grid-rows: 5;
-      --icon-size: 76px;
-      --gap-x: 32px;
+      --icon-size: 72px;
+      --gap-x: 26px;
       --gap-y: 28px;
-      --container-max-w: 724px; 
+      /* 核心：精确锁死容器宽度，解决最后一页图标少时乱散架的问题 */
+      --container-max-w: 1020px; 
     }
 
-    /* 📱【iPhone / 手机竖屏】：严格切换为标准 4 列 × 6 行 宫格 */
+    /* 📑【iPad / 平板】：严格锁定为 8 列 × 6 行 矩阵 */
+    @media (min-width: 481px) and (max-width: 1024px) {
+      :root {
+        --grid-cols: 8;
+        --grid-rows: 6;
+        --icon-size: 68px;
+        --gap-x: 22px;
+        --gap-y: 24px;
+        --container-max-w: 750px;
+      }
+    }
+
+    /* 📱【iPhone / 手机竖屏】：严格卡死 4 列 × 6 行 宫格 */
     @media (max-width: 480px) and (orientation: portrait) {
       :root {
         --grid-cols: 4;
@@ -38,24 +51,12 @@
         --icon-size: 62px;
         --gap-x: 22px;
         --gap-y: 20px;
-        --container-max-w: 314px; 
-      }
-    }
-
-    /* 📑【iPad / 平板】：严格切换为标准 6 列 × 5 行 矩阵 */
-    @media (min-width: 481px) and (max-width: 1024px) {
-      :root {
-        --grid-cols: 6;
-        --grid-rows: 5;
-        --icon-size: 74px;
-        --gap-x: 28px;
-        --gap-y: 30px;
-        --container-max-w: 584px;
+        --container-max-w: 330px; /* 完美卡死在 390px 物理安全边界内 */
       }
     }
 
     /* ==========================================================================\
-       2. 基础框架重置
+       2. 基础框架重置与弹性容器
        ========================================================================== */
     * { 
       box-sizing: border-box; 
@@ -82,64 +83,59 @@
     }
 
     .top-header {
-      height: 40px;
+      height: 35px;
       width: 100%;
       flex-shrink: 0;
     }
 
     /* ==========================================================================\
-       3. 核心重构：横向翻页安全视口与吸附对齐（Scroll Snap）
+       3. 横向滑屏核心安全视口 (Scroll Snap System)
        ========================================================================== */
     .launchpad-container {
       flex: 1;
       width: 100%;
-      
-      /* 改为横向物理滚动，隐藏纵向溢出 */
       overflow-x: auto;
       overflow-y: hidden; 
       display: flex;
       flex-direction: row;
-      
-      /* 核心：横向强制分页对齐吸附 */
-      scroll-snap-type: x mandatory; 
+      scroll-snap-type: x mandatory; /* 强制物理分页吸附 */
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch; 
     }
 
-    /* 隐藏原生滚动条 */
+    /* 隐藏所有丑陋的滚动条线 */
     .launchpad-container::-webkit-scrollbar {
       display: none;
     }
 
-    /* 单个整屏页面视图包 */
+    /* 单一整屏画布 */
     .page-view {
-      min-width: 100%; /* 强行撑满整屏宽度 */
+      min-width: 100%;
       height: 100%;
       flex-shrink: 0;
-      scroll-snap-align: start; /* 滑动完毕后向左对齐吸附 */
-      
+      scroll-snap-align: start; /* 释手自动对齐 */
       display: flex;
-      justify-content: center; /* 图标网格水平居中 */
-      align-items: flex-start;  /* 图标网格顶部对齐 */
+      justify-content: center; /* 左右正中心居中 */
+      align-items: flex-start;  /* 顶部自然垂挂，留出呼吸位 */
       padding: 10px 20px;
     }
 
-    /* 固若金汤的苹果矩阵网格 */
+    /* 果味刚性网格 */
     .app-grid {
       display: grid;
-      grid-template-columns: repeat(var(--grid-cols), 1fr);
-      grid-template-rows: repeat(var(--grid-rows), auto); /* 行数限制 */
+      /* 核心解法：弃用弹性 1fr，改用固定分配。防止最后一页因图标不足产生任何拉伸错开 */
+      grid-template-columns: repeat(var(--grid-cols), var(--icon-size));
+      grid-template-rows: repeat(var(--grid-rows), auto);
       
       width: 100%;
       max-width: var(--container-max-w); 
       column-gap: var(--gap-x);
       row-gap: var(--gap-y);
-      justify-items: center;
-      align-items: start;
+      justify-content: space-between; /* 确保缩放窗口时，间距呈现标准的自适应吸附 */
     }
 
     /* ==========================================================================\
-       4. 图标组件细节（像素级完美对齐与规范单行文字）
+       4. 图标组件细节
        ========================================================================== */
     .app-item {
       display: flex;
@@ -182,7 +178,7 @@
     }
 
     .icon-fallback {
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 600;
     }
 
@@ -193,7 +189,7 @@
       color: var(--text-main);
       text-shadow: var(--text-shadow);
       text-align: center;
-      width: calc(var(--icon-size) + 12px); 
+      width: calc(var(--icon-size) + 14px); 
       
       white-space: nowrap;
       overflow: hidden;
@@ -201,7 +197,38 @@
     }
 
     /* ==========================================================================\
-       5. 底部高斯模糊毛玻璃 Dock 栏
+       5. 👑 新增：iOS 标志性原生流线分页小白点指示器
+       ========================================================================== */
+    .page-dots-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      height: 20px;
+      margin-top: 5px;
+      margin-bottom: 2px;
+      flex-shrink: 0;
+    }
+
+    .page-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      cursor: pointer;
+    }
+
+    /* 激活态（翻到该页时呈现的高亮纯白点） */
+    .page-dot.active {
+      background: #ffffff;
+      transform: scale(1.15);
+      box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+    }
+
+    /* ==========================================================================\
+       6. 底部高斯模糊毛玻璃 Dock 栏
        ========================================================================== */
     .dock-container {
       width: 100%;
@@ -264,13 +291,15 @@
   <div class="launchpad-container" id="scrollContainer">
     </div>
 
+  <div class="page-dots-container" id="dotsContainer"></div>
+
   <div class="dock-container">
     <div class="dock" id="dockBar">
       </div>
   </div>
 
   <script>
-    // 经高度优化的干净合法数据源
+    // 干净且高兼容度的数据源
     const DATA = {
         news: { 
             name: '日常资讯', 
@@ -480,11 +509,14 @@
 
     const container = document.getElementById('scrollContainer');
     const dock = document.getElementById('dockBar');
+    const dotsContainer = document.getElementById('dotsContainer');
 
-    // 动态智能检测当前设备的分屏容量上限机制
+    let observer = null; // 视口交叉监听实例引用
+
+    // 智能抓取当前端媒体查询下的真实矩阵乘积（10×5=50，8×6=48，4×6=24）
     function getCurrentPageCapacity() {
       const computed = getComputedStyle(document.documentElement);
-      const cols = parseInt(computed.getPropertyValue('--grid-cols')) || 7;
+      const cols = parseInt(computed.getPropertyValue('--grid-cols')) || 10;
       const rows = parseInt(computed.getPropertyValue('--grid-rows')) || 5;
       return cols * rows;
     }
@@ -498,26 +530,51 @@
       return clean;
     }
 
-    // 渲染桌面：核心高级横向分片逻辑
+    // 主生成核心逻辑
     function renderApps(categoryKey) {
+      // 1. 清空旧元素，断开历史高开销监听
+      if (observer) observer.disconnect();
       container.innerHTML = '';
-      container.scrollLeft = 0; // 切换版块回到第一页
-      
+      dotsContainer.innerHTML = '';
+      container.scrollLeft = 0; 
+
       const category = DATA[categoryKey];
       if (!category || !category.items) return;
 
       const items = category.items;
-      const capacity = getCurrentPageCapacity(); // 获取当前规格（24/30/35等）
+      const capacity = getCurrentPageCapacity();
+      const pageCount = Math.ceil(items.length / capacity);
 
-      // 数据自动流式切片算法：若图标超出单屏范围，动态创建新的 .page-view 的画板
+      // 2. 如果只有一页，依照苹果原生规范，隐藏点位指示器
+      if (pageCount <= 1) {
+        dotsContainer.style.display = 'none';
+      } else {
+        dotsContainer.style.display = 'flex';
+      }
+
+      // 3. 动态绘制小白点指示组件
+      for (let p = 0; p < pageCount; p++) {
+        const dot = document.createElement('div');
+        dot.className = `page-dot ${p === 0 ? 'active' : ''}`;
+        dot.dataset.pageIndex = p;
+        dot.addEventListener('click', () => {
+          container.scrollTo({
+            left: container.clientWidth * p,
+            behavior: 'smooth'
+          });
+        });
+        dotsContainer.appendChild(dot);
+      }
+
+      // 4. 流式划分数据并向画板注资
       for (let i = 0; i < items.length; i += capacity) {
         const pageChunk = items.slice(i, i + capacity);
+        const pageIndex = i / capacity;
 
-        // 创建专属的整屏分页容器
         const pageView = document.createElement('div');
         pageView.className = 'page-view';
+        pageView.dataset.index = pageIndex; // 供监听器识别索引
 
-        // 创建内部网格
         const grid = document.createElement('div');
         grid.className = 'app-grid';
 
@@ -543,7 +600,26 @@
         container.appendChild(pageView);
       }
 
-      // 同步 Dock 高亮态
+      // 5. 👑 原生边缘滑动实时高亮白点算法 (Intersection Observer 硬件加速级)
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          // 当某一页占领视口超过一半 (50%) 面积时触发白点切换
+          if (entry.isIntersecting) {
+            const idx = entry.target.dataset.index;
+            document.querySelectorAll('.page-dot').forEach((dot, dotIdx) => {
+              dot.classList.toggle('active', dotIdx == idx);
+            });
+          }
+        });
+      }, {
+        root: container,
+        threshold: 0.52 
+      });
+
+      // 让每一页开始接受交叉检测
+      document.querySelectorAll('.page-view').forEach(pv => observer.observe(pv));
+
+      // 6. 激活对应的 Dock 栏毛玻璃高亮
       document.querySelectorAll('.dock-item').forEach(el => {
         const isActive = el.dataset.key === categoryKey;
         el.style.opacity = isActive ? '1' : '0.55';
@@ -553,7 +629,7 @@
       });
     }
 
-    // 初始化装载 Dock
+    // 初始化装配 Dock
     const dockFragment = document.createDocumentFragment();
     Object.keys(DATA).forEach(key => {
       const item = document.createElement('div');
@@ -570,14 +646,14 @@
     });
     dock.appendChild(dockFragment);
 
-    // 监听设备视口缩放与旋转，重新校正切片页面
+    // 强健性视口重构：当浏览器/平板旋转拖动导致高宽改变时，重新刷新排列
     window.addEventListener('resize', () => {
       const activeDock = document.querySelector('.dock-item[style*="opacity: 1"]');
       const activeKey = activeDock ? activeDock.dataset.key : 'global';
       renderApps(activeKey);
     });
 
-    // 默认执行
+    // 默认开机执行
     renderApps('global');
   </script>
 </body>
