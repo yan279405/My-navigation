@@ -13,7 +13,7 @@
   
   <style>
     /* ==========================================================================\
-       1. 全局响应式变量系统（针对手机、平板、桌面端优化布局与毛玻璃）
+       1. 全局响应式变量系统（全面规避布局挤压塌陷）
        ========================================================================== */
     :root {
       --text-main: #ffffff;
@@ -31,7 +31,6 @@
     }
 
     @media (max-width: 1024px) {
-      /* 📐 平板端专项微调 */
       :root {
         --grid-cols: 6;
         --grid-rows: 5;
@@ -43,7 +42,6 @@
     }
 
     @media (max-width: 768px) {
-      /* 📱 手机端像素级复刻 iOS 4×6 桌面 */
       :root {
         --grid-cols: 4;
         --grid-rows: 6;
@@ -57,7 +55,6 @@
     * { box-sizing: border-box; user-select: none; -webkit-user-select: none; }
     html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: var(--font-stack); }
 
-    /* 顶级视觉：支持平滑切换的多套高阶渐变背景 */
     body {
       background: linear-gradient(135deg, #1e1e2f 0%, #2a1b40 30%, #4a2040 60%, #1a2a6c 100%);
       background-size: 400% 400%;
@@ -68,15 +65,14 @@
     }
 
     /* ==========================================================================\
-       2. 顶端多功能智能卡片控制栏
+       2. 顶端状态功能栏
        ========================================================================== */
     .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 25px var(--padding-size) 10px var(--padding-size);
+      padding: 20px var(--padding-size) 5px var(--padding-size);
       z-index: 30;
-      gap: 15px;
     }
 
     .brand-title {
@@ -108,7 +104,7 @@
       background: #007aff;
       border-color: #007aff;
       font-weight: 600;
-      display: none; /* 仅在编辑模式下激活动态流出 */
+      display: none;
       box-shadow: 0 4px 12px rgba(0,122,255,0.3);
     }
     body.editing-mode .done-btn { display: inline-block; animation: fadeIn 0.3s ease; }
@@ -116,103 +112,111 @@
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ==========================================================================\
-       3. iOS 经典 Spotlight 隐藏全应用搜索舱
+       3. 桌面正上方半透明常驻搜索舱 (全新设计)
        ========================================================================== */
-    .spotlight-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(30px) saturate(140%);
-      -webkit-backdrop-filter: blur(30px) saturate(140%);
-      z-index: 100;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 40px;
-    }
-    .spotlight-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .spotlight-content {
+    .desktop-search-wrapper {
       width: 90%;
-      max-width: 600px;
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-      transform: translateY(-30px);
-      transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+      max-width: 480px;
+      margin: 10px auto 5px auto;
+      position: relative;
+      z-index: 100;
     }
-    .spotlight-overlay.active .spotlight-content {
-      transform: translateY(0);
-    }
-    .spotlight-search-box {
-      width: 100%;
+
+    .desktop-search-box {
       display: flex;
       align-items: center;
       gap: 12px;
-      position: relative;
+      background: rgba(255, 255, 255, 0.13);
+      backdrop-filter: blur(20px) saturate(120%);
+      -webkit-backdrop-filter: blur(20px) saturate(120%);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 14px;
+      padding: 10px 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
     }
-    .spotlight-search-box .search-icon {
-      position: absolute;
-      left: 16px;
-      font-size: 16px;
-      opacity: 0.6;
+
+    .desktop-search-box:focus-within {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
     }
-    .spotlight-search-box input {
+
+    .desktop-search-box .search-icon {
+      font-size: 15px;
+      opacity: 0.7;
+    }
+
+    .desktop-search-box input {
       flex: 1;
-      padding: 13px 16px 13px 46px;
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.12);
+      background: none;
+      border: none;
       color: #fff;
-      font-size: 16px;
+      font-size: 15px;
       outline: none;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
       -webkit-user-select: text;
       user-select: text;
     }
-    .spotlight-search-box input:focus {
-      background: rgba(255, 255, 255, 0.18);
-      border-color: rgba(255, 255, 255, 0.4);
+
+    .desktop-search-box input::placeholder {
+      color: rgba(255, 255, 255, 0.55);
     }
-    .spotlight-results {
+
+    /* 搜索悬浮结果面板 */
+    .search-results-panel {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
       width: 100%;
-      max-height: 65vh;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(35px) saturate(140%);
+      -webkit-backdrop-filter: blur(35px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      max-height: 55vh;
       overflow-y: auto;
-      scrollbar-width: none;
+      z-index: 110;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+      padding: 15px;
+      display: none;
+      animation: fadeIn 0.25s cubic-bezier(0.25, 1, 0.5, 1);
     }
-    .spotlight-results::-webkit-scrollbar { display: none; }
     
+    body.search-active .search-results-panel {
+      display: block;
+    }
+
     .search-results-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 20px;
       width: 100%;
-      padding: 10px;
     }
+
     .search-tip {
       text-align: center;
-      color: rgba(255, 255, 255, 0.45);
-      font-size: 14px;
-      margin-top: 40px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 13px;
+      padding: 20px 0;
       letter-spacing: 0.5px;
     }
 
     /* ==========================================================================\
-       4. 横向滑屏主舞台 (Scroll Snap 物理页面吸附)
+       4. 横向滑屏舞台 (输入搜索时触发 10% 模糊)
        ========================================================================== */
     .stage {
       flex: 1;
       width: 100%;
       position: relative;
       overflow: hidden;
+      /* 丝滑的模糊过渡滤镜 */
+      transition: filter 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* 当搜索栏处于激活输入状态时，给下方图标附加完美的 10% 空间模糊度 */
+    body.search-active .stage {
+      filter: blur(8px); 
+      pointer-events: none; /* 模糊状态下临时锁定主屏幕图标触控 */
     }
 
     .scroll-container {
@@ -227,7 +231,6 @@
     }
     .scroll-container::-webkit-scrollbar { display: none; }
 
-    /* 单页视图 */
     .page-view {
       flex: 0 0 100%;
       width: 100%;
@@ -235,13 +238,15 @@
       scroll-snap-align: start;
       display: grid;
       grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
-      grid-template-rows: repeat(var(--grid-rows), minmax(0, 1fr));
+      grid-template-rows: repeat(var(--grid-rows), auto);
+      align-content: start; 
+      justify-items: center;
       gap: var(--gap-size);
-      padding: var(--padding-size) var(--padding-size) calc(var(--padding-size) + 30px) var(--padding-size);
+      padding: var(--padding-size) var(--padding-size) calc(var(--padding-size) + 40px) var(--padding-size);
     }
 
     /* ==========================================================================\
-       5. 应用组件体系与精细化 iOS 经典抖动动效
+       5. 应用组件与经典抖动动效
        ========================================================================== */
     .app-item {
       display: flex;
@@ -249,7 +254,6 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      height: 100%;
       cursor: pointer;
       position: relative;
       transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -269,6 +273,7 @@
       -webkit-backdrop-filter: blur(var(--blur-amount));
       box-shadow: 0 8px 24px rgba(0,0,0,0.18), inset 0 1px 1px rgba(255,255,255,0.25);
       border: 1px solid rgba(255,255,255,0.12);
+      flex-shrink: 0;
     }
 
     .app-name {
@@ -277,14 +282,13 @@
       color: var(--text-main);
       text-shadow: var(--text-shadow);
       text-align: center;
-      width: 90%;
+      width: 100%;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       font-weight: 500;
     }
 
-    /* 🍏 iOS 经典乱序抖动效果 */
     @keyframes iosJiggle {
       0% { transform: rotate(-1.2deg) scale(0.99); }
       50% { transform: rotate(1.2deg) scale(1.01); }
@@ -298,7 +302,6 @@
       animation-delay: 0.04s;
     }
 
-    /* 拖拽态样式抓取反馈 */
     .app-item.dragging {
       opacity: 0.25;
       transform: scale(1.15);
@@ -306,7 +309,7 @@
     }
 
     /* ==========================================================================\
-       6. 流线指示器与高饱和度毛玻璃 Dock 栏
+       6. 分页小白点与极光 Dock 栏
        ========================================================================== */
     .pagination-container {
       position: absolute;
@@ -373,21 +376,17 @@
   <div class="top-bar">
     <div class="brand-title">Hub OS</div>
     <div class="control-actions">
-      <button id="openSearchBtn" class="glass-btn">🔍 搜索</button>
       <button id="wallpaperBtn" class="glass-btn" title="切换背景">🎨</button>
       <button id="exitEditBtn" class="glass-btn done-btn">完成</button>
     </div>
   </div>
 
-  <div class="spotlight-overlay" id="spotlightOverlay">
-    <div class="spotlight-content">
-      <div class="spotlight-search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="spotlightInput" placeholder="搜索全站所有应用..." autocomplete="off">
-        <button id="closeSearchBtn" class="glass-btn">取消</button>
-      </div>
-      <div class="spotlight-results" id="spotlightResults"></div>
+  <div class="desktop-search-wrapper">
+    <div class="desktop-search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="desktopSearchInput" placeholder="搜索应用..." autocomplete="off">
     </div>
+    <div class="search-results-panel" id="searchResultsPanel"></div>
   </div>
 
   <div class="stage" id="stageMain">
@@ -401,9 +400,9 @@
 
   <script>
     // ==========================================================================\
-    // 7. 数据核心层
+    // 7. 核心应用数据矩阵
     // ==========================================================================
-    const DATA = {
+   const DATA = {
         news: { 
             name: '日常资讯', 
             short: '📰', 
@@ -610,12 +609,18 @@
     }
 };
 
-    const WALLPAPERS = [
-      'linear-gradient(135deg, #1e1e2f 0%, #2a1b40 30%, #4a2040 60%, #1a2a6c 100%)',
-      'linear-gradient(135deg, #0d1b2a 0%, #1b263b 40%, #415a77 100%)',
-      'linear-gradient(135deg, #141115 0%, #2f1b25 50%, #4f3130 100%)',
-      'linear-gradient(135deg, #16161a 0%, #24252d 100%)'
-    ];
+    const container = document.getElementById('scrollContainer');
+    const dock = document.getElementById('dockBar');
+    const dotsContainer = document.getElementById('dotsContainer');
+
+    let observer = null; // 视口交叉监听实例引用
+
+    //const WALLPAPERS = [
+      //'linear-gradient(135deg, #1e1e2f 0%, #2a1b40 30%, #4a2040 60%, #1a2a6c 100%)',
+      //'linear-gradient(135deg, #0d1b2a 0%, #1b263b 40%, #415a77 100%)',
+     // 'linear-gradient(135deg, #141115 0%, #2f1b25 50%, #4f3130 100%)',
+     // 'linear-gradient(135deg, #16161a 0%, #24252d 100%)'
+    //];
 
     const container = document.getElementById('scrollContainer');
     const dotsContainer = document.getElementById('paginationContainer');
@@ -623,19 +628,14 @@
     const wallpaperBtn = document.getElementById('wallpaperBtn');
     const exitEditBtn = document.getElementById('exitEditBtn');
     
-    // 唤隐搜索核心组件
-    const openSearchBtn = document.getElementById('openSearchBtn');
-    const closeSearchBtn = document.getElementById('closeSearchBtn');
-    const spotlightOverlay = document.getElementById('spotlightOverlay');
-    const spotlightInput = document.getElementById('spotlightInput');
-    const spotlightResults = document.getElementById('spotlightResults');
+    const desktopSearchInput = document.getElementById('desktopSearchInput');
+    const searchResultsPanel = document.getElementById('searchResultsPanel');
 
     let currentCategory = 'global';
     let currentWallpaperIdx = 0;
     let isEditMode = false;
     let pressTimer = null;
     let draggedIdx = null;
-    let touchStartY = 0;
 
     function getGridCapacity() {
       const width = window.innerWidth;
@@ -645,7 +645,7 @@
     }
 
     // ==========================================================================\
-    // 8. 桌面应用渲染核心 (基于分类流式分箱)
+    // 8. 应用渲染服务
     // ==========================================================================
     function renderApps(categoryKey) {
       currentCategory = categoryKey;
@@ -653,6 +653,7 @@
       dotsContainer.innerHTML = '';
       
       const category = DATA[categoryKey];
+      if (!category) return;
       let apps = [...category.apps];
       
       const pageSize = getGridCapacity();
@@ -683,7 +684,7 @@
           
           bindLongPressEvents(item);
           
-          // 挂载 Drag & Drop 核心排序
+          // 挂载高精度拖拽重排机制
           item.addEventListener('dragstart', (e) => {
             if (!isEditMode) return e.preventDefault();
             draggedIdx = globalIdx;
@@ -727,21 +728,35 @@
     }
 
     // ==========================================================================\
-    // 9. 全域 APP 深度检索与秒级渲染
+    // 9. 桌面集成搜索状态调度与模糊响应控制
     // ==========================================================================
-    function handleGlobalSearch(query) {
-      spotlightResults.innerHTML = '';
-      if (!query) {
-        spotlightResults.innerHTML = '<div class="search-tip">💡 下拉或输入应用名称，检索全站聚合矩阵</div>';
-        return;
+    function updateSearchUI() {
+      if (!desktopSearchInput || !searchResultsPanel) return;
+      
+      const query = desktopSearchInput.value.trim();
+      
+      // 当搜索栏处于聚焦状态，无论是否输入均激活下方图标 10% 模糊
+      if (document.activeElement === desktopSearchInput) {
+        document.body.classList.add('search-active');
+        
+        if (query.length === 0) {
+          searchResultsPanel.innerHTML = '<div class="search-tip">💡 输入任何关键字，进行全站云端检索</div>';
+        } else {
+          renderPanelResults(query);
+        }
+      } else {
+        // 未聚焦时恢复正常
+        document.body.classList.remove('search-active');
       }
+    }
 
-      // 提取跨分类下的所有 APP 资源组
+    function renderPanelResults(query) {
+      searchResultsPanel.innerHTML = '';
       let matchedApps = [];
+      
       Object.keys(DATA).forEach(key => {
         DATA[key].apps.forEach(app => {
           if (app.name.toLowerCase().includes(query.toLowerCase())) {
-            // 防止各分类中有重名引发冲突
             if (!matchedApps.some(m => m.name === app.name)) {
               matchedApps.push(app);
             }
@@ -750,7 +765,7 @@
       });
 
       if (matchedApps.length === 0) {
-        spotlightResults.innerHTML = '<div class="search-tip">🔍 未找到匹配的应用，请检查拼写</div>';
+        searchResultsPanel.innerHTML = '<div class="search-tip">🔍 未匹配到相关应用，请精简关键词</div>';
         return;
       }
 
@@ -765,18 +780,42 @@
           <div class="app-name">${app.name}</div>
         `;
         item.addEventListener('click', () => {
-          hideSpotlight();
+          desktopSearchInput.value = '';
+          document.body.classList.remove('search-active');
+          desktopSearchInput.blur();
           routeToApp(app);
         });
         resultsGrid.appendChild(item);
       });
 
-      spotlightResults.appendChild(resultsGrid);
+      searchResultsPanel.appendChild(resultsGrid);
     }
+
+    if (desktopSearchInput) {
+      desktopSearchInput.addEventListener('input', updateSearchUI);
+      desktopSearchInput.addEventListener('focus', updateSearchUI);
+      desktopSearchInput.addEventListener('blur', () => {
+        // 延迟延时关闭，确保列表项的点击事件能够优先顺利执行
+        setTimeout(() => {
+          if (document.activeElement !== desktopSearchInput) {
+            document.body.classList.remove('search-active');
+          }
+        }, 200);
+      });
+    }
+
+    // 点击桌面非搜索核心区，安全回弹收起
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.desktop-search-wrapper') && desktopSearchInput) {
+        desktopSearchInput.value = '';
+        document.body.classList.remove('search-active');
+        desktopSearchInput.blur();
+      }
+    });
 
     function routeToApp(app) {
       if (!app.url) {
-        alert(`💡 「${app.name}」暂未配置跳转链接。\n提示：可通过修改源码中的 DATA 结构进行绑定。`);
+        alert(`💡 「${app.name}」暂未配置跳转链接。`);
       } else if (app.url.startsWith('custom://')) {
         alert(`🚀 正在接入「${app.name}」独立创作生态...\n详情请通过底部客服进行对接。`);
       } else {
@@ -785,50 +824,7 @@
     }
 
     // ==========================================================================\
-    // 10. Spotlight 唤醒与隐藏引擎 (支持手势下拉)
-    // ==========================================================================
-    function showSpotlight() {
-      if (isEditMode) return; // 编辑状态下锁定搜索
-      spotlightOverlay.classList.add('active');
-      setTimeout(() => spotlightInput.focus(), 150);
-      handleGlobalSearch(spotlightInput.value.trim());
-    }
-
-    function hideSpotlight() {
-      spotlightOverlay.classList.remove('active');
-      spotlightInput.value = '';
-      spotlightInput.blur();
-    }
-
-    // 交互触发器绑定
-    openSearchBtn.addEventListener('click', showSpotlight);
-    closeSearchBtn.addEventListener('click', hideSpotlight);
-    spotlightOverlay.addEventListener('click', (e) => {
-      if (e.target === spotlightOverlay) hideSpotlight();
-    });
-    spotlightInput.addEventListener('input', (e) => {
-      handleGlobalSearch(e.target.value.trim());
-    });
-    // 物理键盘 ESC 快速退出
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') hideSpotlight();
-    });
-
-    // 🍏 像素级复刻 iOS 桌面任何空白处下滑（Swipe Down）呼出搜索栏
-    document.getElementById('stageMain').addEventListener('touchstart', (e) => {
-      touchStartY = e.touches[0].clientY;
-    }, { passive: true });
-
-    document.getElementById('stageMain').addEventListener('touchend', (e) => {
-      const touchEndY = e.changedTouches[0].clientY;
-      // 下滑距离大于 80px 时呼出
-      if (touchEndY - touchStartY > 80) {
-        showSpotlight();
-      }
-    });
-
-    // ==========================================================================\
-    // 11. iOS 经典长按逻辑模块与辅助联动
+    // 10. 高仿真长按管理模块
     // ==========================================================================
     function bindLongPressEvents(el) {
       const startHandler = () => {
@@ -851,26 +847,32 @@
       renderApps(currentCategory);
     }
 
-    exitEditBtn.addEventListener('click', () => {
-      isEditMode = false;
-      document.body.classList.remove('editing-mode');
-      renderApps(currentCategory);
-    });
-
-    container.addEventListener('scroll', () => {
-      const dots = dotsContainer.querySelectorAll('.dot');
-      if (dots.length === 0) return;
-      const pageIndex = Math.round(container.scrollLeft / container.clientWidth);
-      dots.forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === pageIndex);
+    if (exitEditBtn) {
+      exitEditBtn.addEventListener('click', () => {
+        isEditMode = false;
+        document.body.classList.remove('editing-mode');
+        renderApps(currentCategory);
       });
-    });
+    }
 
-    wallpaperBtn.addEventListener('click', () => {
-      currentWallpaperIdx = (currentWallpaperIdx + 1) % WALLPAPERS.length;
-      document.body.style.background = WALLPAPERS[currentWallpaperIdx];
-      document.body.style.backgroundSize = '400% 400%';
-    });
+    if (container) {
+      container.addEventListener('scroll', () => {
+        const dots = dotsContainer.querySelectorAll('.dot');
+        if (dots.length === 0) return;
+        const pageIndex = Math.round(container.scrollLeft / container.clientWidth);
+        dots.forEach((dot, idx) => {
+          dot.classList.toggle('active', idx === pageIndex);
+        });
+      });
+    }
+
+    if (wallpaperBtn) {
+      wallpaperBtn.addEventListener('click', () => {
+        currentWallpaperIdx = (currentWallpaperIdx + 1) % WALLPAPERS.length;
+        document.body.style.background = WALLPAPERS[currentWallpaperIdx];
+        document.body.style.backgroundSize = '400% 400%';
+      });
+    }
 
     function updateDockUI(activeKey) {
       document.querySelectorAll('.dock-item').forEach(el => {
@@ -882,26 +884,29 @@
       });
     }
 
-    // 初始化装载 Dock 栏
-    const dockFragment = document.createDocumentFragment();
-    Object.keys(DATA).forEach(key => {
-      const item = document.createElement('div');
-      item.className = 'dock-item';
-      item.dataset.key = key;
-      item.innerHTML = `
-        <div class="dock-icon-wrapper">
-          <span class="dock-emoji">${DATA[key].short}</span>
-          <span class="dock-name">${DATA[key].name}</span>
-        </div>
-      `;
-      item.addEventListener('click', () => {
-        if(isEditMode) return;
-        renderApps(key);
+    // 构建 Dock 导航
+    if (dock) {
+      const dockFragment = document.createDocumentFragment();
+      Object.keys(DATA).forEach(key => {
+        const item = document.createElement('div');
+        item.className = 'dock-item';
+        item.dataset.key = key;
+        item.innerHTML = `
+          <div class="dock-icon-wrapper">
+            <span class="dock-emoji">${DATA[key].short}</span>
+            <span class="dock-name">${DATA[key].name}</span>
+          </div>
+        `;
+        item.addEventListener('click', () => {
+          if(isEditMode) return;
+          renderApps(key);
+        });
+        dockFragment.appendChild(item);
       });
-      dockFragment.appendChild(item);
-    });
-    dock.appendChild(dockFragment);
+      dock.appendChild(dockFragment);
+    }
 
+    // 默认高亮渲染首屏
     renderApps('global');
 
     let resizeTimer;
