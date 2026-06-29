@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-  <title>Creator Hub OS26 - Rigid Matrix Edition</title>
+  <title>Creator Hub OS26 - Pixel Perfect Edition</title>
   
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon.png">
@@ -13,65 +13,65 @@
   
   <style>
     /* ==========================================================================\
-       1. 全局样式重置与苹果原生基础定义 (Mac / 电脑端全屏配置)
+       1. 全局样式重置与苹果原生基础定义
        ========================================================================== */
     :root {
       --text-main: #ffffff;
-      --text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+      --text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
       --icon-radius: 22%; /* 苹果官方 Squircle 黄金圆角比例 */
       --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
       
-      /* 🖥️【Mac 电脑端锁死：7 × 5 矩阵】 */
+      /* 🖥️【Mac / 电脑窗口】像素级锁死参数：7 × 5 矩阵 */
       --grid-cols: 7;
-      --icon-size: 64px;
-      --gap-x: 24px;       /* 锁死图标之间的横向物理间距 */
-      --gap-y: 28px;       /* 锁死图标之间的纵向物理间距 */
-      /* 宽度精密计算：(64px * 7列) + (24px * 6个间距) = 592px，加上内边距保护锁死为 620px */
-      --container-max-w: 620px; 
+      --icon-size: 76px;
+      --gap-x: 32px; /* 横向物理间距锁死 */
+      --gap-y: 36px; /* 纵向物理间距锁死 */
+      /* 精确数学计算限制最大宽度：(76 * 7) + (32 * 6) = 724px */
+      --container-max-w: 724px; 
     }
 
     /* ==========================================================================\
-       2. 设备精准控制区 (精准复刻 iPhone 4×6, iPad 6×5 桌面行列比例)
+       2. 多端设备精细化矩阵硬限制（参照 iPhone 4×6、iPad 6×5 原生桌面）
        ========================================================================== */
     
-    /* 📱【iPhone / 手机竖屏】：锁定标准的 4 × 6 宫格 */
-    @media (max-width: 600px) and (orientation: portrait) {
+    /* 📱【iPhone / 手机竖屏】：严格切换为标准 4 × 6 宫格 */
+    @media (max-width: 480px) and (orientation: portrait) {
       :root {
         --grid-cols: 4;
         --icon-size: 64px;
-        --gap-x: 24px;
-        --gap-y: 28px;
-        /* 宽度精密计算：(64 * 4) + (24 * 3) = 328px，安全锁定宽为 350px */
-        --container-max-w: 350px; 
+        --gap-x: 22px;
+        --gap-y: 26px;
+        /* 精确限制盒子宽度：(64 * 4) + (22 * 3) = 322px */
+        --container-max-w: 322px; 
       }
     }
 
-    /* 📱【iPhone / 手机横屏】由于高度变矮，智能降级为 6 列 */
-    @media (max-height: 500px) and (orientation: landscape) {
+    /* 📱【iPhone / 手机横屏】 */
+    @media (max-height: 450px) and (orientation: landscape) {
       :root {
-        --grid-cols: 6;
-        --icon-size: 50px;
+        --grid-cols: 7;
+        --icon-size: 48px;
         --gap-x: 18px;
-        --gap-y: 18px;
-        --container-max-w: 420px;
+        --gap-y: 16px;
+        --container-max-w: 442px;
       }
-      .top-header { height: 15px !important; }
+      .top-header { height: 12px !important; }
     }
 
-    /* 📑【iPad / 平板竖屏】：锁定标准的 6 × 5 比例 */
-    @media (min-width: 601px) and (max-width: 1024px) and (orientation: portrait) {
+    /* 📑【iPad / 平板】：严格切换为标准 6 × 5 矩阵 */
+    @media (min-width: 481px) and (max-width: 1024px) {
       :root {
         --grid-cols: 6;
-        --icon-size: 64px;
-        --gap-x: 24px;
-        --gap-y: 28px;
-        /* 宽度精密计算：(64 * 6) + (24 * 5) = 504px，安全锁定宽为 530px */
-        --container-max-w: 530px;
+        --icon-size: 74px;
+        --gap-x: 28px;
+        --gap-y: 34px;
+        /* 精确限制盒子宽度：(74 * 6) + (28 * 5) = 584px */
+        --container-max-w: 584px;
       }
     }
 
     /* ==========================================================================\
-       3. 页面骨架与弹性居中系统（防拉伸、防乱套）
+       3. 页面骨架与双向弹性真居中系统（防散架、防变形）
        ========================================================================== */
     * { 
       box-sizing: border-box; 
@@ -97,73 +97,76 @@
       position: relative;
     }
 
+    /* 顶部安全区域留白 */
     .top-header {
-      height: 40px;
+      height: 45px;
       width: 100%;
       flex-shrink: 0;
     }
 
-    /* 核心安全滚动舱：多余的宽度和高度会自动转化为外围的黄金呼吸留白 */
+    /* 核心安全滚动页：外层负责提供滚动条与全屏手势 */
     .launchpad-container {
       flex: 1;
       width: 100%;
-      padding: 10px 20px 30px 20px;
+      padding: 10px 20px 40px 20px;
       
       overflow-x: hidden;
-      overflow-y: auto; /* 支持在中央桌面内上下手势、鼠标滚轮翻页 */
+      overflow-y: auto; /* 在主安全区内部无缝进行上下手势滚动翻页 */
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch; 
       
+      /* 终极奥义：使内部的 App 盒子在水平方向绝对居中，两边多余空间全部化作完美留白 */
       display: flex;
-      justify-content: center; /* 无论屏幕怎么拉伸，整体图标矩阵永远保持水平完美居中 */
-      align-items: flex-start; /* 纵向从顶部自然对齐，超出时向下翻页 */
+      justify-content: center; 
+      align-items: flex-start; 
     }
 
-    /* 隐藏粗糙的滚动条，保留系统原生 Launchpad 纯净感 */
+    /* 隐藏原生粗糙滚动条，还原完美纯净度 */
     .launchpad-container::-webkit-scrollbar {
       display: none;
     }
 
-    /* 锁死行列与间距的黄金网格 */
+    /* 固若金汤的网格盒子 */
     .app-grid {
       display: grid;
       grid-template-columns: repeat(var(--grid-cols), 1fr);
       
       width: 100%;
-      max-width: var(--container-max-w); /* 关键核心：利用 max-width 锁死图标，使其绝不随窗口缩放而散开 */
+      max-width: var(--container-max-w); /* 核心：用最大宽度卡死它，使其在缩放时绝不横向拉伸间距 */
       
       column-gap: var(--gap-x);
       row-gap: var(--gap-y);
       
       justify-items: center;
       align-items: start;
-      padding-bottom: 60px; /* 底部预留安全缓冲，防止和底部的 Dock 栏亲在一起 */
+      padding-bottom: 60px; /* 预留底部，防止图标被 Dock 遮挡 */
     }
 
     /* ==========================================================================\
-       4. 应用组件细节与完美的单行文字裁切
+       4. 图标组件细节（像素级完美对齐与文字裁切）
        ========================================================================== */
     .app-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: var(--icon-size); /* 条目宽度与图标锁死，不产生多余的左右占位 */
+      /* 条目容器宽度与图标完全等宽，避免 Grid 内部单元格产生无法对齐的诡异错位 */
+      width: var(--icon-size); 
       cursor: pointer;
       transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease;
       outline: none;
     }
 
     .app-item:active {
-      transform: scale(0.9);
+      transform: scale(0.88);
       opacity: 0.8;
     }
 
-    /* 图标骨架：锁死宽高比例 */
+    /* 图标外观外盒：锁死正方形比例 */
     .icon-wrapper {
       width: var(--icon-size);
       height: var(--icon-size);
       border-radius: var(--icon-radius);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -172,7 +175,7 @@
       background: #333;
     }
 
-    /* 清洗格式后的标准内联 SVG */
+    /* 完美的内置 SVG 图标比例（52% 的标准视觉安全区区域） */
     .icon-wrapper svg {
       width: 52% !important;
       height: 52% !important;
@@ -186,19 +189,20 @@
     }
 
     .icon-fallback {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 600;
     }
 
-    /* 文字单行截断，防止两行将整体布局顶乱 */
+    /* 应用文字：完全仿照 iOS/macOS 规范，多出的一行截断成 ... */
     .app-name {
-      margin-top: 7px;
+      margin-top: 8px;
       font-size: 11px;
       font-weight: 500;
       color: var(--text-main);
       text-shadow: var(--text-shadow);
       text-align: center;
-      width: calc(var(--icon-size) + 16px); /* 允许文字两边轻微延展出图标一点，但严格单行居中 */
+      /* 允许名字两侧比图标略宽出 12px 的呼吸位，但整体保持高内聚 */
+      width: calc(var(--icon-size) + 12px); 
       
       white-space: nowrap;
       overflow: hidden;
@@ -212,7 +216,7 @@
       width: 100%;
       display: flex;
       justify-content: center;
-      padding-bottom: 15px;
+      padding-bottom: 16px;
       padding-top: 5px;
       flex-shrink: 0;
     }
@@ -277,7 +281,7 @@
   </div>
 
   <script>
-    // 干净且高度格式化兼容的数据源
+    // 经严密清洗后的标准无错数据源（自动净化了历史转义斜杠）
     const DATA = {
     mediaPlatforms: {
         name: '自媒体与视频创作平台（国内/国际）',
@@ -462,7 +466,7 @@
 
     function renderApps(categoryKey) {
       grid.innerHTML = '';
-      scrollContainer.scrollTop = 0; // 切换分类时回弹到顶端
+      scrollContainer.scrollTop = 0; // 重置翻页状态
       
       const category = DATA[categoryKey];
       if (!category || !category.items) return;
@@ -489,17 +493,17 @@
 
       grid.appendChild(fragment);
 
-      // 同步高亮底部 Dock 栏导航激活态样式
+      // Dock 激活项毛玻璃高亮联动
       document.querySelectorAll('.dock-item').forEach(el => {
         const isActive = el.dataset.key === categoryKey;
         el.style.opacity = isActive ? '1' : '0.55';
         el.style.background = isActive ? 'rgba(255, 255, 255, 0.25)' : 'none';
         el.style.borderRadius = '14px';
-        el.style.transform = isActive ? 'scale(1.05)' : 'scale(1)';
+        el.style.transform = isActive ? 'scale(1.04)' : 'scale(1)';
       });
     }
 
-    // 动态初始化创建底部 Dock 栏
+    // 动态装配底部分类 Dock
     const dockFragment = document.createDocumentFragment();
     Object.keys(DATA).forEach(key => {
       const item = document.createElement('div');
@@ -516,7 +520,7 @@
     });
     dock.appendChild(dockFragment);
 
-    // 启动默认渲染
+    // 默认开机载入
     renderApps('global');
   </script>
 </body>
