@@ -609,305 +609,320 @@
     }
 };
 
-    const WALLPAPERS = [
-      'linear-gradient(135deg, #1e1e2f 0%, #2a1b40 30%, #4a2040 60%, #1a2a6c 100%)',
-      'linear-gradient(135deg, #0d1b2a 0%, #1b263b 40%, #415a77 100%)',
-      'linear-gradient(135deg, #141115 0%, #2f1b25 50%, #4f3130 100%)',
-      'linear-gradient(135deg, #16161a 0%, #24252d 100%)'
-    ];
+const WALLPAPERS = [
+  'linear-gradient(135deg, #1e1e2f 0%, #2a1b40 30%, #4a2040 60%, #1a2a6c 100%)',
+  'linear-gradient(135deg, #0d1b2a 0%, #1b263b 40%, #415a77 100%)',
+  'linear-gradient(135deg, #141115 0%, #2f1b25 50%, #4f3130 100%)',
+  'linear-gradient(135deg, #16161a 0%, #24252d 100%)'
+];
 
-    const container = document.getElementById('scrollContainer');
-    const dotsContainer = document.getElementById('paginationContainer');
-    const dock = document.getElementById('dock');
-    const wallpaperBtn = document.getElementById('wallpaperBtn');
-    const exitEditBtn = document.getElementById('exitEditBtn');
+const container = document.getElementById('scrollContainer');
+const dotsContainer = document.getElementById('paginationContainer');
+const dock = document.getElementById('dock');
+const wallpaperBtn = document.getElementById('wallpaperBtn');
+const exitEditBtn = document.getElementById('exitEditBtn');
+
+const desktopSearchInput = document.getElementById('desktopSearchInput');
+const searchResultsPanel = document.getElementById('searchResultsPanel');
+
+let currentCategory = 'news'; // 🛠️ 修复：默认从 news 分类启动
+let currentWallpaperIdx = 0;
+let isEditMode = false;
+let pressTimer = null;
+let draggedIdx = null;
+
+function getGridCapacity() {
+  const width = window.innerWidth;
+  if (width > 1024) return 10 * 4;
+  if (width > 768) return 6 * 5;
+  return 4 * 6;
+}
+
+// 🛠️ 辅助函数：安全生成图标内容（优先使用自带 SVG，若无则取名字首字）
+function generateIconHTML(app) {
+  if (app.svg) {
+    // 注入自定义颜色或背景（如果有）
+    let style = app.color ? `fill: ${app.color}; width:60%; height:60%;` : `fill: #fff; width:60%; height:60%;`;
+    // 如果有自定义背景，改变包装层样式比较理想，这里简单通过带 bg 属性判断
+    return `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;">${app.svg.replace('<svg', `<svg style="${style}"`)}</div>`;
+  }
+  // 兜底机制：截取应用名称前 1-2 个字符作为拟物拟真图标
+  const shortName = app.name ? app.name.substring(0, 2) : 'App';
+  return `<span style="font-size: 16px; font-weight: bold; color: #fff; letter-spacing:-0.5px;">${shortName}</span>`;
+}
+
+// ==========================================================================\
+// 8. 应用渲染服务
+// ==========================================================================
+function renderApps(categoryKey) {
+  currentCategory = categoryKey;
+  container.innerHTML = '';
+  dotsContainer.innerHTML = '';
+  
+  const category = DATA[categoryKey];
+  if (!category) return;
+  let apps = [...category.items]; // 🛠️ 修复：从 apps 改为 items
+  
+  const pageSize = getGridCapacity();
+  const pagesCount = Math.max(1, Math.ceil(apps.length / pageSize));
+  
+  for (let p = 0; p < pagesCount; p++) {
+    const pageView = document.createElement('div');
+    pageView.className = 'page-view';
     
-    const desktopSearchInput = document.getElementById('desktopSearchInput');
-    const searchResultsPanel = document.getElementById('searchResultsPanel');
-
-    let currentCategory = 'global';
-    let currentWallpaperIdx = 0;
-    let isEditMode = false;
-    let pressTimer = null;
-    let draggedIdx = null;
-
-    function getGridCapacity() {
-      const width = window.innerWidth;
-      if (width > 1024) return 10 * 4;
-      if (width > 768) return 6 * 5;
-      return 4 * 6;
-    }
-
-    // ==========================================================================\
-    // 8. 应用渲染服务
-    // ==========================================================================
-    function renderApps(categoryKey) {
-      currentCategory = categoryKey;
-      container.innerHTML = '';
-      dotsContainer.innerHTML = '';
+    const pageApps = apps.slice(p * pageSize, (p + 1) * pageSize);
+    const fragment = document.createDocumentFragment();
+    
+    pageApps.forEach((app) => {
+      const globalIdx = category.items.findIndex(a => a.name === app.name); // 🛠️ 修复：apps -> items
       
-      const category = DATA[categoryKey];
-      if (!category) return;
-      let apps = [...category.apps];
+      const item = document.createElement('div');
+      item.className = 'app-item';
+      item.tabIndex = 0;
       
-      const pageSize = getGridCapacity();
-      const pagesCount = Math.max(1, Math.ceil(apps.length / pageSize));
-      
-      for (let p = 0; p < pagesCount; p++) {
-        const pageView = document.createElement('div');
-        pageView.className = 'page-view';
-        
-        const pageApps = apps.slice(p * pageSize, (p + 1) * pageSize);
-        const fragment = document.createDocumentFragment();
-        
-        pageApps.forEach((app) => {
-          const globalIdx = category.apps.findIndex(a => a.name === app.name);
-          
-          const item = document.createElement('div');
-          item.className = 'app-item';
-          item.tabIndex = 0;
-          
-          if (isEditMode) {
-            item.setAttribute('draggable', 'true');
-          }
-          
-          item.innerHTML = `
-            <div class="icon-wrapper"><span>${app.emoji}</span></div>
-            <div class="app-name">${app.name}</div>
-          `;
-          
-          bindLongPressEvents(item);
-          
-          // 挂载高精度拖拽重排机制
-          item.addEventListener('dragstart', (e) => {
-            if (!isEditMode) return e.preventDefault();
-            draggedIdx = globalIdx;
-            item.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-          });
-          item.addEventListener('dragover', (e) => e.preventDefault());
-          item.addEventListener('drop', (e) => {
-            e.preventDefault();
-            if (draggedIdx === null || draggedIdx === globalIdx) return;
-            const targetApps = DATA[currentCategory].apps;
-            const movingItem = targetApps.splice(draggedIdx, 1)[0];
-            targetApps.splice(globalIdx, 0, movingItem);
-            renderApps(currentCategory);
-          });
-          item.addEventListener('dragend', () => {
-            item.classList.remove('dragging');
-            draggedIdx = null;
-          });
-          
-          item.addEventListener('click', (e) => {
-            if (isEditMode) return e.preventDefault();
-            routeToApp(app);
-          });
-          
-          fragment.appendChild(item);
-        });
-        
-        pageView.appendChild(fragment);
-        container.appendChild(pageView);
+      // 如果有单独的背景定义，应用到 icon-wrapper
+      if (isEditMode) {
+        item.setAttribute('draggable', 'true');
       }
-
-      if (pagesCount > 1) {
-        for (let i = 0; i < pagesCount; i++) {
-          const dot = document.createElement('div');
-          dot.className = `dot ${i === 0 ? 'active' : ''}`;
-          dotsContainer.appendChild(dot);
-        }
-      }
-      updateDockUI(categoryKey);
-    }
-
-    // ==========================================================================\
-    // 9. 桌面集成搜索状态调度与模糊响应控制
-    // ==========================================================================
-    function updateSearchUI() {
-      if (!desktopSearchInput || !searchResultsPanel) return;
       
-      const query = desktopSearchInput.value.trim();
+      // 🛠️ 修复：使用动态图标生成器，取代未定义的 app.emoji
+      item.innerHTML = `
+        <div class="icon-wrapper" style="${app.bg ? `background:${app.bg};` : ''}">
+          ${generateIconHTML(app)}
+        </div>
+        <div class="app-name">${app.name}</div>
+      `;
       
-      // 当搜索栏处于聚焦状态，无论是否输入均激活下方图标 10% 模糊
-      if (document.activeElement === desktopSearchInput) {
-        document.body.classList.add('search-active');
-        
-        if (query.length === 0) {
-          searchResultsPanel.innerHTML = '<div class="search-tip">💡 输入任何关键字，进行全站云端检索</div>';
-        } else {
-          renderPanelResults(query);
-        }
-      } else {
-        // 未聚焦时恢复正常
-        document.body.classList.remove('search-active');
-      }
-    }
-
-    function renderPanelResults(query) {
-      searchResultsPanel.innerHTML = '';
-      let matchedApps = [];
+      bindLongPressEvents(item);
       
-      Object.keys(DATA).forEach(key => {
-        DATA[key].apps.forEach(app => {
-          if (app.name.toLowerCase().includes(query.toLowerCase())) {
-            if (!matchedApps.some(m => m.name === app.name)) {
-              matchedApps.push(app);
-            }
-          }
-        });
+      // 挂载高精度拖拽重排机制
+      item.addEventListener('dragstart', (e) => {
+        if (!isEditMode) return e.preventDefault();
+        draggedIdx = globalIdx;
+        item.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
       });
-
-      if (matchedApps.length === 0) {
-        searchResultsPanel.innerHTML = '<div class="search-tip">🔍 未匹配到相关应用，请精简关键词</div>';
-        return;
-      }
-
-      const resultsGrid = document.createElement('div');
-      resultsGrid.className = 'search-results-grid';
-
-      matchedApps.forEach(app => {
-        const item = document.createElement('div');
-        item.className = 'app-item';
-        item.innerHTML = `
-          <div class="icon-wrapper"><span>${app.emoji}</span></div>
-          <div class="app-name">${app.name}</div>
-        `;
-        item.addEventListener('click', () => {
-          desktopSearchInput.value = '';
-          document.body.classList.remove('search-active');
-          desktopSearchInput.blur();
-          routeToApp(app);
-        });
-        resultsGrid.appendChild(item);
-      });
-
-      searchResultsPanel.appendChild(resultsGrid);
-    }
-
-    if (desktopSearchInput) {
-      desktopSearchInput.addEventListener('input', updateSearchUI);
-      desktopSearchInput.addEventListener('focus', updateSearchUI);
-      desktopSearchInput.addEventListener('blur', () => {
-        // 延迟延时关闭，确保列表项的点击事件能够优先顺利执行
-        setTimeout(() => {
-          if (document.activeElement !== desktopSearchInput) {
-            document.body.classList.remove('search-active');
-          }
-        }, 200);
-      });
-    }
-
-    // 点击桌面非搜索核心区，安全回弹收起
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.desktop-search-wrapper') && desktopSearchInput) {
-        desktopSearchInput.value = '';
-        document.body.classList.remove('search-active');
-        desktopSearchInput.blur();
-      }
-    });
-
-    function routeToApp(app) {
-      if (!app.url) {
-        alert(`💡 「${app.name}」暂未配置跳转链接。`);
-      } else if (app.url.startsWith('custom://')) {
-        alert(`🚀 正在接入「${app.name}」独立创作生态...\n详情请通过底部客服进行对接。`);
-      } else {
-        window.open(app.url, '_blank', 'noopener,noreferrer');
-      }
-    }
-
-    // ==========================================================================\
-    // 10. 高仿真长按管理模块
-    // ==========================================================================
-    function bindLongPressEvents(el) {
-      const startHandler = () => {
-        if (isEditMode) return;
-        pressTimer = setTimeout(() => enterEditMode(), 700);
-      };
-      const cancelHandler = () => clearTimeout(pressTimer);
-      
-      el.addEventListener('mousedown', startHandler);
-      el.addEventListener('mouseup', cancelHandler);
-      el.addEventListener('mouseleave', cancelHandler);
-      el.addEventListener('touchstart', startHandler, { passive: true });
-      el.addEventListener('touchend', cancelHandler);
-      el.addEventListener('touchmove', cancelHandler);
-    }
-
-    function enterEditMode() {
-      isEditMode = true;
-      document.body.classList.add('editing-mode');
-      renderApps(currentCategory);
-    }
-
-    if (exitEditBtn) {
-      exitEditBtn.addEventListener('click', () => {
-        isEditMode = false;
-        document.body.classList.remove('editing-mode');
+      item.addEventListener('dragover', (e) => e.preventDefault());
+      item.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (draggedIdx === null || draggedIdx === globalIdx) return;
+        const targetApps = DATA[currentCategory].items; // 🛠️ 修复：apps -> items
+        const movingItem = targetApps.splice(draggedIdx, 1)[0];
+        targetApps.splice(globalIdx, 0, movingItem);
         renderApps(currentCategory);
       });
-    }
-
-    if (container) {
-      container.addEventListener('scroll', () => {
-        const dots = dotsContainer.querySelectorAll('.dot');
-        if (dots.length === 0) return;
-        const pageIndex = Math.round(container.scrollLeft / container.clientWidth);
-        dots.forEach((dot, idx) => {
-          dot.classList.toggle('active', idx === pageIndex);
-        });
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+        draggedIdx = null;
       });
-    }
-
-    if (wallpaperBtn) {
-      wallpaperBtn.addEventListener('click', () => {
-        currentWallpaperIdx = (currentWallpaperIdx + 1) % WALLPAPERS.length;
-        document.body.style.background = WALLPAPERS[currentWallpaperIdx];
-        document.body.style.backgroundSize = '400% 400%';
+      
+      item.addEventListener('click', (e) => {
+        if (isEditMode) return e.preventDefault();
+        routeToApp(app);
       });
-    }
-
-    function updateDockUI(activeKey) {
-      document.querySelectorAll('.dock-item').forEach(el => {
-        const isActive = el.dataset.key === activeKey;
-        el.style.opacity = isActive ? '1' : '0.55';
-        el.style.background = isActive ? 'rgba(255, 255, 255, 0.22)' : 'none';
-        el.style.borderRadius = '16px';
-        el.style.transform = isActive ? 'scale(1.05)' : 'scale(1)';
-      });
-    }
-
-    // 构建 Dock 导航
-    if (dock) {
-      const dockFragment = document.createDocumentFragment();
-      Object.keys(DATA).forEach(key => {
-        const item = document.createElement('div');
-        item.className = 'dock-item';
-        item.dataset.key = key;
-        item.innerHTML = `
-          <div class="dock-icon-wrapper">
-            <span class="dock-emoji">${DATA[key].short}</span>
-            <span class="dock-name">${DATA[key].name}</span>
-          </div>
-        `;
-        item.addEventListener('click', () => {
-          if(isEditMode) return;
-          renderApps(key);
-        });
-        dockFragment.appendChild(item);
-      });
-      dock.appendChild(dockFragment);
-    }
-
-    // 默认高亮渲染首屏
-    renderApps('global');
-
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => renderApps(currentCategory), 150);
+      
+      fragment.appendChild(item);
     });
+    
+    pageView.appendChild(fragment);
+    container.appendChild(pageView);
+  }
+
+  if (pagesCount > 1) {
+    for (let i = 0; i < pagesCount; i++) {
+      const dot = document.createElement('div');
+      dot.className = `dot ${i === 0 ? 'active' : ''}`;
+      dotsContainer.appendChild(dot);
+    }
+  }
+  updateDockUI(categoryKey);
+}
+
+// ==========================================================================\
+// 9. 桌面集成搜索状态调度与模糊响应控制
+// ==========================================================================
+function updateSearchUI() {
+  if (!desktopSearchInput || !searchResultsPanel) return;
+  
+  const query = desktopSearchInput.value.trim();
+  
+  if (document.activeElement === desktopSearchInput) {
+    document.body.classList.add('search-active');
+    
+    if (query.length === 0) {
+      searchResultsPanel.innerHTML = '<div class="search-tip">💡 输入任何关键字，进行全站云端检索</div>';
+    } else {
+      renderPanelResults(query);
+    }
+  } else {
+    document.body.classList.remove('search-active');
+  }
+}
+
+function renderPanelResults(query) {
+  searchResultsPanel.innerHTML = '';
+  let matchedApps = [];
+  
+  Object.keys(DATA).forEach(key => {
+    DATA[key].items.forEach(app => { // 🛠️ 修复：apps -> items
+      if (app.name.toLowerCase().includes(query.toLowerCase()) || (app.desc && app.desc.toLowerCase().includes(query.toLowerCase()))) {
+        if (!matchedApps.some(m => m.name === app.name)) {
+          matchedApps.push(app);
+        }
+      }
+    });
+  });
+
+  if (matchedApps.length === 0) {
+    searchResultsPanel.innerHTML = '<div class="search-tip">🔍 未匹配到相关应用，请精简关键词</div>';
+    return;
+  }
+
+  const resultsGrid = document.createElement('div');
+  resultsGrid.className = 'search-results-grid';
+
+  matchedApps.forEach(app => {
+    const item = document.createElement('div');
+    item.className = 'app-item';
+    // 🛠️ 修复：同上，搜索面板的 emoji 渲染同步修复
+    item.innerHTML = `
+      <div class="icon-wrapper" style="${app.bg ? `background:${app.bg};` : ''}">
+        ${generateIconHTML(app)}
+      </div>
+      <div class="app-name">${app.name}</div>
+    `;
+    item.addEventListener('click', () => {
+      desktopSearchInput.value = '';
+      document.body.classList.remove('search-active');
+      desktopSearchInput.blur();
+      routeToApp(app);
+    });
+    resultsGrid.appendChild(item);
+  });
+
+  searchResultsPanel.appendChild(resultsGrid);
+}
+
+if (desktopSearchInput) {
+  desktopSearchInput.addEventListener('input', updateSearchUI);
+  desktopSearchInput.addEventListener('focus', updateSearchUI);
+  desktopSearchInput.addEventListener('blur', () => {
+    setTimeout(() => {
+      if (document.activeElement !== desktopSearchInput) {
+        document.body.classList.remove('search-active');
+      }
+    }, 200);
+  });
+}
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.desktop-search-wrapper') && desktopSearchInput) {
+    desktopSearchInput.value = '';
+    document.body.classList.remove('search-active');
+    desktopSearchInput.blur();
+  }
+});
+
+function routeToApp(app) {
+  if (!app.url || app.url === '#') {
+    alert(`💡 「${app.name}」暂未配置有效跳转链接。`);
+  } else if (app.url.startsWith('custom://')) {
+    alert(`🚀 正在接入「${app.name}」独立创作生态...\n详情请通过底部客服进行对接。`);
+  } else {
+    window.open(app.url, '_blank', 'noopener,noreferrer');
+  }
+}
+
+// ==========================================================================\
+// 10. 高仿真长按管理模块
+// ==========================================================================
+function bindLongPressEvents(el) {
+  const startHandler = () => {
+    if (isEditMode) return;
+    pressTimer = setTimeout(() => enterEditMode(), 700);
+  };
+  const cancelHandler = () => clearTimeout(pressTimer);
+  
+  el.addEventListener('mousedown', startHandler);
+  el.addEventListener('mouseup', cancelHandler);
+  el.addEventListener('mouseleave', cancelHandler);
+  el.addEventListener('touchstart', startHandler, { passive: true });
+  el.addEventListener('touchend', cancelHandler);
+  el.addEventListener('touchmove', cancelHandler);
+}
+
+function enterEditMode() {
+  isEditMode = true;
+  document.body.classList.add('editing-mode');
+  renderApps(currentCategory);
+}
+
+if (exitEditBtn) {
+  exitEditBtn.addEventListener('click', () => {
+    isEditMode = false;
+    document.body.classList.remove('editing-mode');
+    renderApps(currentCategory);
+  });
+}
+
+if (container) {
+  container.addEventListener('scroll', () => {
+    const dots = dotsContainer.querySelectorAll('.dot');
+    if (dots.length === 0) return;
+    const pageIndex = Math.round(container.scrollLeft / container.clientWidth);
+    dots.forEach((dot, idx) => {
+      dot.classList.toggle('active', idx === pageIndex);
+    });
+  });
+}
+
+if (wallpaperBtn) {
+  wallpaperBtn.addEventListener('click', () => {
+    currentWallpaperIdx = (currentWallpaperIdx + 1) % WALLPAPERS.length;
+    document.body.style.background = WALLPAPERS[currentWallpaperIdx];
+    document.body.style.backgroundSize = '400% 400%';
+  });
+}
+
+function updateDockUI(activeKey) {
+  document.querySelectorAll('.dock-item').forEach(el => {
+    const isActive = el.dataset.key === activeKey;
+    el.style.opacity = isActive ? '1' : '0.55';
+    el.style.background = isActive ? 'rgba(255, 255, 255, 0.22)' : 'none';
+    el.style.borderRadius = '16px';
+    el.style.transform = isActive ? 'scale(1.05)' : 'scale(1)';
+  });
+}
+
+if (dock) {
+  const dockFragment = document.createDocumentFragment();
+  Object.keys(DATA).forEach(key => {
+    const item = document.createElement('div');
+    item.className = 'dock-item';
+    item.dataset.key = key;
+    item.innerHTML = `
+      <div class="dock-icon-wrapper">
+        <span class="dock-emoji">${DATA[key].short}</span>
+        <span class="dock-name">${DATA[key].name}</span>
+      </div>
+    `;
+    item.addEventListener('click', () => {
+      if(isEditMode) return;
+      renderApps(key);
+    });
+    dockFragment.appendChild(item);
+  });
+  dock.appendChild(dockFragment);
+}
+
+// 🛠️ 修复：默认渲染存在的第一个分类
+renderApps('news');
+
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => renderApps(currentCategory), 150);
+});
   </script>
 </body>
 </html>
