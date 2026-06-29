@@ -3,254 +3,209 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-  <title>Creator Hub OS26 - Full Ecosystem Edition</title>
+  <title>Creator Hub OS26 - Ultimate Hybrid Edition</title>
   
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content=\"yes\">
   <meta name="apple-mobile-web-app-status-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Hub OS">
   
   <style>
     /* ==========================================================================\
-       1. 全局配置与多端锁死矩阵参数 (Mac 10×5, iPad 8×6, iPhone 4×6)
+       1. 全局变量与响应式矩阵拉伸（既有矩阵边界，又能自适应塞满）
        ========================================================================== */
     :root {
       --text-main: #ffffff;
-      --text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-      --icon-radius: 22%; /* 苹果 Squircle 黄金圆角 */
+      --text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+      --icon-radius: 22%;
       --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
       
-      /* 🖥️【Mac / 电脑大屏】严格锁定 10 列 × 5 行 */
+      /* 🖥️ 默认桌面大屏：10列 × 5行 */
       --grid-cols: 10;
       --grid-rows: 5;
-      --icon-size: 72px;
-      --gap-x: 26px;
-      --gap-y: 28px;
-      /* 核心：精确锁死容器宽度，解决最后一页图标少时乱散架的问题 */
-      --container-max-w: 1020px; 
+      --gap-size: 24px;
+      --padding-size: 40px;
     }
 
-    /* 📑【iPad / 平板】：严格锁定为 8 列 × 6 行 矩阵 */
-    @media (min-width: 481px) and (max-width: 1024px) {
+    @media (max-width: 1024px) {
+      /* 平板端：8列 × 6行 */
       :root {
         --grid-cols: 8;
         --grid-rows: 6;
-        --icon-size: 68px;
-        --gap-x: 22px;
-        --gap-y: 24px;
-        --container-max-w: 750px;
+        --gap-size: 18px;
+        --padding-size: 30px;
       }
     }
 
-    /* 📱【iPhone / 手机竖屏】：严格卡死 4 列 × 6 行 宫格 */
-    @media (max-width: 480px) and (orientation: portrait) {
+    @media (max-width: 768px) {
+      /* 📱 手机端：严格 4列 × 6行（完美复刻iOS桌面） */
       :root {
         --grid-cols: 4;
         --grid-rows: 6;
-        --icon-size: 62px;
-        --gap-x: 22px;
-        --gap-y: 20px;
-        --container-max-w: 330px; /* 完美卡死在 390px 物理安全边界内 */
+        --gap-size: 16px;
+        --padding-size: 20px;
       }
     }
 
-    /* ==========================================================================\
-       2. 基础框架重置与弹性容器
-       ========================================================================== */
-    * { 
-      box-sizing: border-box; 
-      margin: 0;
-      padding: 0;
-    }
-    
-    html, body { 
-      height: 100%;
-      overflow: hidden;
-      background-color: #000;
-    }
+    * { box-sizing: border-box; user-select: none; -webkit-user-select: none; }
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: var(--font-stack); }
 
+    /* 苹果超高清动态渐变壁纸 */
     body {
-      font-family: var(--font-stack);
-      user-select: none;
-      -webkit-user-select: none;
-      background: radial-gradient(circle at center, #232f48 0%, #090d14 100%);
-      background-size: cover;
-      background-position: center;
+      background: linear-gradient(135deg, #1e1e2f 0%, #2a1b40 30%, #4a2040 60%, #1a2a6c 100%);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
       display: flex;
       flex-direction: column;
-      position: relative;
+      justify-content: space-between;
     }
 
-    .top-header {
-      height: 35px;
-      width: 100%;
-      flex-shrink: 0;
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     /* ==========================================================================\
-       3. 横向滑屏核心安全视口 (Scroll Snap System)
+       2. 横向滑屏主容器 (Scroll Snap)
        ========================================================================== */
-    .launchpad-container {
+    .stage {
       flex: 1;
       width: 100%;
-      overflow-x: auto;
-      overflow-y: hidden; 
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-container {
       display: flex;
-      flex-direction: row;
-      scroll-snap-type: x mandatory; /* 强制物理分页吸附 */
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch; 
-    }
-
-    /* 隐藏所有丑陋的滚动条线 */
-    .launchpad-container::-webkit-scrollbar {
-      display: none;
-    }
-
-    /* 单一整屏画布 */
-    .page-view {
-      min-width: 100%;
-      height: 100%;
-      flex-shrink: 0;
-      scroll-snap-align: start; /* 释手自动对齐 */
-      display: flex;
-      justify-content: center; /* 左右正中心居中 */
-      align-items: flex-start;  /* 顶部自然垂挂，留出呼吸位 */
-      padding: 10px 20px;
-    }
-
-    /* 果味刚性网格 */
-    .app-grid {
-      display: grid;
-      /* 核心解法：弃用弹性 1fr，改用固定分配。防止最后一页因图标不足产生任何拉伸错开 */
-      grid-template-columns: repeat(var(--grid-cols), var(--icon-size));
-      grid-template-rows: repeat(var(--grid-rows), auto);
-      
       width: 100%;
-      max-width: var(--container-max-w); 
-      column-gap: var(--gap-x);
-      row-gap: var(--gap-y);
-      justify-content: space-between; /* 确保缩放窗口时，间距呈现标准的自适应吸附 */
+      height: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      scrollbar-width: none; /* Firefox */
+    }
+    .scroll-container::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+    /* 单个物理页面：承载自适应流式网格 */
+    .page-view {
+      flex: 0 0 100%;
+      width: 100%;
+      height: 100%;
+      scroll-snap-align: start;
+      display: grid;
+      /* 互补核心：使用 1fr 弹性拉伸，配合 minmax 确保多端自动塞满不空旷 */
+      grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+      grid-template-rows: repeat(var(--grid-rows), minmax(0, 1fr));
+      gap: var(--gap-size);
+      padding: var(--padding-size) var(--padding-size) calc(var(--padding-size) + 20px) var(--padding-size);
+      place-items: center;
     }
 
     /* ==========================================================================\
-       4. 图标组件细节
+       3. 弹性 App 图标组件样式
        ========================================================================== */
     .app-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: var(--icon-size); 
+      justify-content: center;
+      width: 100%;
+      height: 100%;
       cursor: pointer;
-      transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
       outline: none;
     }
 
-    .app-item:active {
-      transform: scale(0.88);
-      opacity: 0.8;
-    }
+    .app-item:active { transform: scale(0.88); }
 
     .icon-wrapper {
-      width: var(--icon-size);
-      height: var(--icon-size);
+      width: 68px;
+      height: 68px;
+      max-width: 85%;
+      aspect-ratio: 1 / 1;
       border-radius: var(--icon-radius);
-      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      position: relative;
-      background: #333;
+      font-size: 32px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: box-shadow 0.25s;
     }
-
-    .icon-wrapper svg {
-      width: 52% !important;
-      height: 52% !important;
-      display: block;
-    }
-
-    .icon-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .icon-fallback {
-      font-size: 24px;
-      font-weight: 600;
-    }
+    @media (max-width: 768px) { .icon-wrapper { width: 60px; height: 60px; } }
 
     .app-name {
       margin-top: 8px;
-      font-size: 11px;
-      font-weight: 500;
+      font-size: 12px;
       color: var(--text-main);
       text-shadow: var(--text-shadow);
       text-align: center;
-      width: calc(var(--icon-size) + 14px); 
-      
+      width: 90%;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      font-weight: 500;
     }
 
     /* ==========================================================================\
-       5. 👑 新增：iOS 标志性原生流线分页小白点指示器
+       4. 原生流线分页指示器 (Dots)
        ========================================================================== */
-    .page-dots-container {
-      width: 100%;
+    .pagination-container {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
-      justify-content: center;
-      align-items: center;
       gap: 8px;
-      height: 20px;
-      margin-top: 5px;
-      margin-bottom: 2px;
-      flex-shrink: 0;
+      z-index: 10;
+      padding: 6px 12px;
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(5px);
     }
 
-    .page-dot {
+    .dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-      cursor: pointer;
+      background: rgba(255, 255, 255, 0.35);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* 激活态（翻到该页时呈现的高亮纯白点） */
-    .page-dot.active {
-      background: #ffffff;
-      transform: scale(1.15);
-      box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+    .dot.active {
+      background: var(--text-main);
+      width: 18px; /* 流线拉长效果 */
+      border-radius: 4px;
     }
 
     /* ==========================================================================\
-       6. 底部高斯模糊毛玻璃 Dock 栏
+       5. 极光毛玻璃 Dock 栏
        ========================================================================== */
     .dock-container {
       width: 100%;
+      padding: 0 20px calc(10px + env(safe-area-inset-bottom)) 20px;
       display: flex;
       justify-content: center;
-      padding-bottom: 16px;
-      padding-top: 5px;
-      flex-shrink: 0;
+      z-index: 20;
     }
 
     .dock {
-      background: rgba(255, 255, 255, 0.14);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(35px) saturate(180%);
+      -webkit-backdrop-filter: blur(35px) saturate(180%);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 22px;
-      padding: 6px 12px;
+      border-radius: 32px;
+      padding: 10px 16px;
       display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      max-width: 92%;
+      gap: 14px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      max-width: 95%;
       overflow-x: auto;
     }
     .dock::-webkit-scrollbar { display: none; }
@@ -260,47 +215,39 @@
       flex-direction: column;
       align-items: center;
       cursor: pointer;
-      padding: 4px 12px;
-      transition: all 0.2s ease;
+      padding: 6px 12px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .dock-icon-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
+      gap: 4px;
     }
-
-    .dock-emoji {
-      font-size: 20px;
-      line-height: 1.2;
-    }
-
-    .dock-name {
-      font-size: 9px;
-      color: #fff;
-      margin-top: 1px;
-      font-weight: 500;
-      opacity: 0.8;
-    }
+    .dock-emoji { font-size: 24px; transition: transform 0.2s; }
+    .dock-item:hover .dock-emoji { transform: scale(1.15) translateY(-4px); }
+    .dock-name { font-size: 11px; color: var(--text-main); font-weight: 500; opacity: 0.8; }
   </style>
 </head>
 <body>
 
-  <div class="top-header"></div>
-
-  <div class="launchpad-container" id="scrollContainer">
-    </div>
-
-  <div class="page-dots-container" id="dotsContainer"></div>
+  <div class="stage">
+    <div class="scroll-container" id="scrollContainer">
+      </div>
+    
+    <div class="pagination-container" id="paginationContainer"></div>
+  </div>
 
   <div class="dock-container">
-    <div class="dock" id="dockBar">
-      </div>
+    <div class="dock" id="dock"></div>
   </div>
 
   <script>
-    // 干净且高兼容度的数据源
-    const DATA = {
+    /* ==========================================================================\
+       6. 闭环数据流（集成配置 1 的完备应用列表）
+       ========================================================================== */
+   const DATA = {
         news: { 
             name: '日常资讯', 
             short: '📰', 
@@ -508,128 +455,115 @@
 };
 
     const container = document.getElementById('scrollContainer');
-    const dock = document.getElementById('dockBar');
-    const dotsContainer = document.getElementById('dotsContainer');
+    const dotsContainer = document.getElementById('paginationContainer');
+    const dock = document.getElementById('dock');
+    
+    let currentCategory = 'global';
 
-    let observer = null; // 视口交叉监听实例引用
-
-    // 智能抓取当前端媒体查询下的真实矩阵乘积（10×5=50，8×6=48，4×6=24）
-    function getCurrentPageCapacity() {
-      const computed = getComputedStyle(document.documentElement);
-      const cols = parseInt(computed.getPropertyValue('--grid-cols')) || 10;
-      const rows = parseInt(computed.getPropertyValue('--grid-rows')) || 5;
-      return cols * rows;
+    /* ==========================================================================\
+       7. 核心互补算法：动态计算每页格数，完美切片
+       ========================================================================== */
+    function getGridCapacity() {
+      const width = window.innerWidth;
+      if (width > 1024) return 10 * 5;  // 🖥️ 50格
+      if (width > 768) return 8 * 6;   // 📐 48格
+      return 4 * 6;                    // 📱 24格
     }
 
-    function cleanSVG(svgStr) {
-      if (!svgStr) return '';
-      let clean = svgStr.replace(/\\"/g, '"').replace(/\\'/g, "'");
-      if (!clean.includes('fill=')) {
-        clean = clean.replace('<svg', '<svg fill="currentColor"');
-      }
-      return clean;
-    }
-
-    // 主生成核心逻辑
     function renderApps(categoryKey) {
-      // 1. 清空旧元素，断开历史高开销监听
-      if (observer) observer.disconnect();
+      currentCategory = categoryKey;
       container.innerHTML = '';
       dotsContainer.innerHTML = '';
-      container.scrollLeft = 0; 
-
+      
       const category = DATA[categoryKey];
-      if (!category || !category.items) return;
-
-      const items = category.items;
-      const capacity = getCurrentPageCapacity();
-      const pageCount = Math.ceil(items.length / capacity);
-
-      // 2. 如果只有一页，依照苹果原生规范，隐藏点位指示器
-      if (pageCount <= 1) {
-        dotsContainer.style.display = 'none';
-      } else {
-        dotsContainer.style.display = 'flex';
-      }
-
-      // 3. 动态绘制小白点指示组件
-      for (let p = 0; p < pageCount; p++) {
-        const dot = document.createElement('div');
-        dot.className = `page-dot ${p === 0 ? 'active' : ''}`;
-        dot.dataset.pageIndex = p;
-        dot.addEventListener('click', () => {
-          container.scrollTo({
-            left: container.clientWidth * p,
-            behavior: 'smooth'
-          });
-        });
-        dotsContainer.appendChild(dot);
-      }
-
-      // 4. 流式划分数据并向画板注资
-      for (let i = 0; i < items.length; i += capacity) {
-        const pageChunk = items.slice(i, i + capacity);
-        const pageIndex = i / capacity;
-
+      const apps = category.apps;
+      const pageSize = getGridCapacity(); // 核心：读取当前分辨率下的单页最高容量
+      
+      // 将海量 App 列表按照单页容量，智能分箱（Chunking）
+      const pagesCount = Math.max(1, Math.ceil(apps.length / pageSize));
+      
+      for (let p = 0; p < pagesCount; p++) {
         const pageView = document.createElement('div');
         pageView.className = 'page-view';
-        pageView.dataset.index = pageIndex; // 供监听器识别索引
-
-        const grid = document.createElement('div');
-        grid.className = 'app-grid';
-
-        pageChunk.forEach(app => {
+        
+        // 截取当前页需要渲染的 App
+        const pageApps = apps.slice(p * pageSize, (p + 1) * pageSize);
+        const fragment = document.createDocumentFragment();
+        
+        pageApps.forEach(app => {
           const item = document.createElement('div');
           item.className = 'app-item';
           item.tabIndex = 0;
-
-          const finalIconHTML = app.svg ? cleanSVG(app.svg) : `<span class="icon-fallback">${app.name.charAt(0)}</span>`;
-
           item.innerHTML = `
-            <div class="icon-wrapper" style="background: ${app.bg || '#333'}; color: ${app.color || '#fff'};">
-              ${finalIconHTML}
-            </div>
+            <div class="icon-wrapper"><span>${app.emoji}</span></div>
             <div class="app-name">${app.name}</div>
           `;
-
-          item.addEventListener('click', () => window.open(app.url, '_blank', 'noopener,noreferrer'));
-          grid.appendChild(item);
+          
+          // 极高内聚的点击路由（集成自配置 1）
+          item.addEventListener('click', () => {
+            if (!app.url) {
+              alert(`💡 「${app.name}」暂未配置跳转链接。\n提示：可通过修改源码中的 DATA 结构进行绑定。`);
+            } else if (app.url.startsWith('custom://')) {
+              alert(`🚀 正在接入「${app.name}」独立创作生态...\n详情请通过底部客服进行对接。`);
+            } else {
+              window.open(app.url, '_blank', 'noopener,noreferrer');
+            }
+          });
+          
+          fragment.appendChild(item);
         });
-
-        pageView.appendChild(grid);
+        
+        pageView.appendChild(fragment);
         container.appendChild(pageView);
       }
 
-      // 5. 👑 原生边缘滑动实时高亮白点算法 (Intersection Observer 硬件加速级)
-      observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          // 当某一页占领视口超过一半 (50%) 面积时触发白点切换
-          if (entry.isIntersecting) {
-            const idx = entry.target.dataset.index;
-            document.querySelectorAll('.page-dot').forEach((dot, dotIdx) => {
-              dot.classList.toggle('active', dotIdx == idx);
-            });
-          }
-        });
-      }, {
-        root: container,
-        threshold: 0.52 
+      // 动态生成对应数量的流线指示器小白点
+      if (pagesCount > 1) {
+        for (let i = 0; i < pagesCount; i++) {
+          const dot = document.createElement('div');
+          dot.className = `dot ${i === 0 ? 'active' : ''}`;
+          dotsContainer.appendChild(dot);
+        }
+      }
+
+      // 重置滚动位置并高亮 Dock 栏
+      container.scrollLeft = 0;
+      updateDockUI(categoryKey);
+    }
+
+    /* ==========================================================================\
+       8. 滚动监听与小白点联动（像素级高丝滑度）
+       ========================================================================== */
+    container.addEventListener('scroll', () => {
+      const dots = dotsContainer.querySelectorAll('.dot');
+      if (dots.length === 0) return;
+      
+      // 计算当前滚动到了第几页
+      const pageIndex = Math.round(container.scrollLeft / container.clientWidth);
+      
+      dots.forEach((dot, idx) => {
+        if (idx === pageIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
       });
+    });
 
-      // 让每一页开始接受交叉检测
-      document.querySelectorAll('.page-view').forEach(pv => observer.observe(pv));
-
-      // 6. 激活对应的 Dock 栏毛玻璃高亮
+    /* ==========================================================================\
+       9. Dock 栏渲染与多端高适配弹性刷新
+       ========================================================================== */
+    function updateDockUI(activeKey) {
       document.querySelectorAll('.dock-item').forEach(el => {
-        const isActive = el.dataset.key === categoryKey;
+        const isActive = el.dataset.key === activeKey;
         el.style.opacity = isActive ? '1' : '0.55';
-        el.style.background = isActive ? 'rgba(255, 255, 255, 0.25)' : 'none';
-        el.style.borderRadius = '14px';
-        el.style.transform = isActive ? 'scale(1.04)' : 'scale(1)';
+        el.style.background = isActive ? 'rgba(255, 255, 255, 0.22)' : 'none';
+        el.style.borderRadius = '18px';
+        el.style.transform = isActive ? 'scale(1.05)' : 'scale(1)';
       });
     }
 
-    // 初始化装配 Dock
+    // 初始化构建 Dock 栏
     const dockFragment = document.createDocumentFragment();
     Object.keys(DATA).forEach(key => {
       const item = document.createElement('div');
@@ -646,15 +580,17 @@
     });
     dock.appendChild(dockFragment);
 
-    // 强健性视口重构：当浏览器/平板旋转拖动导致高宽改变时，重新刷新排列
-    window.addEventListener('resize', () => {
-      const activeDock = document.querySelector('.dock-item[style*="opacity: 1"]');
-      const activeKey = activeDock ? activeDock.dataset.key : 'global';
-      renderApps(activeKey);
-    });
-
-    // 默认开机执行
+    // 默认加载首屏
     renderApps('global');
+
+    // 防抖重构：当平板或手机横竖屏切换导致视口改变时，重新切片网格，确保完美适配
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        renderApps(currentCategory);
+      }, 150);
+    });
   </script>
 </body>
 </html>
