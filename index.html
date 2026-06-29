@@ -82,6 +82,22 @@
       text-shadow: var(--text-shadow);
       letter-spacing: 0.5px;
     }
+    settings-head-icon {
+      width: 45px;
+      height: 45px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 999;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: transform 0.2s, background 0.2s;
+    }
+    .settings-head-icon:active { transform: scale(0.9); }
 
     .control-actions { display: flex; gap: 10px; align-items: center; }
     
@@ -695,7 +711,7 @@ body.settings-active .settings-modal-overlay { display: block; }
     <div class="brand-title">Hub OS</div>
     <div class="control-actions">
       <button id="exitEditBtn" class="glass-btn done-btn">完成</button>
-    </div>
+    </div><div id="settingsHeadBtn">👤</div>
   </div>
 
   <div class="desktop-search-wrapper">
@@ -714,7 +730,7 @@ body.settings-active .settings-modal-overlay { display: block; }
   <div class="dock-container">
     <div class="dock" id="dock"></div>
   </div>
-<div id="invisibleSettingsBtn" class="invisible-settings-trigger" title="系统账户与控制中心"></div>
+<div id="invisibleSettingsBtn" class="invisible-settings-trigger" title="👤"></div>
 
   <div id="settingsModalOverlay" class="settings-modal-overlay"></div>
   <div class="settings-panel-drawer" id="settingsPanel">
@@ -840,7 +856,7 @@ body.settings-active .settings-modal-overlay { display: block; }
             ]
         },
     mediaPlatforms: {
-        name: '创作平台（内外）',
+        name: '创作平台',
         short: '📹',
         items: [
             // 国内主流创作后台
@@ -894,7 +910,7 @@ body.settings-active .settings-modal-overlay { display: block; }
             ]
         },
     creativeTools: {
-        name: '创作辅助工具',
+        name: '辅助工具',
         short: '🎬',
         items: [
             // 短剧、剧本与小说创作
@@ -930,7 +946,7 @@ body.settings-active .settings-modal-overlay { display: block; }
         ]
     },
     networkAndDev: {
-        name: '代理云服务器',
+        name: '云服务器',
         short: '💻',
         items: [
             // 云服务器 (VPS) 与域名托管
