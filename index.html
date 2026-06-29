@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-  <title>Creator Hub OS26 - Premium Device Target Edition</title>
+  <title>Creator Hub OS26 - Absolute Pro Layout</title>
   
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon.png">
@@ -13,63 +13,73 @@
   
   <style>
     /* ==========================================================================\
-       1. 全局基础参数与默认值 (Mac 电脑端全屏配置)
+       1. 全局样式重置与苹果原生色彩定义
        ========================================================================== */
     :root {
       --text-main: #ffffff;
       --text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-      --icon-radius: 22%; /* 标准 iOS/macOS 官方图标圆角 */
+      --icon-radius: 22%; /* 苹果官方 Squircle 黄金圆角比例 */
       --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
       
-      /* 👇 【Mac 全屏端参数修改处】 */
-      --grid-cols: 8;       /* Mac 全屏一行最多 10 个图标 */
-      --icon-size: 75px;     /* Mac 端的图标物理大小 */
-      --side-padding: 8%;    /* 桌面两侧安全留白比例 */
+      /* 🖥️【Mac 电脑端/默认大屏】锁死的物理像素（缩放窗口时，这些值绝对不动） */
+      --grid-cols: 10;
+      --icon-size: 68px;
+      --gap-x: 24px;       /* 严格锁死图标之间的横向物理间距 */
+      --gap-y: 28px;       /* 严格锁死图标之间的纵向物理间距 */
+      --container-max-w: 920px; /* (68 * 10) + (24 * 9) = 896px 左右，刚好锁死不外溢 */
     }
 
     /* ==========================================================================\
-       2. 【核心参数修改区】：在此处自由精准修改 iPhone 和 iPad 的图标列数
+       2. 设备精准控制区 (参照 iPhone, iPad 原生桌面行列比例)
        ========================================================================== */
     
-    /* 📱 【iPhone / 手机竖屏】参数修改 */
+    /* 📱【iPhone / 手机竖屏】严格切换为 4 列标准桌面布局 */
     @media (max-width: 600px) and (orientation: portrait) {
       :root {
-        --grid-cols: 4;       /* iPhone 竖屏一行最多 4 个 */
-        --icon-size: 58px;    /* iPhone 竖屏图标大小 */
-        --side-padding: 5%;   /* 缩小边缘留白，留出更多空间给图标 */
+        --grid-cols: 4;
+        --icon-size: 60px;
+        --gap-x: 18px;
+        --gap-y: 22px;
+        --container-max-w: 320px; 
       }
     }
 
-    /* 📱 【iPhone / 手机横屏】参数修改 */
+    /* 📱【iPhone / 手机横屏】由于高度矮，采用 7 列 */
     @media (max-height: 500px) and (orientation: landscape) {
       :root {
-        --grid-cols: 6;       /* iPhone 横屏一行最多 7 个 */
-        --icon-size: 46px;    /* 横屏高度矮，适当缩小图标防止越界 */
-        --side-padding: 8%;
+        --grid-cols: 7;
+        --icon-size: 48px;
+        --gap-x: 16px;
+        --gap-y: 16px;
+        --container-max-w: 460px;
       }
-      .top-header { height: 15px !important; } /* 横屏状态栏变窄 */
+      .top-header { height: 15px !important; }
     }
 
-    /* 📑 【iPad / 平板竖屏】参数修改 */
+    /* 📑【iPad / 平板竖屏】严格切换为 6 列标准桌面布局 */
     @media (min-width: 601px) and (max-width: 1024px) and (orientation: portrait) {
       :root {
-        --grid-cols: 6;       /* iPad 竖屏一行最多 6 个 */
-        --icon-size: 72px;    /* iPad 屏幕大，图标可以放大 */
-        --side-padding: 8%;
+        --grid-cols: 6;
+        --icon-size: 72px;
+        --gap-x: 24px;
+        --gap-y: 30px;
+        --container-max-w: 580px;
       }
     }
 
-    /* 📑 【iPad / 平板横屏】参数修改 */
+    /* 📑【iPad / 平板横屏】保持 8 列原生比例 */
     @media (min-width: 601px) and (max-width: 1100px) and (orientation: landscape) {
       :root {
-        --grid-cols: 8;       /* iPad 横屏一行最多 8 个 */
+        --grid-cols: 8;
         --icon-size: 70px;
-        --side-padding: 9%;
+        --gap-x: 22px;
+        --gap-y: 28px;
+        --container-max-w: 750px;
       }
     }
 
     /* ==========================================================================\
-       3. 页面骨架与安全翻页容器
+       3. 页面骨架与弹性居中容器（无论窗口怎么变，中间雷打不动）
        ========================================================================== */
     * { 
       box-sizing: border-box; 
@@ -101,49 +111,51 @@
       flex-shrink: 0;
     }
 
-    /* 容器：限制在安全视口内，支持上下鼠标滚轮/手势双指翻页 */
+    /* 核心秘诀：双向 Flex 居中容器。无论外层窗口怎么缩放，内部的 App 盒子都稳居中央，多余空间变安全留白 */
     .launchpad-container {
       flex: 1;
       width: 100%;
-      padding: 10px var(--side-padding) 30px var(--side-padding); 
+      padding: 10px 4% 30px 4%; /* 基础最小边界保护 */
+      
       overflow-x: hidden;
-      overflow-y: auto; 
+      overflow-y: auto; /* 允许在中央桌面内上下手势、滚轮换页 */
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch; 
+      
       display: flex;
-      justify-content: center;
-      align-items: start;
+      justify-content: center; /* 左右横向居中 */
+      align-items: flex-start; /* 纵向从顶部自然排布，超出可向下翻页 */
     }
 
-    /* 隐藏滚动条，保持 Mac 原生桌面的纯净优雅 */
+    /* 隐藏粗糙的滚动条 */
     .launchpad-container::-webkit-scrollbar {
       display: none;
     }
 
-    /* 响应式精细网格 */
+    /* 锁死尺寸的果味网格 */
     .app-grid {
       display: grid;
-      /* 使用上面媒体查询动态传递过来的 --grid-cols 变量实现完美适配 */
       grid-template-columns: repeat(var(--grid-cols), 1fr);
       
       width: 100%;
-      max-width: 1400px;
-      column-gap: 20px;
-      row-gap: 28px;
+      max-width: var(--container-max-w); /* 严格限制盒子的最大宽度，实现锁死间距 */
+      
+      column-gap: var(--gap-x);
+      row-gap: var(--gap-y);
+      
       justify-items: center;
       align-items: start;
-      padding-bottom: 60px;
+      padding-bottom: 60px; /* 底部缓冲，防止撞到 Dock */
     }
 
     /* ==========================================================================\
-       4. 应用组件与严格单行裁切（彻底解决凌乱）
+       4. 应用组件与高级文字截断
        ========================================================================== */
     .app-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 100%;
-      max-width: 90px;
+      width: var(--icon-size); /* 条目宽度严格等于图标宽度，消除乱七八糟的横向挤压 */
       cursor: pointer;
       transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease;
       outline: none;
@@ -154,7 +166,7 @@
       opacity: 0.8;
     }
 
-    /* 图标容器：严格控制大小，长宽一致，防挤压拉伸 */
+    /* 图标包裹层 */
     .icon-wrapper {
       width: var(--icon-size);
       height: var(--icon-size);
@@ -168,7 +180,7 @@
       background: #333;
     }
 
-    /* 规范注入进去的 SVG 格式 */
+    /* 清洗格式后的标准 SVG 图标 */
     .icon-wrapper svg {
       width: 52% !important;
       height: 52% !important;
@@ -186,7 +198,7 @@
       font-weight: 600;
     }
 
-    /* 严格限制文本只有单行，多出的自动转为 ... */
+    /* 文本单行严格截断 */
     .app-name {
       margin-top: 7px;
       font-size: 11px;
@@ -194,8 +206,7 @@
       color: var(--text-main);
       text-shadow: var(--text-shadow);
       text-align: center;
-      width: 100%;
-      padding: 0 2px;
+      width: calc(var(--icon-size) + 14px); /* 允许文字比图标稍微宽一点点点，但严格居中 */
       
       white-space: nowrap;
       overflow: hidden;
@@ -274,7 +285,7 @@
   </div>
 
   <script>
-    // 清洗和规范数据格式，防止有损坏的转义斜杠导致 SVG 不亮
+    // 干净且高兼容度的数据源
     const DATA = {
     mediaPlatforms: {
         name: '自媒体与视频创作平台（国内/国际）',
@@ -459,7 +470,7 @@
 
     function renderApps(categoryKey) {
       grid.innerHTML = '';
-      scrollContainer.scrollTop = 0; // 切换分类时回弹到顶端
+      scrollContainer.scrollTop = 0; // 切换版块重置滚动到顶部
       
       const category = DATA[categoryKey];
       if (!category || !category.items) return;
@@ -486,7 +497,7 @@
 
       grid.appendChild(fragment);
 
-      // 同步高亮底部 Dock 栏导航激活态
+      // Dock 激活高亮动效
       document.querySelectorAll('.dock-item').forEach(el => {
         const isActive = el.dataset.key === categoryKey;
         el.style.opacity = isActive ? '1' : '0.55';
@@ -496,7 +507,7 @@
       });
     }
 
-    // 动态初始化 Dock 栏
+    // 动态初始化创建 Dock 栏
     const dockFragment = document.createDocumentFragment();
     Object.keys(DATA).forEach(key => {
       const item = document.createElement('div');
@@ -513,7 +524,7 @@
     });
     dock.appendChild(dockFragment);
 
-    // 默认加载
+    // 默认执行
     renderApps('global');
   </script>
 </body>
