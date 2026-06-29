@@ -390,11 +390,19 @@
 }
 
 /* 高级多功能控制面板 */
+/* 1. 替换原有的设置面板样式：限制最大高度、允许内部上下滚动、增加小屏手机横屏适配 */
 .settings-panel-drawer {
   position: fixed;
   top: 80px;
   right: var(--padding-size);
   width: 360px;
+  
+  /* 🎯 核心自适应：锁死最大高度并支持垂直上下滚动，彻底解决各设备内容被截断问题 */
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(40px) saturate(160%);
   -webkit-backdrop-filter: blur(40px) saturate(160%);
@@ -402,13 +410,39 @@
   border-radius: 24px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
   color: #fff;
-  z-index: 1000;
+  z-index: 1000; /* 确保在最上层 */
   padding: 24px;
   transform: translateY(-20px) scale(0.95);
   opacity: 0;
   pointer-events: none;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
 }
+.settings-panel-drawer.active { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
+.settings-panel-drawer::-webkit-scrollbar { width: 4px; }
+.settings-panel-drawer::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+
+/* 针对小屏幕或手机横屏的极限边界适配 */
+@media (max-width: 500px) or (max-height: 550px) {
+  .settings-panel-drawer {
+    width: calc(100vw - calc(var(--padding-size) * 2));
+    top: 70px;
+    max-height: calc(100vh - 90px);
+    padding: 16px;
+  }
+}
+
+/* 2. 在下方追加这层：全局防误触透明隔离墙样式 */
+.settings-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent; /* 完全透明，保留桌面纯净视觉 */
+  z-index: 900;           /* 介于普通桌面(较低)和设置大面板(1000)之间 */
+  display: none;
+}
+body.settings-active .settings-modal-overlay { display: block; }
 .settings-panel-drawer.active {
   transform: translateY(0) scale(1);
   opacity: 1;
@@ -682,6 +716,7 @@
   </div>
 <div id="invisibleSettingsBtn" class="invisible-settings-trigger" title="系统账户与控制中心"></div>
 
+  <div id="settingsModalOverlay" class="settings-modal-overlay"></div>
   <div class="settings-panel-drawer" id="settingsPanel">
     
     <div class="panel-section profile-card">
@@ -1257,22 +1292,45 @@ const WALLPAPERS = [
 ];
 let currentWallpaperIdx = 0;
 
-const invisibleSettingsBtn = document.getElementById('invisibleSettingsBtn');
-const settingsPanel = document.getElementById('settingsPanel');
-const closeSettingsPanelBtn = document.getElementById('closeSettingsPanelBtn');
+// 获取新加入的隔离墙节点
+const settingsModalOverlay = document.getElementById('settingsModalOverlay');
 
-// 1. 控制面板的唤醒与熄灭（点击右上角隐形区域）
-if (invisibleSettingsBtn && settingsPanel) {
+// 统一封装：开启控制中心
+function openSystemSettings() {
+  if (settingsPanel && settingsModalOverlay) {
+    document.body.classList.add('settings-active'); // 为body加类名，激活隔离墙
+    settingsPanel.classList.add('active');
+  }
+}
+
+// 统一封装：关闭控制中心（恢复网页其他按钮的可点状态）
+function closeSystemSettings() {
+  if (settingsPanel && settingsModalOverlay) {
+    document.body.classList.remove('settings-active'); // 移除类名，注销隔离墙
+    settingsPanel.classList.remove('active');
+  }
+}
+
+// 绑定隐形触发区点击
+if (invisibleSettingsBtn) {
   invisibleSettingsBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    settingsPanel.classList.toggle('active');
+    if (settingsPanel.classList.contains('active')) {
+      closeSystemSettings();
+    } else {
+      openSystemSettings();
+    }
   });
 }
 
-if (closeSettingsPanelBtn && settingsPanel) {
-  closeSettingsPanelBtn.addEventListener('click', () => {
-    settingsPanel.classList.remove('active');
-  });
+// 绑定内部关闭按钮点击
+if (closeSettingsPanelBtn) {
+  closeSettingsPanelBtn.addEventListener('click', closeSystemSettings);
+}
+
+// 核心：点击隔离墙背景（即面板外任意空白处）也能安全退出面板并解除误触锁定
+if (settingsModalOverlay) {
+  settingsModalOverlay.addEventListener('click', closeSystemSettings);
 }
 
 // 2. 点击面板外侧空白处（主舞台）自动收起面板，复刻高阶系统沉浸感
